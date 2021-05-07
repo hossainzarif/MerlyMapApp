@@ -1,8 +1,8 @@
 import React from 'react'
 import { Text, StyleSheet, View, Pressable } from 'react-native'
-import colors from '../../assets/data/colors'
+import colors from '../../../assets/data/colors'
 import { Button } from 'react-native-elements'
-
+import { HEIGHT_BUTTON, BUTTON_RADIUS } from '../../Constants/Height_Width'
 const CurvedButton = (props) => {
   const { btnText } = props
   return (
@@ -17,13 +17,15 @@ const CurvedButton = (props) => {
 
 const styles = StyleSheet.create({
   containerStyle: {
-    borderRadius: 20,
-    height: 40,
+    borderRadius: BUTTON_RADIUS,
+    height: HEIGHT_BUTTON,
+    marginTop: 10,
+    marginBottom: 10,
   },
   buttonStyle: {
     backgroundColor: colors.primary,
-    borderRadius: 20,
-    height: 40,
+    borderRadius: BUTTON_RADIUS,
+    height: HEIGHT_BUTTON,
   },
 })
 

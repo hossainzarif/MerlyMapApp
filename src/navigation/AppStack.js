@@ -7,7 +7,13 @@ const AppStack = () => {
 
   return (
     <appstack.Navigator>
-      <appstack.Screen name='loginScreen' component={loginScreen} />
+      <appstack.Screen
+        name='loginScreen'
+        component={loginScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
     </appstack.Navigator>
   )
 }
