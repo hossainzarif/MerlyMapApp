@@ -11,12 +11,12 @@ import {
 } from '../../constants/Height_Width'
 import { MaterialIcons } from '@expo/vector-icons'
 const TextInputTaker = (props) => {
-  const { email, lefticon } = props
+  const { place, lefticon } = props
 
   return (
     <Input
       leftIcon={lefticon}
-      placeholder={email}
+      placeholder={place}
       inputStyle={styles.input}
       containerStyle={styles.textInput}
       inputContainerStyle={styles.inputcontainer}

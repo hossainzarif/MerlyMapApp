@@ -1,5 +1,12 @@
 import React from 'react'
-import { Text, StyleSheet, View, TextInput, SafeAreaView } from 'react-native'
+import {
+  Text,
+  StyleSheet,
+  View,
+  TextInput,
+  SafeAreaView,
+  KeyboardAvoidingView,
+} from 'react-native'
 import CurvedButton from '../components/buttons/CurvedButton'
 import colors from '../../assets/data/colors'
 import color from 'color'
@@ -8,18 +15,28 @@ import PasswordInputTaker from '../components/inputs/PasswordInputTaker'
 import { ICON_SIZE_MED } from '../constants/Height_Width'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import TextButton from '../components/buttons/TextButton'
+import IconButton from '../components/buttons/IconButton'
+import { Entypo } from '@expo/vector-icons'
 
-const loginScreen = () => {
+const loginScreen = (props) => {
   return (
-    <SafeAreaView style={styles.container}>
+    <View
+      style={styles.container}
+      // behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+    >
       <View style={styles.header}>
+        <View style={styles.iconButtonStyle}>
+          <IconButton
+            icon={<Entypo name='chevron-left' size={32} color='white' />}
+          />
+        </View>
         <Text style={styles.text_header}>WELCOME !</Text>
       </View>
 
-      <View style={styles.footer}>
+      <KeyboardAvoidingView style={styles.footer} behavior='padding'>
         <View style={styles.inputContainer}>
           <TextInputTaker
-            email='Email'
+            place='Email'
             lefticon={
               <MaterialCommunityIcons
                 name='email'
@@ -41,11 +58,16 @@ const loginScreen = () => {
           <CurvedButton btnText='Sign In'></CurvedButton>
           <View style={styles.signupfirst}>
             <Text style={styles.textStyle}>Don't have an Account? </Text>
-            <TextButton textIn='Sign Up' />
+            <TextButton
+              textIn='Sign Up'
+              onPress={function () {
+                props.navigation.navigate('SignUpScreen')
+              }}
+            />
           </View>
         </View>
-      </View>
-    </SafeAreaView>
+      </KeyboardAvoidingView>
+    </View>
   )
 }
 
@@ -55,18 +77,18 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   buttoncontainer: {
-    position: 'absolute',
-    bottom: 50,
     width: '98%',
+    position: 'absolute',
+    bottom: 20,
   },
   header: {
     flex: 1,
     justifyContent: 'flex-end',
     paddingHorizontal: 20,
-    paddingBottom: 40,
+    paddingBottom: 10,
   },
   footer: {
-    flex: 2.4,
+    flex: 2,
     backgroundColor: '#fff',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
@@ -100,6 +122,9 @@ const styles = StyleSheet.create({
   textStyle: {
     fontSize: 14,
     color: colors.darkGray,
+  },
+  iconButtonStyle: {
+    paddingBottom: 80,
   },
 })
 

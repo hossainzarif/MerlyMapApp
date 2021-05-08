@@ -8,10 +8,10 @@ import {
 } from 'react-native'
 import colors from '../../../assets/data/colors'
 const TextButton = (props) => {
-  const { textIn } = props
+  const { textIn, onPress } = props
 
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={onPress}>
       <Text style={styles.textStyle}>{textIn}</Text>
     </TouchableOpacity>
   )
