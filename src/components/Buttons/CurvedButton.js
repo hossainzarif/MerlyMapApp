@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, StyleSheet, View, Pressable } from 'react-native'
 import colors from '../../../assets/data/colors'
 import { Button } from 'react-native-elements'
-import { HEIGHT_BUTTON, BUTTON_RADIUS } from '../../Constants/Height_Width'
+import { HEIGHT_BUTTON, BUTTON_RADIUS } from '../../constants/Height_Width'
 const CurvedButton = (props) => {
   const { btnText } = props
   return (

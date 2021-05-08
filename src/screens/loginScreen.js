@@ -1,34 +1,48 @@
 import React from 'react'
 import { Text, StyleSheet, View, TextInput, SafeAreaView } from 'react-native'
-import CurvedButton from '../components/Buttons/CurvedButton'
+import CurvedButton from '../components/buttons/CurvedButton'
 import colors from '../../assets/data/colors'
-import { Input } from 'react-native-elements'
-import { AntDesign } from '@expo/vector-icons'
 import color from 'color'
+import TextInputTaker from '../components/inputs/TextInputTaker'
+import PasswordInputTaker from '../components/inputs/PasswordInputTaker'
+import { ICON_SIZE_MED } from '../constants/Height_Width'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import TextButton from '../components/buttons/TextButton'
+
 const loginScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.text_header}>WELCOME!</Text>
+        <Text style={styles.text_header}>WELCOME !</Text>
       </View>
 
       <View style={styles.footer}>
-        <View style={styles.action}>
-          <Input
-            rightIcon={
-              <AntDesign name='rightcircle' size={20} color={colors.primary} />
+        <View style={styles.inputContainer}>
+          <TextInputTaker
+            email='Email'
+            lefticon={
+              <MaterialCommunityIcons
+                name='email'
+                size={ICON_SIZE_MED}
+                color={colors.primary}
+              />
             }
-            leftIcon={
-              <AntDesign name='rightcircle' size={20} color={colors.primary} />
-            }
-            inputStyle={{ paddingLeft: 5 }}
-            containerStyle={styles.textInput}
-            inputContainerStyle={{ borderBottomWidth: 0 }}
           />
+          <PasswordInputTaker />
+        </View>
+
+        <View style={styles.forgotButton}>
+          <View style={styles.textButtonContainer}>
+            <TextButton textIn='Forgot Password?' />
+          </View>
         </View>
 
         <View style={styles.buttoncontainer}>
-          <CurvedButton btnText='LOGIN!'></CurvedButton>
+          <CurvedButton btnText='Sign In'></CurvedButton>
+          <View style={styles.signupfirst}>
+            <Text style={styles.textStyle}>Don't have an Account? </Text>
+            <TextButton textIn='Sign Up' />
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -43,7 +57,7 @@ const styles = StyleSheet.create({
   buttoncontainer: {
     position: 'absolute',
     bottom: 50,
-    width: '100%',
+    width: '98%',
   },
   header: {
     flex: 1,
@@ -52,7 +66,7 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   footer: {
-    flex: 2.5,
+    flex: 2.4,
     backgroundColor: '#fff',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
@@ -65,35 +79,27 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 28,
   },
-  text_footer: {
-    color: '#05375a',
-    fontSize: 18,
+  inputContainer: {
+    width: '98%',
   },
-  input: {
-    height: 40,
-    margin: 12,
-    width: '100%',
-    borderWidth: 1,
-    borderRadius: 15,
-    borderColor: colors.primary,
-    backgroundColor: colors.primary_fade,
+  forgotButton: {
+    width: '95%',
+    margin: 10,
   },
-  action: {
+  signupfirst: {
+    width: '95%',
+    margin: 10,
     flexDirection: 'row',
-    marginTop: 10,
-    borderBottomColor: '#f2f2f2',
-    paddingBottom: 5,
+    justifyContent: 'center',
   },
-  textInput: {
-    flex: 1,
-    marginTop: Platform.OS === 'ios' ? 0 : -12,
-    borderWidth: 1,
-    width: '100%',
-    margin: 12,
-    height: 47,
-    borderRadius: 15,
-    borderColor: colors.primary,
-    backgroundColor: colors.primary_fade,
+  fontStyleBottom: {
+    fontSize: 12,
+    color: colors.primary_dark,
+  },
+  textButtonContainer: { alignItems: 'flex-end' },
+  textStyle: {
+    fontSize: 14,
+    color: colors.darkGray,
   },
 })
 
