@@ -1,8 +1,8 @@
-import React from 'react'
-import { Text, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
+import { Text, StyleSheet, TouchableOpacity } from 'react-native'
 
 import { Input } from 'react-native-elements'
-import { MaterialIcons } from '@expo/vector-icons'
+import { MaterialIcons, Entypo } from '@expo/vector-icons'
 import colors from '../../../assets/data/colors'
 import {
   HEIGHT_INPUT,
@@ -10,7 +10,16 @@ import {
   ICON_SIZE_MED,
 } from '../../constants/Height_Width'
 
-const PasswordInputTaker = () => {
+const PasswordInputTaker = (props) => {
+  const [passshow, setshow] = useState(false)
+
+  const handleEye = () => {
+    if (passshow) {
+      setshow(false)
+    } else {
+      setshow(true)
+    }
+  }
   return (
     <Input
       leftIcon={
@@ -20,12 +29,26 @@ const PasswordInputTaker = () => {
           color={colors.primary}
         />
       }
+      rightIcon={
+        <TouchableOpacity onPress={handleEye}>
+          {passshow ? (
+            <Entypo name='eye' size={ICON_SIZE_MED} color={colors.primary} />
+          ) : (
+            <Entypo
+              name='eye-with-line'
+              size={ICON_SIZE_MED}
+              color={colors.primary}
+            />
+          )}
+        </TouchableOpacity>
+      }
       placeholder='Password'
       inputStyle={styles.input}
       containerStyle={styles.textInput}
       inputContainerStyle={styles.inputcontainer}
-      secureTextEntry={true}
+      secureTextEntry={!passshow}
       style={styles.fontStyle}
+      onChangeText={props.onChangeText}
     />
   )
 }

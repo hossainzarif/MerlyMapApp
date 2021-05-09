@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Text,
   StyleSheet,
@@ -17,56 +17,56 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import TextButton from '../components/buttons/TextButton'
 import IconButton from '../components/buttons/IconButton'
 import { Entypo } from '@expo/vector-icons'
+import { SocialIcon } from 'react-native-elements'
 
-const loginScreen = (props) => {
+const WelcomeScreen = ({ navigation }) => {
+  const [Password, setPassword] = useState('')
+
   return (
     <View
       style={styles.container}
       // behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
     >
       <View style={styles.header}>
-        <View style={styles.iconButtonStyle}>
-          <IconButton
-            icon={<Entypo name='chevron-left' size={32} color='white' />}
-          />
-        </View>
-        <Text style={styles.text_header}>WELCOME !</Text>
+        <Text style={styles.text_header}>Welcome to MerlyApp</Text>
       </View>
 
-      <KeyboardAvoidingView style={styles.footer} behavior='padding'>
-        <View style={styles.inputContainer}>
-          <TextInputTaker
-            place='Email'
-            lefticon={
-              <MaterialCommunityIcons
-                name='email'
-                size={ICON_SIZE_MED}
-                color={colors.primary}
-              />
-            }
-          />
-          <PasswordInputTaker />
-        </View>
-
-        <View style={styles.forgotButton}>
-          <View style={styles.textButtonContainer}>
-            <TextButton textIn='Forgot Password?' />
-          </View>
-        </View>
-
+      <View style={styles.footer}>
         <View style={styles.buttoncontainer}>
-          <CurvedButton btnText='Sign In'></CurvedButton>
+          <SocialIcon
+            raised={true}
+            title='Continue With Facebook'
+            button
+            type='facebook'
+          />
+          <SocialIcon
+            raised={true}
+            title='Continue With Google'
+            button
+            type='google'
+          />
+
+          <SocialIcon
+            onPress={() => {
+              navigation.navigate('SignInScreen')
+            }}
+            raised={true}
+            title='Sign In With Email'
+            button
+            type='envelope'
+          />
+
           <View style={styles.signupfirst}>
             <Text style={styles.textStyle}>Don't have an Account? </Text>
             <TextButton
               textIn='Sign Up'
               onPress={function () {
-                props.navigation.navigate('SignUpScreen')
+                navigation.navigate('SignUpScreen')
               }}
             />
           </View>
         </View>
-      </KeyboardAvoidingView>
+      </View>
     </View>
   )
 }
@@ -78,23 +78,22 @@ const styles = StyleSheet.create({
   },
   buttoncontainer: {
     width: '98%',
-    position: 'absolute',
-    bottom: 20,
   },
   header: {
-    flex: 1,
+    flex: 1.4,
     justifyContent: 'flex-end',
     paddingHorizontal: 20,
-    paddingBottom: 10,
+    paddingBottom: 20,
   },
   footer: {
-    flex: 2,
+    flex: 1,
     backgroundColor: '#fff',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingHorizontal: 20,
     paddingVertical: 30,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   text_header: {
     color: '#fff',
@@ -124,8 +123,10 @@ const styles = StyleSheet.create({
     color: colors.darkGray,
   },
   iconButtonStyle: {
-    paddingBottom: 80,
+    position: 'absolute',
+    top: 50,
+    left: 10,
   },
 })
 
-export default loginScreen
+export default WelcomeScreen
