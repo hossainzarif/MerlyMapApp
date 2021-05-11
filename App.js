@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import AuthStack from './src/navigation/AuthStack'
 import { Value } from 'react-native-reanimated'
 import OnboardStack from './src/navigation/OnboardStack'
+import DrawerNav from './src/navigation/DrawerNav'
 export default function App() {
   const [isFirstLaunch, setIsFirstLaunch] = useState(null)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
@@ -39,7 +40,7 @@ export default function App() {
   } else {
     return (
       <NavigationContainer>
-        {isLoggedIn ? <OnboardStack /> : <AuthStack />}
+        {isLoggedIn ? <DrawerNav /> : <AuthStack />}
       </NavigationContainer>
     )
   }
