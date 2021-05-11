@@ -3,3 +3,9 @@ export const PRIVACY =
 
 export const TERMS =
   "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry'sLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry'sLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry'sLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry'sLorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's "
+
+export const ONBOARDING_1 =
+  'Done with React Native Onboarding Swiper Done with React Native Onboarding Swiper Done with React Native Onboarding Swiper Done with React Native Onboarding Swiper'
+
+export const ONBOARDING_2 =
+  'Done with React Native Onboarding Swiper Done with React Native Onboarding Swiper Done with React Native Onboarding Swiper Done with React Native Onboarding Swiper'

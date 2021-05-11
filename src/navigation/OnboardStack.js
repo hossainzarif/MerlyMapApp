@@ -4,12 +4,18 @@ import SignInScreen from '../screens/SignInScreen'
 import SignUpScreen from '../screens/SignUpScreen'
 import WelcomeScreen from '../screens/WelcomeScreen'
 import OnboardingScreen from '../screens/OnboardingScreen'
-const AuthStack = () => {
-  authstack = createStackNavigator()
-
+const OnboardStack = () => {
+  onboardstack = createStackNavigator()
   return (
-    <authstack.Navigator>
-      <authstack.Screen
+    <onboardstack.Navigator>
+      <onboardstack.Screen
+        name='OnboardingScreen'
+        component={OnboardingScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <onboardstack.Screen
         name='WelcomeScreen'
         component={WelcomeScreen}
         options={{
@@ -17,22 +23,22 @@ const AuthStack = () => {
         }}
       />
 
-      <authstack.Screen
+      <onboardstack.Screen
         name='SignInScreen'
         component={SignInScreen}
         options={{
           headerShown: false,
         }}
       />
-      <authstack.Screen
+      <onboardstack.Screen
         name='SignUpScreen'
         component={SignUpScreen}
         options={{
           headerShown: false,
         }}
       />
-    </authstack.Navigator>
+    </onboardstack.Navigator>
   )
 }
 
-export default AuthStack
+export default OnboardStack
