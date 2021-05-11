@@ -16,21 +16,23 @@ export default function App() {
         AsyncStorage.setItem('alreadyLaunched', 'true')
         setIsFirstLaunch(true)
       } else {
-        setIsFirstLaunch(true)
+        setIsFirstLaunch(false)
       }
     })
   }, [])
 
   if (isFirstLaunch == null) {
+    return null
+  } else if (isFirstLaunch == true) {
     return (
       <NavigationContainer>
-        <AuthStack />
+        <OnboardStack />
       </NavigationContainer>
     )
   } else {
     return (
       <NavigationContainer>
-        <OnboardStack />
+        <AuthStack />
       </NavigationContainer>
     )
   }
