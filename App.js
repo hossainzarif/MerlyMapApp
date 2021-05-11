@@ -9,6 +9,7 @@ import { Value } from 'react-native-reanimated'
 import OnboardStack from './src/navigation/OnboardStack'
 export default function App() {
   const [isFirstLaunch, setIsFirstLaunch] = useState(null)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   useEffect(() => {
     AsyncStorage.getItem('alreadyLaunched').then((value) => {
@@ -17,6 +18,12 @@ export default function App() {
         setIsFirstLaunch(true)
       } else {
         setIsFirstLaunch(false)
+      }
+    })
+
+    AsyncStorage.getItem('loggedIn').then((value) => {
+      if (value != null) {
+        setIsLoggedIn(true)
       }
     })
   }, [])
@@ -32,7 +39,7 @@ export default function App() {
   } else {
     return (
       <NavigationContainer>
-        <AuthStack />
+        {isLoggedIn ? <OnboardStack /> : <AuthStack />}
       </NavigationContainer>
     )
   }

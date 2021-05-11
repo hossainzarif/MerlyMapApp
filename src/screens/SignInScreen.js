@@ -17,6 +17,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import TextButton from '../components/buttons/TextButton'
 import IconButton from '../components/buttons/IconButton'
 import { Entypo } from '@expo/vector-icons'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const SignInScreen = ({ navigation }) => {
   const [Password, setPassword] = useState('')
@@ -65,7 +66,12 @@ const SignInScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.buttoncontainer}>
-          <CurvedButton btnText='Sign In'></CurvedButton>
+          <CurvedButton
+            btnText='Sign In'
+            onPress={function () {
+              AsyncStorage.setItem('loggedIn', 'true')
+            }}
+          ></CurvedButton>
           <View style={styles.signupfirst}>
             <Text style={styles.textStyle}>Don't have an Account? </Text>
             <TextButton

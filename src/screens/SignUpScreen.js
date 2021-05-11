@@ -107,7 +107,13 @@ const SignUpScreen = ({ navigation }) => {
         </View>
 
         <View style={styles.buttoncontainer}>
-          <CurvedButton btnText='Sign Up'></CurvedButton>
+          <CurvedButton
+            chk={!checked}
+            btnText='Sign Up'
+            onPress={function () {
+              console.log(checked)
+            }}
+          ></CurvedButton>
           <View style={styles.signupfirst}>
             <Text style={styles.textStyle}>Already have an Account? </Text>
             <TextButton

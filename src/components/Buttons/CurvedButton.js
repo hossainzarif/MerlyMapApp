@@ -4,13 +4,15 @@ import colors from '../../../assets/data/colors'
 import { Button } from 'react-native-elements'
 import { HEIGHT_BUTTON, BUTTON_RADIUS } from '../../constants/Height_Width'
 const CurvedButton = (props) => {
-  const { btnText } = props
+  const { btnText, onPress, chk } = props
   return (
     <Button
       containerStyle={styles.containerStyle}
       buttonStyle={styles.buttonStyle}
       title={btnText}
       raised
+      onPress={onPress}
+      disabled={chk}
     />
   )
 }
