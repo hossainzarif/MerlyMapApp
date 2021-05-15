@@ -12,6 +12,7 @@ export default function App() {
   const [isFirstLaunch, setIsFirstLaunch] = useState(null)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
+  // Firebase Init
   useEffect(() => {
     AsyncStorage.getItem('alreadyLaunched').then((value) => {
       if (value == null) {
