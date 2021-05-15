@@ -21,12 +21,6 @@ export default function App() {
         setIsFirstLaunch(false)
       }
     })
-
-    AsyncStorage.getItem('loggedIn').then((value) => {
-      if (value != null) {
-        setIsLoggedIn(true)
-      }
-    })
   }, [])
 
   if (isFirstLaunch == null) {
@@ -40,7 +34,7 @@ export default function App() {
   } else {
     return (
       <NavigationContainer>
-        {isLoggedIn ? <DrawerNav /> : <AuthStack />}
+        <AuthStack />
       </NavigationContainer>
     )
   }

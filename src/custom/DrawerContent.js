@@ -17,9 +17,10 @@ import {
 import { SimpleLineIcons, AntDesign, MaterialIcons } from '@expo/vector-icons'
 import { DRAWER_ICON_SIZE } from '../constants/Height_Width'
 import { FontAwesome5 } from '@expo/vector-icons'
+import { Foundation } from '@expo/vector-icons'
 const DrawerContent = (props) => {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={styles.container}>
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
@@ -84,8 +85,22 @@ const DrawerContent = (props) => {
         </View>
       </DrawerContentScrollView>
       <Drawer.Section style={styles.bottomDrawerSection}>
-        <DrawerItem label='Terms and service' />
-        <DrawerItem label='Privacy Policy' />
+        <DrawerItem
+          icon={() => (
+            <Foundation
+              name='page-copy'
+              size={DRAWER_ICON_SIZE}
+              color='black'
+            />
+          )}
+          label='Terms and service'
+        />
+        <DrawerItem
+          icon={() => (
+            <Foundation name='page-pdf' size={DRAWER_ICON_SIZE} color='black' />
+          )}
+          label='Privacy Policy'
+        />
         <DrawerItem
           icon={() => (
             <SimpleLineIcons
@@ -102,6 +117,10 @@ const DrawerContent = (props) => {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+
   drawerContent: {
     flex: 1,
   },
