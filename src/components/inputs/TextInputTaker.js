@@ -11,7 +11,7 @@ import {
 } from '../../constants/Height_Width'
 import { MaterialIcons } from '@expo/vector-icons'
 const TextInputTaker = (props) => {
-  const { place, lefticon } = props
+  const { place, lefticon, onChangeText } = props
 
   return (
     <Input
@@ -21,6 +21,7 @@ const TextInputTaker = (props) => {
       containerStyle={styles.textInput}
       inputContainerStyle={styles.inputcontainer}
       style={styles.fontStyle}
+      onChangeText={onChangeText}
     />
   )
 }

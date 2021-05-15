@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import {
   Text,
   StyleSheet,
@@ -29,6 +29,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen'
 import ModalPrivacy from '../components/modals/ModalPrivacy'
 import ModalTerms from '../components/modals/ModalTerms'
 import { PRIVACY, TERMS } from '../constants/stringsConstants'
+import { AuthContext } from '../Providers/AuthProvider'
 const SignUpScreen = ({ navigation }) => {
   // const [isvisible_terms, setisvisible_terms] = useState(false)
   // const [isvisible_privacy, setisvisible_privacy] = useState(false)
@@ -37,6 +38,10 @@ const SignUpScreen = ({ navigation }) => {
   // const [isModalVisible, setModalVisible] = useState(true)
   const [modalVisible, setModalVisible] = useState(false)
   const [modalVisible_terms, setModalVisible_terms] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('')
+  const { register } = useContext(AuthContext)
 
   return (
     <View
@@ -66,6 +71,9 @@ const SignUpScreen = ({ navigation }) => {
                 color={colors.primary}
               />
             }
+            onChangeText={function (currentInput) {
+              setUsername(currentInput)
+            }}
           />
 
           <TextInputTaker
@@ -77,8 +85,15 @@ const SignUpScreen = ({ navigation }) => {
                 color={colors.primary}
               />
             }
+            onChangeText={function (currentInput) {
+              setEmail(currentInput)
+            }}
           />
-          <PasswordInputTaker />
+          <PasswordInputTaker
+            onChangeText={function (currentInput) {
+              setPassword(currentInput)
+            }}
+          />
         </View>
 
         <View style={styles.checkContainer}>
@@ -110,9 +125,7 @@ const SignUpScreen = ({ navigation }) => {
           <CurvedButton
             chk={!checked}
             btnText='Sign Up'
-            onPress={function () {
-              console.log(checked)
-            }}
+            onPress={() => register(email, password)}
           ></CurvedButton>
           <View style={styles.signupfirst}>
             <Text style={styles.textStyle}>Already have an Account? </Text>
