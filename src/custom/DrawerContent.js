@@ -1,39 +1,53 @@
-import React from 'react'
+import React, { useContext } from 'react'
 
 import { View, StyleSheet } from 'react-native'
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer'
 import {
   useTheme,
-  Avatar,
   Title,
   Caption,
+  Avatar,
   Paragraph,
   Drawer,
   Text,
   TouchableRipple,
   Switch,
 } from 'react-native-paper'
-
+// import { Avatar } from 'react-native-elements'
 import { SimpleLineIcons, AntDesign, MaterialIcons } from '@expo/vector-icons'
 import { DRAWER_ICON_SIZE } from '../constants/Height_Width'
 import { FontAwesome5 } from '@expo/vector-icons'
 import { Foundation } from '@expo/vector-icons'
+
+import { AuthContext } from '../Providers/AuthProvider'
+import colors from '../../assets/data/colors'
 const DrawerContent = (props) => {
+  const { logout, user } = useContext(AuthContext)
+
   return (
     <View style={styles.container}>
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
             <View style={{ flexDirection: 'row', marginTop: 15 }}>
-              <Avatar.Image
-                source={{
-                  uri: 'https://picsum.photos/seed/picsum/200/300',
-                }}
-                size={50}
-              />
+              {user.photoURL ? (
+                <Avatar.Image
+                  source={{
+                    uri: 'https://picsum.photos/seed/picsum/200/300', //user.photoURL should be added
+                  }}
+                  size={60}
+                />
+              ) : (
+                <Avatar.Icon
+                  size={60}
+                  icon='account'
+                  color='white'
+                  style={{ backgroundColor: colors.primary }}
+                />
+              )}
               <View style={{ marginLeft: 15, flexDirection: 'column' }}>
-                <Title style={styles.title}>Merly</Title>
-                <Caption style={styles.caption}>@merly@gmail.com</Caption>
+                <Title style={styles.title}>{user.displayName}</Title>
+                <Caption style={styles.caption}>{user.email}</Caption>
               </View>
             </View>
           </View>
@@ -80,6 +94,9 @@ const DrawerContent = (props) => {
                 />
               )}
               label='Contact Us'
+              onPress={() => {
+                console.log(user)
+              }}
             />
           </Drawer.Section>
         </View>
@@ -110,6 +127,9 @@ const DrawerContent = (props) => {
             />
           )}
           label='Sign Out'
+          onPress={() => {
+            logout()
+          }}
         />
       </Drawer.Section>
     </View>

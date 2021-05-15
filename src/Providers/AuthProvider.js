@@ -1,4 +1,5 @@
 import React, { createContext, useState } from 'react'
+import { Alert } from 'react-native'
 import { auth } from '../utils/firebase'
 
 export const AuthContext = createContext()
@@ -15,12 +16,21 @@ export const AuthProvider = ({ children }) => {
           try {
             await auth.signInWithEmailAndPassword(email, password)
           } catch (e) {
-            console.log(e)
+            Alert.alert('Error', e.message)
           }
         },
-        register: async (email, password) => {
+        register: async (email, password, name) => {
           try {
-            await auth.createUserWithEmailAndPassword(email, password)
+            await auth
+              .createUserWithEmailAndPassword(email, password)
+              .then((authUser) => {
+                authUser.user.updateProfile({
+                  displayName: name,
+                })
+              })
+              .catch((e) => {
+                Alert.alert('Error', e.message)
+              })
           } catch (e) {
             console.log(e)
           }
@@ -29,7 +39,7 @@ export const AuthProvider = ({ children }) => {
           try {
             await auth.signOut()
           } catch (e) {
-            console.log(e)
+            Alert.alert('Error', e.message)
           }
         },
       }}

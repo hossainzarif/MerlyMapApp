@@ -125,7 +125,7 @@ const SignUpScreen = ({ navigation }) => {
           <CurvedButton
             chk={!checked}
             btnText='Sign Up'
-            onPress={() => register(email, password)}
+            onPress={() => register(email, password, username)}
           ></CurvedButton>
           <View style={styles.signupfirst}>
             <Text style={styles.textStyle}>Already have an Account? </Text>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import {
   Text,
   StyleSheet,
@@ -18,9 +18,12 @@ import TextButton from '../components/buttons/TextButton'
 import IconButton from '../components/buttons/IconButton'
 import { Entypo } from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { AuthContext } from '../Providers/AuthProvider'
 
 const SignInScreen = ({ navigation }) => {
-  const [Password, setPassword] = useState('')
+  const [password, setPassword] = useState('')
+  const { login } = useContext(AuthContext)
+  const [email, setEmail] = useState('')
 
   return (
     <View
@@ -50,9 +53,12 @@ const SignInScreen = ({ navigation }) => {
                 color={colors.primary}
               />
             }
+            onChangeText={function (currentInput) {
+              setEmail(currentInput)
+            }}
           />
           <PasswordInputTaker
-            pass={Password}
+            pass={password}
             onChangeText={function (currentInput) {
               setPassword(currentInput)
             }}
@@ -68,8 +74,8 @@ const SignInScreen = ({ navigation }) => {
         <View style={styles.buttoncontainer}>
           <CurvedButton
             btnText='Sign In'
-            onPress={function () {
-              AsyncStorage.setItem('loggedIn', 'true')
+            onPress={() => {
+              login(email, password)
             }}
           ></CurvedButton>
           <View style={styles.signupfirst}>
