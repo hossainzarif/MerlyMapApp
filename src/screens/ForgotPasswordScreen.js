@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import {
   Text,
   StyleSheet,
@@ -11,9 +11,12 @@ import CurvedButton from '../components/buttons/CurvedButton'
 import colors from '../../assets/data/colors'
 import TextInputTaker from '../components/inputs/TextInputTaker'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { ICON_SIZE_MED } from '../constants/Height_Width'
+import { AuthContext } from '../Providers/AuthProvider'
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
+  const { resetPassword, loading } = useContext(AuthContext)
 
   return (
     <View style={styles.container}>
@@ -22,18 +25,24 @@ const ForgotPasswordScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.footer}>
+        <TextInputTaker
+          place='Email'
+          lefticon={
+            <MaterialCommunityIcons
+              name='email'
+              size={ICON_SIZE_MED}
+              color={colors.primary}
+            />
+          }
+          onChangeText={function (currentInput) {
+            setEmail(currentInput)
+          }}
+        />
         <View style={styles.buttoncontainer}>
-          <TextInputTaker
-            place='Email'
-            lefticon={
-              <MaterialCommunityIcons
-                name='email'
-                size={ICON_SIZE_MED}
-                color={colors.primary}
-              />
-            }
-            onChangeText={function (currentInput) {
-              setEmail(currentInput)
+          <CurvedButton
+            btnText='Reset Password'
+            onPress={() => {
+              resetPassword(email)
             }}
           />
         </View>
@@ -49,9 +58,12 @@ const styles = StyleSheet.create({
   },
   buttoncontainer: {
     width: '98%',
+    position: 'absolute',
+    bottom: 20,
   },
+
   header: {
-    flex: 1.4,
+    flex: 1,
     justifyContent: 'flex-end',
     paddingHorizontal: 20,
     paddingBottom: 20,
@@ -64,7 +76,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 30,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   text_header: {
     color: '#fff',
