@@ -30,6 +30,7 @@ import ModalPrivacy from '../components/modals/ModalPrivacy'
 import ModalTerms from '../components/modals/ModalTerms'
 import { PRIVACY, TERMS } from '../constants/stringsConstants'
 import { AuthContext } from '../Providers/AuthProvider'
+import Loading from '../custom/Loading'
 const SignUpScreen = ({ navigation }) => {
   // const [isvisible_terms, setisvisible_terms] = useState(false)
   // const [isvisible_privacy, setisvisible_privacy] = useState(false)
@@ -41,116 +42,120 @@ const SignUpScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [username, setUsername] = useState('')
-  const { register } = useContext(AuthContext)
+  const { register, loading } = useContext(AuthContext)
 
-  return (
-    <View
-      style={styles.container}
-      //   behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-    >
-      <View style={styles.header}>
-        <View style={styles.iconButtonStyle}>
-          <IconButton
-            icon={<Entypo name='chevron-left' size={32} color='white' />}
-            onpress={function () {
-              navigation.goBack()
-            }}
-          />
-        </View>
-        <Text style={styles.text_header}>SIGN UP</Text>
-      </View>
-
-      <KeyboardAvoidingView style={styles.footer} behavior='padding'>
-        <View style={styles.inputContainer}>
-          <TextInputTaker
-            place='Username'
-            lefticon={
-              <MaterialIcons
-                name='person'
-                size={ICON_SIZE_MED}
-                color={colors.primary}
-              />
-            }
-            onChangeText={function (currentInput) {
-              setUsername(currentInput)
-            }}
-          />
-
-          <TextInputTaker
-            place='Email'
-            lefticon={
-              <MaterialCommunityIcons
-                name='email'
-                size={ICON_SIZE_MED}
-                color={colors.primary}
-              />
-            }
-            onChangeText={function (currentInput) {
-              setEmail(currentInput)
-            }}
-          />
-          <PasswordInputTaker
-            onChangeText={function (currentInput) {
-              setPassword(currentInput)
-            }}
-          />
+  if (loading) {
+    return <Loading />
+  } else {
+    return (
+      <View
+        style={styles.container}
+        //   behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+      >
+        <View style={styles.header}>
+          {/* <View style={styles.iconButtonStyle}>
+            <IconButton
+              icon={<Entypo name='chevron-left' size={32} color='white' />}
+              onpress={function () {
+                navigation.goBack()
+              }}
+            />
+          </View> */}
+          <Text style={styles.text_header}>SIGN UP</Text>
         </View>
 
-        <View style={styles.checkContainer}>
-          <Checkbox.Android
-            status={checked ? 'checked' : 'unchecked'}
-            onPress={() => {
-              setChecked(!checked)
-            }}
-            color={colors.primary_dark}
-            uncheckedColor={colors.primary}
-          />
-          <Text style={styles.textStyle}> I agree to </Text>
-          <TextButton
-            textIn='Terms of Service'
-            onPress={function () {
-              setModalVisible_terms(true)
-            }}
-          />
-          <Text> and </Text>
-          <TextButton
-            textIn='Privacy Policy'
-            onPress={function () {
-              setModalVisible(true)
-            }}
-          />
-        </View>
+        <KeyboardAvoidingView style={styles.footer} behavior='padding'>
+          <View style={styles.inputContainer}>
+            <TextInputTaker
+              place='Username'
+              lefticon={
+                <MaterialIcons
+                  name='person'
+                  size={ICON_SIZE_MED}
+                  color={colors.primary}
+                />
+              }
+              onChangeText={function (currentInput) {
+                setUsername(currentInput)
+              }}
+            />
 
-        <View style={styles.buttoncontainer}>
-          <CurvedButton
-            chk={!checked}
-            btnText='Sign Up'
-            onPress={() => register(email, password, username)}
-          ></CurvedButton>
-          <View style={styles.signupfirst}>
-            <Text style={styles.textStyle}>Already have an Account? </Text>
-            <TextButton
-              textIn='Sign In'
-              onPress={function () {
-                navigation.navigate('SignInScreen')
+            <TextInputTaker
+              place='Email'
+              lefticon={
+                <MaterialCommunityIcons
+                  name='email'
+                  size={ICON_SIZE_MED}
+                  color={colors.primary}
+                />
+              }
+              onChangeText={function (currentInput) {
+                setEmail(currentInput)
+              }}
+            />
+            <PasswordInputTaker
+              onChangeText={function (currentInput) {
+                setPassword(currentInput)
               }}
             />
           </View>
-        </View>
-      </KeyboardAvoidingView>
 
-      <View style={styles.centeredView}>
-        <ModalPrivacy
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-        />
-        <ModalTerms
-          modalVisible_terms={modalVisible_terms}
-          setModalVisible_terms={setModalVisible_terms}
-        />
+          <View style={styles.checkContainer}>
+            <Checkbox.Android
+              status={checked ? 'checked' : 'unchecked'}
+              onPress={() => {
+                setChecked(!checked)
+              }}
+              color={colors.primary_dark}
+              uncheckedColor={colors.primary}
+            />
+            <Text style={styles.textStyle}> I agree to </Text>
+            <TextButton
+              textIn='Terms of Service'
+              onPress={function () {
+                setModalVisible_terms(true)
+              }}
+            />
+            <Text> and </Text>
+            <TextButton
+              textIn='Privacy Policy'
+              onPress={function () {
+                setModalVisible(true)
+              }}
+            />
+          </View>
+
+          <View style={styles.buttoncontainer}>
+            <CurvedButton
+              chk={!checked}
+              btnText='Sign Up'
+              onPress={() => register(email, password, username)}
+            ></CurvedButton>
+            <View style={styles.signupfirst}>
+              <Text style={styles.textStyle}>Already have an Account? </Text>
+              <TextButton
+                textIn='Sign In'
+                onPress={function () {
+                  navigation.navigate('SignInScreen')
+                }}
+              />
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+
+        <View style={styles.centeredView}>
+          <ModalPrivacy
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+          />
+          <ModalTerms
+            modalVisible_terms={modalVisible_terms}
+            setModalVisible_terms={setModalVisible_terms}
+          />
+        </View>
       </View>
-    </View>
-  )
+    )
+  }
 }
 
 const styles = StyleSheet.create({

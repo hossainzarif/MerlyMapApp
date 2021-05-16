@@ -33,7 +33,7 @@ const DrawerContent = (props) => {
               {user.photoURL ? (
                 <Avatar.Image
                   source={{
-                    uri: 'https://picsum.photos/seed/picsum/200/300', //user.photoURL should be added
+                    uri: user.photoURL, //user.photoURL should be added
                   }}
                   size={60}
                 />

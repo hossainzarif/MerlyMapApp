@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import { auth } from '../utils/firebase'
 import { AuthContext, AuthProvider } from '../Providers/AuthProvider'
 import DrawerNav from './DrawerNav'
+import * as Google from 'expo-google-app-auth'
 
 const RootNav = () => {
   const [isFirstLaunch, setIsFirstLaunch] = useState(null)

@@ -5,6 +5,7 @@ import SignUpScreen from '../screens/SignUpScreen'
 import WelcomeScreen from '../screens/WelcomeScreen'
 import OnboardingScreen from '../screens/OnboardingScreen'
 import MapScreen from '../screens/MapScreen'
+import ForgotPasswordScreen from '../screens/ForgotPasswordScreen'
 
 const AuthStack = () => {
   authstack = createStackNavigator()
@@ -29,6 +30,13 @@ const AuthStack = () => {
       <authstack.Screen
         name='SignUpScreen'
         component={SignUpScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <authstack.Screen
+        name='ForgotPassword'
+        component={ForgotPasswordScreen}
         options={{
           headerShown: false,
         }}

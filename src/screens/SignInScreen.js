@@ -19,78 +19,88 @@ import IconButton from '../components/buttons/IconButton'
 import { Entypo } from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AuthContext } from '../Providers/AuthProvider'
+import Loading from '../custom/Loading'
 
 const SignInScreen = ({ navigation }) => {
   const [password, setPassword] = useState('')
-  const { login } = useContext(AuthContext)
+  const { login, loading } = useContext(AuthContext)
   const [email, setEmail] = useState('')
 
-  return (
-    <View
-      style={styles.container}
-      // behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-    >
-      <View style={styles.header}>
-        <View style={styles.iconButtonStyle}>
+  if (loading) {
+    return <Loading />
+  } else {
+    return (
+      <View
+        style={styles.container}
+        // behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+      >
+        <View style={styles.header}>
+          {/* <View style={styles.iconButtonStyle}>
           <IconButton
             icon={<Entypo name='chevron-left' size={32} color='white' />}
             onpress={function () {
               navigation.goBack()
             }}
           />
-        </View>
-        <Text style={styles.text_header}>Sign In</Text>
-      </View>
-
-      <KeyboardAvoidingView style={styles.footer} behavior='padding'>
-        <View style={styles.inputContainer}>
-          <TextInputTaker
-            place='Email'
-            lefticon={
-              <MaterialCommunityIcons
-                name='email'
-                size={ICON_SIZE_MED}
-                color={colors.primary}
-              />
-            }
-            onChangeText={function (currentInput) {
-              setEmail(currentInput)
-            }}
-          />
-          <PasswordInputTaker
-            pass={password}
-            onChangeText={function (currentInput) {
-              setPassword(currentInput)
-            }}
-          />
+        </View> */}
+          <Text style={styles.text_header}>Sign In</Text>
         </View>
 
-        <View style={styles.forgotButton}>
-          <View style={styles.textButtonContainer}>
-            <TextButton textIn='Forgot Password?' />
-          </View>
-        </View>
-
-        <View style={styles.buttoncontainer}>
-          <CurvedButton
-            btnText='Sign In'
-            onPress={() => {
-              login(email, password)
-            }}
-          ></CurvedButton>
-          <View style={styles.signupfirst}>
-            <Text style={styles.textStyle}>Don't have an Account? </Text>
-            <TextButton
-              textIn='Sign Up'
-              onPress={function () {
-                navigation.navigate('SignUpScreen')
+        <KeyboardAvoidingView style={styles.footer} behavior='padding'>
+          <View style={styles.inputContainer}>
+            <TextInputTaker
+              place='Email'
+              lefticon={
+                <MaterialCommunityIcons
+                  name='email'
+                  size={ICON_SIZE_MED}
+                  color={colors.primary}
+                />
+              }
+              onChangeText={function (currentInput) {
+                setEmail(currentInput)
+              }}
+            />
+            <PasswordInputTaker
+              pass={password}
+              onChangeText={function (currentInput) {
+                setPassword(currentInput)
               }}
             />
           </View>
-        </View>
-      </KeyboardAvoidingView>
-    </View>
-  )
+
+          <View style={styles.forgotButton}>
+            <View style={styles.textButtonContainer}>
+              <TextButton
+                textIn='Forgot Password?'
+                onPress={function () {
+                  navigation.navigate('ForgotPassword')
+                }}
+              />
+            </View>
+          </View>
+
+          <View style={styles.buttoncontainer}>
+            <CurvedButton
+              btnText='Sign In'
+              onPress={() => {
+                login(email, password)
+              }}
+            ></CurvedButton>
+            <View style={styles.signupfirst}>
+              <Text style={styles.textStyle}>Don't have an Account? </Text>
+              <TextButton
+                textIn='Sign Up'
+                onPress={function () {
+                  navigation.navigate('SignUpScreen')
+                }}
+              />
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({

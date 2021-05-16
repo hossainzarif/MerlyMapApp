@@ -9,65 +9,33 @@ import {
 } from 'react-native'
 import CurvedButton from '../components/buttons/CurvedButton'
 import colors from '../../assets/data/colors'
-import color from 'color'
 import TextInputTaker from '../components/inputs/TextInputTaker'
-import PasswordInputTaker from '../components/inputs/PasswordInputTaker'
-import { ICON_SIZE_MED } from '../constants/Height_Width'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
-import TextButton from '../components/buttons/TextButton'
-import IconButton from '../components/buttons/IconButton'
-import { Entypo } from '@expo/vector-icons'
-import { SocialIcon } from 'react-native-elements'
 
-const WelcomeScreen = ({ navigation }) => {
-  const [Password, setPassword] = useState('')
+const ForgotPasswordScreen = ({ navigation }) => {
+  const [email, setEmail] = useState('')
 
   return (
-    <View
-      style={styles.container}
-      // behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-    >
+    <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.text_header}>Welcome to MerlyApp</Text>
       </View>
 
       <View style={styles.footer}>
         <View style={styles.buttoncontainer}>
-          <SocialIcon
-            raised={true}
-            title='Continue With Facebook'
-            button
-            type='facebook'
-          />
-          <SocialIcon
-            raised={true}
-            title='Continue With Google'
-            button
-            type='google'
-            onPress={() => {
-              console.log('GG')
+          <TextInputTaker
+            place='Email'
+            lefticon={
+              <MaterialCommunityIcons
+                name='email'
+                size={ICON_SIZE_MED}
+                color={colors.primary}
+              />
+            }
+            onChangeText={function (currentInput) {
+              setEmail(currentInput)
             }}
           />
-
-          <SocialIcon
-            onPress={() => {
-              navigation.navigate('SignInScreen')
-            }}
-            raised={true}
-            title='Sign In With Email'
-            button
-            type='envelope'
-          />
-
-          <View style={styles.signupfirst}>
-            <Text style={styles.textStyle}>Don't have an Account? </Text>
-            <TextButton
-              textIn='Sign Up'
-              onPress={function () {
-                navigation.navigate('SignUpScreen')
-              }}
-            />
-          </View>
         </View>
       </View>
     </View>
@@ -132,4 +100,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default WelcomeScreen
+export default ForgotPasswordScreen

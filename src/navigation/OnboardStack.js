@@ -4,6 +4,8 @@ import SignInScreen from '../screens/SignInScreen'
 import SignUpScreen from '../screens/SignUpScreen'
 import WelcomeScreen from '../screens/WelcomeScreen'
 import OnboardingScreen from '../screens/OnboardingScreen'
+import ForgotPasswordScreen from '../screens/ForgotPasswordScreen'
+
 const OnboardStack = () => {
   onboardstack = createStackNavigator()
   return (
@@ -33,6 +35,13 @@ const OnboardStack = () => {
       <onboardstack.Screen
         name='SignUpScreen'
         component={SignUpScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <onboardstack.Screen
+        name='ForgotPassword'
+        component={ForgotPasswordScreen}
         options={{
           headerShown: false,
         }}
