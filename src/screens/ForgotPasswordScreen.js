@@ -13,42 +13,49 @@ import TextInputTaker from '../components/inputs/TextInputTaker'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { ICON_SIZE_MED } from '../constants/Height_Width'
 import { AuthContext } from '../Providers/AuthProvider'
+import Loading from '../custom/Loading'
 
 const ForgotPasswordScreen = ({ navigation }) => {
   const [email, setEmail] = useState('')
   const { resetPassword, loading } = useContext(AuthContext)
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.text_header}>Welcome to MerlyApp</Text>
-      </View>
+  if (loading) {
+    return <Loading />
+  } else {
+    return (
+      <View style={styles.container}>
+        <View style={styles.header}>
+          <Text style={styles.text_header}>
+            Your email address used in this App
+          </Text>
+        </View>
 
-      <View style={styles.footer}>
-        <TextInputTaker
-          place='Email'
-          lefticon={
-            <MaterialCommunityIcons
-              name='email'
-              size={ICON_SIZE_MED}
-              color={colors.primary}
-            />
-          }
-          onChangeText={function (currentInput) {
-            setEmail(currentInput)
-          }}
-        />
-        <View style={styles.buttoncontainer}>
-          <CurvedButton
-            btnText='Reset Password'
-            onPress={() => {
-              resetPassword(email)
+        <View style={styles.footer}>
+          <TextInputTaker
+            place='Email'
+            lefticon={
+              <MaterialCommunityIcons
+                name='email'
+                size={ICON_SIZE_MED}
+                color={colors.primary}
+              />
+            }
+            onChangeText={function (currentInput) {
+              setEmail(currentInput)
             }}
           />
+          <View style={styles.buttoncontainer}>
+            <CurvedButton
+              btnText='Reset Password'
+              onPress={() => {
+                resetPassword(email)
+              }}
+            />
+          </View>
         </View>
       </View>
-    </View>
-  )
+    )
+  }
 }
 
 const styles = StyleSheet.create({
