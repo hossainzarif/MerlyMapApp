@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import {
   View,
   Text,
@@ -6,38 +6,71 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
+  Platform,
 } from 'react-native'
 import BottomSheet from 'reanimated-bottom-sheet'
 import Animated from 'react-native-reanimated'
-
 import colors from '../../assets/data/colors'
 import { AuthContext } from '../Providers/AuthProvider'
 import CurvedButton from '../components/buttons/CurvedButton'
+import * as ImagePicker from 'expo-image-picker'
+import * as firebase from 'firebase'
 
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const ProfileScreen = ({ navigation }) => {
-  const { logout, user } = useContext(AuthContext)
-  const sheetRef = React.useRef(null)
+  const { logout, user, uploadProfilePic } = useContext(AuthContext)
 
-  const renderContent = () => (
-    <View
-      style={{
-        backgroundColor: 'white',
-        padding: 16,
-        height: 450,
-      }}
-    >
-      <Text>Swipe down to close</Text>
-    </View>
-  )
+  const [image, setImage] = useState(null)
+
+  const sheetRef = React.useRef(null)
+  useEffect(() => {
+    ;(async () => {
+      if (Platform.OS !== 'web') {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync()
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!')
+        }
+      }
+    })()
+  }, [])
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    })
+
+    console.log(result)
+
+    if (!result.cancelled) {
+      setImage(result.uri)
+      const response = await fetch(image)
+      const blob = await response.blob()
+      var ref = firebase
+        .storage()
+        .ref()
+        .child('images/' + user.uid)
+      ref.put(blob).then(() => {
+        ref.getDownloadURL().then((downloadURL) => {
+          uploadProfilePic(downloadURL)
+        })
+      })
+
+      sheetRef.current.snapTo(2)
+    }
+  }
   const renderInner = () => (
     <View style={styles.panel}>
       <View style={{ alignItems: 'center' }}>
         <Text style={styles.panelTitle}>Edit Profile</Text>
       </View>
-      <TouchableOpacity style={styles.panelButton}>
-        <Text style={styles.panelButtonTitle}>Change profile picture</Text>
+      <TouchableOpacity style={styles.panelButton} onPress={pickImage}>
+        <Text style={styles.panelButtonTitle}>
+          Upload/Change profile picture
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
@@ -86,10 +119,15 @@ const ProfileScreen = ({ navigation }) => {
         }}
         showsVerticalScrollIndicator={false}
       >
-        <Image
-          style={styles.userImg}
-          source={{ uri: 'https://picsum.photos/id/1074/200/300' }} //photoURL should be used
-        />
+        {user.photoURL ? (
+          <Image style={styles.userImg} source={{ uri: user.photoURL }} />
+        ) : (
+          <Image
+            style={styles.userImg}
+            source={{ uri: 'https://via.placeholder.com/300' }} //photoURL should be used
+          />
+        )}
+
         <Text style={styles.userName}>{user.displayName}</Text>
         {/* <Text>{route.params ? route.params.userId : user.uid}</Text> */}
         <Text style={styles.aboutUser}>{user.email}</Text>

@@ -1,6 +1,7 @@
 import React, { createContext, useState } from 'react'
 import { Alert } from 'react-native'
 import { auth } from '../utils/firebase'
+import * as firebase from 'firebase'
 
 export const AuthContext = createContext()
 
@@ -69,40 +70,58 @@ export const AuthProvider = ({ children }) => {
           }
         },
 
-        updatePassword: async (newPassword) => {
+        updatePassword: (userProvidedPassword, newPassword) => {
+          var credentials = firebase.auth.EmailAuthProvider.credential(
+            user.email,
+            userProvidedPassword
+          )
           try {
             setLoading(true)
-            const credential = firebase.auth.EmailAuthProvider.credential(
-              user.email,
-              userProvidedPassword
-            )
-            await user
-              .reauthenticateWithCredential()
+
+            user
+              .reauthenticateWithCredential(credentials)
               .then(function () {
-                Alert.alert('REAUTH', 'Password has been Updated')
+                user
+                  .updatePassword(newPassword)
+                  .then(function () {
+                    Alert.alert('Updated', 'Password has been Updated')
+                    setLoading(false)
+                  })
+                  .catch(function (error) {
+                    Alert.alert('Error', error.message)
+                    setLoading(false)
+                  })
                 setLoading(false)
               })
               .catch(function (error) {
                 // An error happened.
-                console.log('Error', error.message)
+                Alert.alert('Error', error.message)
 
                 setLoading(false)
               })
-
-            // await user
-            //   .updatePassword(newPassword)
-            //   .then(function () {
-            //     Alert.alert('Updated', 'Password has been Updated')
-            //     setLoading(false)
-            //   })
-            //   .catch(function (error) {
-            //     Alert.alert('Error', error.message)
-            //     setLoading(false)
-            //   })
           } catch (e) {
             Alert.alert('Error', e.message)
+
             setLoading(false)
           }
+        },
+
+        uploadProfilePic: (imageurl) => {
+          setLoading(true)
+
+          user
+            .updateProfile({
+              photoURL: imageurl,
+            })
+            .then(function () {
+              setLoading(false)
+
+              Alert.alert('Uploaded', 'Profile Picture Uploaded')
+            })
+            .catch(function (error) {
+              Alert.alert('Error', error.message)
+              setLoading(false)
+            })
         },
       }}
     >

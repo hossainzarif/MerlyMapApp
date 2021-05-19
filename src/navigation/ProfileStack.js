@@ -6,6 +6,7 @@ import { Entypo } from '@expo/vector-icons'
 
 import ProfileScreen from '../screens/ProfileScreen'
 import ChangePassword from '../screens/ChangePassword'
+import ImagePickerFunc from '../custom/ImagePicker'
 const ProfileStack = ({ navigation }) => {
   profilestack = createStackNavigator()
   return (
@@ -38,6 +39,25 @@ const ProfileStack = ({ navigation }) => {
       <profilestack.Screen
         name='ChangePassword'
         component={ChangePassword}
+        options={{
+          title: '',
+          headerLeft: () => (
+            <Entypo
+              name='menu'
+              size={32}
+              color={colors.white}
+              style={{ padding: 10 }}
+              onPress={() => {
+                navigation.openDrawer()
+              }}
+            />
+          ),
+        }}
+      />
+
+      <profilestack.Screen
+        name='ImagePicker'
+        component={ImagePickerFunc}
         options={{
           title: '',
           headerLeft: () => (

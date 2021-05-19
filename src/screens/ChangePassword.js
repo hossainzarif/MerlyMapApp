@@ -24,6 +24,7 @@ const ChangePassword = () => {
   } else {
     const [password, setPassword] = useState('')
     const [confpassword, setconfPassword] = useState('')
+    const [oldpassword, setoldPassword] = useState('')
 
     return (
       <KeyboardAvoidingView
@@ -38,7 +39,14 @@ const ChangePassword = () => {
         </View>
 
         <View style={styles.inputContainer}>
-          <Text style={styles.subtitleText}>Password:</Text>
+          <Text style={styles.subtitleText}>Old Password:</Text>
+
+          <PasswordInputTaker
+            onChangeText={function (currentInput) {
+              setoldPassword(currentInput)
+            }}
+          />
+          <Text style={styles.subtitleText}> New Password:</Text>
 
           <PasswordInputTaker
             onChangeText={function (currentInput) {
@@ -51,13 +59,18 @@ const ChangePassword = () => {
               setconfPassword(currentInput)
             }}
           />
+
           <CurvedButton
             btnText='Reset Password'
             onPress={() => {
-              if (confpassword != password) {
-                Alert.alert('Password must be same')
+              if (confpassword && password && oldpassword) {
+                if (confpassword != password) {
+                  Alert.alert('Password must be same')
+                } else {
+                  updatePassword(oldpassword, confpassword)
+                }
               } else {
-                updatePassword(confpassword)
+                Alert.alert('Please fill up the blanks')
               }
             }}
           />
