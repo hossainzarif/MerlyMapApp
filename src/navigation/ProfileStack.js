@@ -5,6 +5,7 @@ import colors from '../../assets/data/colors'
 import { Entypo } from '@expo/vector-icons'
 
 import ProfileScreen from '../screens/ProfileScreen'
+import ChangePassword from '../screens/ChangePassword'
 const ProfileStack = ({ navigation }) => {
   profilestack = createStackNavigator()
   return (
@@ -19,6 +20,24 @@ const ProfileStack = ({ navigation }) => {
       <profilestack.Screen
         name='ProfileScreen'
         component={ProfileScreen}
+        options={{
+          title: '',
+          headerLeft: () => (
+            <Entypo
+              name='menu'
+              size={32}
+              color={colors.white}
+              style={{ padding: 10 }}
+              onPress={() => {
+                navigation.openDrawer()
+              }}
+            />
+          ),
+        }}
+      />
+      <profilestack.Screen
+        name='ChangePassword'
+        component={ChangePassword}
         options={{
           title: '',
           headerLeft: () => (

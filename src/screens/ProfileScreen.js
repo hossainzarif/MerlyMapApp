@@ -16,7 +16,7 @@ import CurvedButton from '../components/buttons/CurvedButton'
 
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ navigation }) => {
   const { logout, user } = useContext(AuthContext)
   const sheetRef = React.useRef(null)
 
@@ -39,7 +39,13 @@ const ProfileScreen = () => {
       <TouchableOpacity style={styles.panelButton}>
         <Text style={styles.panelButtonTitle}>Change profile picture</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.panelButton}>
+      <TouchableOpacity
+        style={styles.panelButton}
+        onPress={function () {
+          navigation.navigate('ChangePassword')
+          sheetRef.current.snapTo(2)
+        }}
+      >
         <Text style={styles.panelButtonTitle}>Change password</Text>
       </TouchableOpacity>
 
