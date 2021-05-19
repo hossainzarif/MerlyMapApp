@@ -3,17 +3,75 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
   StyleSheet,
   ScrollView,
   SafeAreaView,
 } from 'react-native'
+import BottomSheet from 'reanimated-bottom-sheet'
+import Animated from 'react-native-reanimated'
+
 import colors from '../../assets/data/colors'
 import { AuthContext } from '../Providers/AuthProvider'
+import CurvedButton from '../components/buttons/CurvedButton'
+
+import { TouchableOpacity } from 'react-native-gesture-handler'
+
 const ProfileScreen = () => {
   const { logout, user } = useContext(AuthContext)
+  const sheetRef = React.useRef(null)
+
+  const renderContent = () => (
+    <View
+      style={{
+        backgroundColor: 'white',
+        padding: 16,
+        height: 450,
+      }}
+    >
+      <Text>Swipe down to close</Text>
+    </View>
+  )
+  const renderInner = () => (
+    <View style={styles.panel}>
+      <View style={{ alignItems: 'center' }}>
+        <Text style={styles.panelTitle}>Edit Profile</Text>
+      </View>
+      <TouchableOpacity style={styles.panelButton}>
+        <Text style={styles.panelButtonTitle}>Change profile picture</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.panelButton}>
+        <Text style={styles.panelButtonTitle}>Change password</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.panelButton}
+        onPress={() => {
+          sheetRef.current.snapTo(2)
+        }}
+      >
+        <Text style={styles.panelButtonTitle}>Cancel</Text>
+      </TouchableOpacity>
+    </View>
+  )
+
+  const renderHeader = () => (
+    <View style={styles.header}>
+      <View style={styles.panelHeader}>
+        <View style={styles.panelHandle} />
+      </View>
+    </View>
+  )
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+      <BottomSheet
+        ref={sheetRef}
+        snapPoints={[300, 200, 0]}
+        initialSnap={2}
+        renderContent={renderInner}
+        renderHeader={renderHeader}
+        enabledInnerScrolling={true}
+      />
       <ScrollView
         style={styles.container}
         contentContainerStyle={{
@@ -32,9 +90,7 @@ const ProfileScreen = () => {
         <View style={styles.userBtnWrapper}>
           <TouchableOpacity
             style={styles.userBtn}
-            onPress={() => {
-              console.log('WORKS')
-            }}
+            onPress={() => sheetRef.current.snapTo(0)}
           >
             <Text style={styles.userBtnTxt}>Edit Profile</Text>
           </TouchableOpacity>
@@ -63,7 +119,6 @@ export default ProfileScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     padding: 20,
   },
   userImg: {
@@ -121,5 +176,58 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#666',
     textAlign: 'center',
+  },
+  panel: {
+    padding: 20,
+    backgroundColor: colors.primary_fade,
+    paddingTop: 20,
+    // borderTopLeftRadius: 20,
+    // borderTopRightRadius: 20,
+    // shadowColor: '#000000',
+    // shadowOffset: { width: 0, height: 0 },
+    // shadowRadius: 5,
+    // shadowOpacity: 0.4,
+  },
+  header: {
+    backgroundColor: colors.primary_fade,
+    shadowColor: '#333333',
+    shadowOffset: { width: -1, height: -3 },
+    shadowRadius: 2,
+    shadowOpacity: 0.4,
+    paddingTop: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  panelHeader: {
+    alignItems: 'center',
+  },
+  panelHandle: {
+    width: 40,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#00000040',
+    marginBottom: 10,
+  },
+  panelTitle: {
+    fontSize: 23,
+    height: 35,
+  },
+  panelSubtitle: {
+    fontSize: 14,
+    color: 'gray',
+    height: 30,
+    marginBottom: 10,
+  },
+  panelButton: {
+    padding: 13,
+    borderRadius: 30,
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    marginVertical: 7,
+  },
+  panelButtonTitle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: 'white',
   },
 })

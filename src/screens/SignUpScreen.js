@@ -31,6 +31,7 @@ import ModalTerms from '../components/modals/ModalTerms'
 import { PRIVACY, TERMS } from '../constants/stringsConstants'
 import { AuthContext } from '../Providers/AuthProvider'
 import Loading from '../custom/Loading'
+import { Platform } from 'react-native'
 const SignUpScreen = ({ navigation }) => {
   // const [isvisible_terms, setisvisible_terms] = useState(false)
   // const [isvisible_privacy, setisvisible_privacy] = useState(false)
@@ -64,7 +65,10 @@ const SignUpScreen = ({ navigation }) => {
           <Text style={styles.text_header}>SIGN UP</Text>
         </View>
 
-        <KeyboardAvoidingView style={styles.footer} behavior='padding'>
+        <KeyboardAvoidingView
+          style={styles.footer}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
           <View style={styles.inputContainer}>
             <TextInputTaker
               place='Username'
@@ -165,8 +169,7 @@ const styles = StyleSheet.create({
   },
   buttoncontainer: {
     width: '98%',
-    position: 'absolute',
-    bottom: 10,
+    marginTop: 10,
   },
   header: {
     flex: 1,
@@ -175,7 +178,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   footer: {
-    flex: 2,
+    flex: 3,
     backgroundColor: '#fff',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,

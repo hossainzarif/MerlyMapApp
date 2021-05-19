@@ -20,6 +20,10 @@ import { Entypo } from '@expo/vector-icons'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { AuthContext } from '../Providers/AuthProvider'
 import Loading from '../custom/Loading'
+import {
+  TapGestureHandler,
+  RotationGestureHandler,
+} from 'react-native-gesture-handler'
 
 const SignInScreen = ({ navigation }) => {
   const [password, setPassword] = useState('')
@@ -110,8 +114,7 @@ const styles = StyleSheet.create({
   },
   buttoncontainer: {
     width: '98%',
-    position: 'absolute',
-    bottom: 10,
+    marginTop: 10,
   },
   header: {
     flex: 1,
