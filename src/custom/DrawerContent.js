@@ -21,6 +21,7 @@ import { Foundation } from '@expo/vector-icons'
 
 import { AuthContext } from '../Providers/AuthProvider'
 import colors from '../../assets/data/colors'
+import { TouchableOpacity } from 'react-native'
 const DrawerContent = (props) => {
   const { logout, user } = useContext(AuthContext)
 
@@ -30,21 +31,27 @@ const DrawerContent = (props) => {
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
             <View style={{ flexDirection: 'row', marginTop: 15 }}>
-              {user.photoURL ? (
-                <Avatar.Image
-                  source={{
-                    uri: user.photoURL, //user.photoURL should be added
-                  }}
-                  size={60}
-                />
-              ) : (
-                <Avatar.Icon
-                  size={60}
-                  icon='account'
-                  color='white'
-                  style={{ backgroundColor: colors.primary }}
-                />
-              )}
+              <TouchableOpacity
+                onPress={() => {
+                  props.navigation.navigate('Profile')
+                }}
+              >
+                {user.photoURL ? (
+                  <Avatar.Image
+                    source={{
+                      uri: user.photoURL, //user.photoURL should be added
+                    }}
+                    size={60}
+                  />
+                ) : (
+                  <Avatar.Icon
+                    size={60}
+                    icon='account'
+                    color='white'
+                    style={{ backgroundColor: colors.primary }}
+                  />
+                )}
+              </TouchableOpacity>
               <View style={{ marginLeft: 15, flexDirection: 'column' }}>
                 <Title style={styles.title}>{user.displayName}</Title>
                 <Caption style={styles.caption}>{user.email}</Caption>

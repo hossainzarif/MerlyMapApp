@@ -106,17 +106,39 @@ export const AuthProvider = ({ children }) => {
           }
         },
 
-        uploadProfilePic: (imageurl) => {
+        uploadProfilePic: async (imageurl) => {
           setLoading(true)
 
-          user
+          try {
+            await user
+              .updateProfile({
+                photoURL: imageurl,
+              })
+              .then(function () {
+                setLoading(false)
+
+                Alert.alert('Uploaded', 'Profile Picture Uploaded')
+              })
+              .catch(function (error) {
+                Alert.alert('Error', error.message)
+                setLoading(false)
+              })
+          } catch (error) {
+            Alert.alert('Error', error.message)
+            setLoading(false)
+          }
+        },
+        deleteProfilePic: async () => {
+          setLoading(true)
+
+          await user
             .updateProfile({
-              photoURL: imageurl,
+              photoURL: null,
             })
             .then(function () {
               setLoading(false)
 
-              Alert.alert('Uploaded', 'Profile Picture Uploaded')
+              Alert.alert('Deleted', 'Profile Picture Deleted')
             })
             .catch(function (error) {
               Alert.alert('Error', error.message)

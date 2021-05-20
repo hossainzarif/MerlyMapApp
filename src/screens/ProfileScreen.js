@@ -19,7 +19,8 @@ import * as firebase from 'firebase'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const ProfileScreen = ({ navigation }) => {
-  const { logout, user, uploadProfilePic } = useContext(AuthContext)
+  const { logout, user, uploadProfilePic, deleteProfilePic } =
+    useContext(AuthContext)
 
   const [image, setImage] = useState(null)
 
@@ -52,7 +53,7 @@ const ProfileScreen = ({ navigation }) => {
       var ref = firebase
         .storage()
         .ref()
-        .child('images/' + user.uid)
+        .child('images/profilepicture' + user.uid)
       ref.put(blob).then(() => {
         ref.getDownloadURL().then((downloadURL) => {
           uploadProfilePic(downloadURL)
@@ -71,6 +72,14 @@ const ProfileScreen = ({ navigation }) => {
         <Text style={styles.panelButtonTitle}>
           Upload/Change profile picture
         </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.panelButton}
+        onPress={() => {
+          deleteProfilePic()
+        }}
+      >
+        <Text style={styles.panelButtonTitle}>Delete profile picture</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
@@ -124,7 +133,9 @@ const ProfileScreen = ({ navigation }) => {
         ) : (
           <Image
             style={styles.userImg}
-            source={{ uri: 'https://via.placeholder.com/300' }} //photoURL should be used
+            source={{
+              uri: 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+            }} //photoURL should be used
           />
         )}
 
