@@ -20,6 +20,7 @@ import { SafeAreaView } from 'react-native'
 import DetailsInputTaker from '../components/inputs/DetailsInputTaker'
 import moment from 'moment'
 import CalendarStrip from 'react-native-calendar-strip'
+import { ImageBrowser } from 'expo-image-picker-multiple'
 
 const PostSalesScreen = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
@@ -28,7 +29,7 @@ const PostSalesScreen = () => {
 
   const [selectedDates, setselectedDates] = useState(moment())
   const [dateTimearr, setdateTimearr] = useState([])
-
+  const [images, setimages] = useState([])
   const showDatePicker = () => {
     setDatePickerVisibility(true)
   }
