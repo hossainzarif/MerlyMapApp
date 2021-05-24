@@ -1,5 +1,11 @@
 import React, { useContext, useState } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native'
 import { AuthContext } from '../Providers/AuthProvider'
 import { FAB } from 'react-native-paper'
 import colors from '../../assets/data/colors'
@@ -12,12 +18,17 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker'
 import DateCard from '../cards/DateCard'
 import { SafeAreaView } from 'react-native'
 import DetailsInputTaker from '../components/inputs/DetailsInputTaker'
+import moment from 'moment'
+import CalendarStrip from 'react-native-calendar-strip'
 
 const PostSalesScreen = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
-  const [isDatePickerVisible_2, setDatePickerVisibility_2] = useState(false)
   const [dateTimeArray, setdateTimeArray] = useState([])
   const [firstDate, setFirstDate] = useState('')
+
+  const [selectedDates, setselectedDates] = useState(moment())
+  const [dateTimearr, setdateTimearr] = useState([])
+
   const showDatePicker = () => {
     setDatePickerVisibility(true)
   }
@@ -27,27 +38,16 @@ const PostSalesScreen = () => {
   }
 
   const handleConfirm = (date) => {
-    console.log('A date has been picked: ', date)
-    setFirstDate(String(date))
-    showDatePicker_2()
-  }
+    let dateTime =
+      String(moment(selectedDates).format('LL')) +
+      ' ' +
+      String(moment(date).format('HH:MM'))
 
-  const showDatePicker_2 = () => {
-    setDatePickerVisibility_2(true)
-  }
+    setdateTimearr((dateTimearr) => [...dateTimearr, dateTime])
 
-  const hideDatePicker_2 = () => {
-    setDatePickerVisibility(false)
-    setDatePickerVisibility_2(false)
-    setFirstDate('')
-  }
+    console.log(dateTimearr)
 
-  const handleConfirm_2 = (time) => {
-    console.log('time:', time)
-    const strmerged = firstDate + '-' + String(time)
-
-    console.log(strmerged)
-    hideDatePicker_2()
+    hideDatePicker()
   }
 
   return (
@@ -66,52 +66,52 @@ const PostSalesScreen = () => {
         <View style={{ width: '90%', marginTop: 10, marginBottom: 10 }}>
           <Text style={styles.headerText}>Date & Time Range (Optional)</Text>
 
+          <CalendarStrip
+            style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
+            calendarColor={'white'}
+            calendarHeaderStyle={{ color: 'black' }}
+            dateNumberStyle={{ color: 'black' }}
+            dateNameStyle={{ color: 'black' }}
+            iconContainer={{ flex: 0.1 }}
+            highlightDateNumberStyle={{
+              color: '#fff',
+              backgroundColor: colors.primary,
+              marginTop: 10,
+              height: 35,
+              width: 35,
+              textAlign: 'center',
+              borderRadius: 17.5,
+              overflow: 'hidden',
+              paddingTop: 6,
+              fontWeight: '400',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onDateSelected={(date) => {
+              setselectedDates(date)
+            }}
+            highlightDateNameStyle={{ color: colors.primary }}
+            disabledDateNameStyle={{ color: 'red' }}
+            disabledDateNumberStyle={{ color: 'red', paddingTop: 10 }}
+            selectedDate={selectedDates}
+          />
           <TouchableOpacity style={styles.userBtn} onPress={showDatePicker}>
             <Entypo name='plus' size={24} color={colors.primary} />
-            <Text style={styles.userBtnTxt}> Pick Date and Time</Text>
+            <Text style={styles.userBtnTxt}>Add day</Text>
           </TouchableOpacity>
+
+          <FlatList
+            data={dateTimearr}
+            renderItem={({ item }) => <DateCard time={item} />}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          />
         </View>
 
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          mode='datetime'
-          is24Hour={true}
-          locale='en_GB' // Use "en_GB" here
-          onConfirm={handleConfirm}
-          onCancel={hideDatePicker}
-        />
-
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible_2}
-          mode='time'
-          is24Hour={true}
-          locale='en_GB' // Use "en_GB" here
-          onConfirm={handleConfirm_2}
-          onCancel={hideDatePicker_2}
-          date={new Date()}
-        />
-
-        <ScrollView
-          contentContainerStyle={{
-            flexDirection: 'row',
-            height: 50,
-          }}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-        >
-          <DateCard />
-          <DateCard />
-          <DateCard />
-          <DateCard />
-
-          <DateCard />
-
-          <DateCard />
-        </ScrollView>
         <View style={{ width: '90%' }}>
           <Text style={styles.headerText}>Add Images</Text>
 
-          <TouchableOpacity style={styles.userBtn} onPress={showDatePicker}>
+          <TouchableOpacity style={styles.userBtn}>
             <Entypo name='camera' size={24} color={colors.primary} />
             <Text style={styles.userBtnTxt}> Add Images</Text>
           </TouchableOpacity>
@@ -128,6 +128,14 @@ const PostSalesScreen = () => {
             }}
           />
         </View>
+        <DateTimePickerModal
+          isVisible={isDatePickerVisible}
+          mode='time'
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
+          locale='en_GB'
+          is24Hour={true}
+        />
       </ScrollView>
     </SafeAreaView>
   )
@@ -135,7 +143,6 @@ const PostSalesScreen = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    alignItems: 'center',
     flex: 1,
   },
   headerText: {
