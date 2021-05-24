@@ -102,7 +102,16 @@ const PostSalesScreen = () => {
 
           <FlatList
             data={dateTimearr}
-            renderItem={({ item }) => <DateCard time={item} />}
+            renderItem={({ item, index }) => (
+              <DateCard
+                time={item}
+                onPress={() => {
+                  setdateTimearr((dateTimearr) =>
+                    dateTimearr.filter((_item, _Index) => _Index !== index)
+                  )
+                }}
+              />
+            )}
             horizontal
             showsHorizontalScrollIndicator={false}
           />

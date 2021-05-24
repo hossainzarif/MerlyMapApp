@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text } from 'react-native'
+import { Text, TouchableOpacity } from 'react-native'
 import { Card } from 'react-native-elements'
 import colors from '../../assets/data/colors'
 import { Entypo } from '@expo/vector-icons'
@@ -26,8 +26,9 @@ const DateCard = (props) => {
         }}
       >
         <Text> {props.time} </Text>
-
-        <Entypo name='cross' size={24} color='red' />
+        <TouchableOpacity onPress={props.onPress}>
+          <Entypo name='cross' size={20} color={colors.warning} />
+        </TouchableOpacity>
       </View>
     </Card>
   )
