@@ -23,6 +23,7 @@ import CalendarStrip from 'react-native-calendar-strip'
 import { ImageBrowser } from 'expo-image-picker-multiple'
 import * as ImagePicker from 'expo-image-picker'
 import ImageCard from '../cards/ImageCard'
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 
 const PostSalesScreen = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
@@ -83,12 +84,35 @@ const PostSalesScreen = () => {
     }
   }
 
+  const homePlace = {
+    description: 'Home',
+    geometry: { location: { lat: 48.8152937, lng: 2.4597668 } },
+  }
+  const workPlace = {
+    description: 'Work',
+    geometry: { location: { lat: 48.8496818, lng: 2.2940881 } },
+  }
+
   return (
     <SafeAreaView style={styles.container}>
+      {/* <GooglePlacesAutocomplete
+        placeholder='Search'
+        onPress={(data, details = null) => {
+          // 'details' is provided when fetchDetails = true
+          console.log(data, details)
+        }}
+        query={{
+          key: 'AIzaSyBBAxNJbe9wYcgUk8tN9VGzFEDMcXbaATU',
+          language: 'en',
+        }}
+        currentLocation={true}
+        currentLocationLabel='Current location'
+        onFail={(error) => console.error(error)}
+      /> */}
       <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
         <View style={{ width: '90%', marginTop: 10, marginBottom: 10 }}>
           <Text style={styles.headerText}>Location</Text>
-          <TextInputTaker />
+
           <Text style={styles.headerText}>Or</Text>
 
           <TouchableOpacity style={styles.userBtn}>

@@ -3,13 +3,13 @@ import 'firebase/firestore'
 import 'firebase/auth'
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyCatvrPP7NsbwWcmTTxlaerMMeWFbGuWpY',
-  authDomain: 'merlymapapp.firebaseapp.com',
-  projectId: 'merlymapapp',
-  storageBucket: 'merlymapapp.appspot.com',
-  messagingSenderId: '937218447496',
-  appId: '1:937218447496:web:4b23d49608976c93fa273d',
-  measurementId: 'G-03FE8YBB4L',
+  apiKey: 'AIzaSyCc4d9fmX1MZbqFd2cqeJ0omCRFclTLU7Y',
+  authDomain: 'garage-sales-map.firebaseapp.com',
+  projectId: 'garage-sales-map',
+  storageBucket: 'garage-sales-map.appspot.com',
+  messagingSenderId: '888836721819',
+  appId: '1:888836721819:web:1d190ee436342d9e95ca3e',
+  measurementId: 'G-1Z2EB5RRFB',
 }
 
 let app
