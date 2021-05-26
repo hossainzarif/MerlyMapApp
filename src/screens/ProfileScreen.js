@@ -25,6 +25,7 @@ const ProfileScreen = ({ navigation }) => {
   const [image, setImage] = useState(null)
 
   const sheetRef = React.useRef(null)
+
   useEffect(() => {
     ;(async () => {
       if (Platform.OS !== 'web') {

@@ -15,6 +15,7 @@ const MapScreen = ({ navigation }) => {
         large
         icon='plus'
         onPress={() => navigation.navigate('PostSales')}
+        color={colors.white}
       />
     </View>
   )

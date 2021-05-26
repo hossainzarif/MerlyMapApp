@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import {
   Text,
   View,
@@ -21,6 +21,8 @@ import DetailsInputTaker from '../components/inputs/DetailsInputTaker'
 import moment from 'moment'
 import CalendarStrip from 'react-native-calendar-strip'
 import { ImageBrowser } from 'expo-image-picker-multiple'
+import * as ImagePicker from 'expo-image-picker'
+import ImageCard from '../cards/ImageCard'
 
 const PostSalesScreen = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
@@ -30,6 +32,8 @@ const PostSalesScreen = () => {
   const [selectedDates, setselectedDates] = useState(moment())
   const [dateTimearr, setdateTimearr] = useState([])
   const [images, setimages] = useState([])
+  const [image, setImage] = useState(null)
+
   const showDatePicker = () => {
     setDatePickerVisibility(true)
   }
@@ -49,6 +53,34 @@ const PostSalesScreen = () => {
     console.log(dateTimearr)
 
     hideDatePicker()
+  }
+
+  useEffect(() => {
+    ;(async () => {
+      if (Platform.OS !== 'web') {
+        const { status } =
+          await ImagePicker.requestMediaLibraryPermissionsAsync()
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!')
+        }
+      }
+    })()
+  }, [])
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 5],
+      quality: 0.7,
+    })
+
+    console.log(result)
+
+    if (!result.cancelled) {
+      setImage(result.uri)
+      setimages((images) => [...images, result.uri])
+      console.log(image)
+    }
   }
 
   return (
@@ -121,10 +153,26 @@ const PostSalesScreen = () => {
         <View style={{ width: '90%' }}>
           <Text style={styles.headerText}>Add Images</Text>
 
-          <TouchableOpacity style={styles.userBtn}>
+          <TouchableOpacity style={styles.userBtn} onPress={pickImage}>
             <Entypo name='camera' size={24} color={colors.primary} />
             <Text style={styles.userBtnTxt}> Add Images</Text>
           </TouchableOpacity>
+
+          <FlatList
+            data={images}
+            renderItem={({ item, index }) => (
+              <ImageCard
+                uri={item}
+                onPress={() => {
+                  setimages((images) =>
+                    images.filter((_item, _Index) => _Index !== index)
+                  )
+                }}
+              />
+            )}
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          />
         </View>
         <View style={{ width: '90%', marginTop: 10, marginBottom: 10 }}>
           <Text style={styles.headerText}>Details (Optional)</Text>
