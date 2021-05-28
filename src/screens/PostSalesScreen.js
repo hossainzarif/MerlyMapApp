@@ -95,7 +95,7 @@ const PostSalesScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <GooglePlacesAutocomplete
+      <GooglePlacesAutocomplete
         placeholder='Search'
         onPress={(data, details = null) => {
           // 'details' is provided when fetchDetails = true
@@ -108,8 +108,8 @@ const PostSalesScreen = () => {
         currentLocation={true}
         currentLocationLabel='Current location'
         onFail={(error) => console.error(error)}
-      /> */}
-      <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+      />
+      {/* <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
         <View style={{ width: '90%', marginTop: 10, marginBottom: 10 }}>
           <Text style={styles.headerText}>Location</Text>
 
@@ -218,7 +218,7 @@ const PostSalesScreen = () => {
           locale='en_GB'
           is24Hour={true}
         />
-      </ScrollView>
+      </ScrollView> */}
     </SafeAreaView>
   )
 }
@@ -226,6 +226,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
+    marginTop: 100,
   },
   headerText: {
     fontSize: 20,
