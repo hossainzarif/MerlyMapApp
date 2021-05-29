@@ -24,7 +24,7 @@ import { ImageBrowser } from 'expo-image-picker-multiple'
 import * as ImagePicker from 'expo-image-picker'
 import ImageCard from '../cards/ImageCard'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
-
+import * as Location from 'expo-location';
 const PostSalesScreen = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
   const [dateTimeArray, setdateTimeArray] = useState([])
@@ -55,6 +55,17 @@ const PostSalesScreen = () => {
 
     hideDatePicker()
   }
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+      Location.installWebGeolocationPolyfill()
+    })();
+  }, []);
 
   useEffect(() => {
     ;(async () => {
@@ -95,7 +106,11 @@ const PostSalesScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <GooglePlacesAutocomplete
+
+
+
+
+      {/* <GooglePlacesAutocomplete
         placeholder='Search'
         onPress={(data, details = null) => {
           // 'details' is provided when fetchDetails = true
@@ -108,17 +123,96 @@ const PostSalesScreen = () => {
         currentLocation={true}
         currentLocationLabel='Current location'
         onFail={(error) => console.error(error)}
-      />
-      {/* <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
+      /> */}
+
+
+
+
+
+                <ScrollView contentContainerStyle={{ alignItems: 'center' }} keyboardShouldPersistTaps={'handled'}>
         <View style={{ width: '90%', marginTop: 10, marginBottom: 10 }}>
           <Text style={styles.headerText}>Location</Text>
+        
+ 
+<GooglePlacesAutocomplete
+          placeholder="Search"
+          minLength={2} // minimum length of text to search
+          autoFocus={false}
+          returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
+          listViewDisplayed="auto" // true/false/undefined
+          fetchDetails={true}
+          renderDescription={row => row.description} // custom description render
+          onPress={(data, details = null) => {
+            console.log(data);
+          }}
+          getDefaultValue={() => {
+            return ''; // text input default value
+          }}
+          query={{
+            // available options: https://developers.google.com/places/web-service/autocomplete
+            key: 'AIzaSyBBAxNJbe9wYcgUk8tN9VGzFEDMcXbaATU',
+            language: 'en', // language of the results
+          }}
+          styles={{
+            description: {
+              fontWeight: 'bold',
+            },
+      
+            predefinedPlacesDescription: {
+              color: colors.primary,
+            },
+            
+    
+            textInput: {
+              backgroundColor: colors.primary_fade,
+              borderColor:colors.primary,
+              height: 44,
+              borderRadius: 30,
+              paddingVertical: 5,
+              paddingHorizontal: 15,
+              fontSize: 15,
+              flex: 1,
+              borderColor:colors.primary,
+              borderWidth:2,
 
-          <Text style={styles.headerText}>Or</Text>
+            },
+            poweredContainer: {
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              borderBottomRightRadius: 5,
+              borderBottomLeftRadius: 5,
+              borderColor: colors.primary,
+              borderTopWidth: 0.5,
 
-          <TouchableOpacity style={styles.userBtn}>
-            <Entypo name='location-pin' size={24} color={colors.primary} />
-            <Text style={styles.userBtnTxt}>Use Current Location</Text>
-          </TouchableOpacity>
+            },
+            
+          }}
+          
+          currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
+          currentLocationLabel="Current location"
+          nearbyPlacesAPI="GoogleReverseGeocoding" // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+          GoogleReverseGeocodingQuery={{
+            // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+          }}
+          GooglePlacesSearchQuery={{
+            // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+            rankby: 'distance',
+            types: 'food',
+          }}
+          filterReverseGeocodingByTypes={[
+            'locality',
+            'administrative_area_level_3',
+          ]} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+          enablePoweredByContainer={false}
+          debounce={200}
+          GooglePlacesDetailsQuery={{
+            fields:['geometry']
+          }}
+
+          onFail={(error) => console.error(error)}
+
+       />
+
         </View>
         <View style={{ width: '90%', marginTop: 10, marginBottom: 10 }}>
           <Text style={styles.headerText}>Date & Time Range (Optional)</Text>
@@ -218,7 +312,7 @@ const PostSalesScreen = () => {
           locale='en_GB'
           is24Hour={true}
         />
-      </ScrollView> */}
+      </ScrollView>
     </SafeAreaView>
   )
 }
@@ -226,7 +320,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
-    marginTop: 100,
   },
   headerText: {
     fontSize: 20,
