@@ -25,6 +25,9 @@ import * as ImagePicker from 'expo-image-picker'
 import ImageCard from '../cards/ImageCard'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
 import * as Location from 'expo-location';
+import config from '../../config'
+
+
 const PostSalesScreen = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
   const [dateTimeArray, setdateTimeArray] = useState([])
@@ -150,7 +153,7 @@ const PostSalesScreen = () => {
           }}
           query={{
             // available options: https://developers.google.com/places/web-service/autocomplete
-            key: 'AIzaSyBBAxNJbe9wYcgUk8tN9VGzFEDMcXbaATU',
+            key: config.MAP_API_KEY  ,
             language: 'en', // language of the results
           }}
           styles={{
