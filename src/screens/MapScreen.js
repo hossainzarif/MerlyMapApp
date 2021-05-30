@@ -8,7 +8,11 @@ import * as Location from "expo-location"
 import { Feather } from "@expo/vector-icons"
 import Loading from "../custom/Loading"
 import { Alert } from "react-native"
-import { SearchBox_MAP_HEIGHT } from "../constants/Height_Width"
+import { ICON_SIZE, SearchBox_MAP_HEIGHT } from "../constants/Height_Width"
+
+import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
+import { Input } from "react-native-elements"
+import config from "../../config"
 
 const MapScreen = ({ navigation }) => {
   const mapRef = React.createRef()
@@ -34,11 +38,13 @@ const MapScreen = ({ navigation }) => {
       setLocation(location)
 
       setloadingMap(false)
-
-      console.log(location)
     } catch (error) {
       setloadingMap(true)
     }
+  }
+
+  const moveToPlace = (loc) => {
+    setLocation({ coords: { latitude: loc.lat, longitude: loc.lng } })
   }
 
   useEffect(() => {
@@ -98,17 +104,38 @@ const MapScreen = ({ navigation }) => {
           color={colors.white}
         />
         <View style={styles.searchBox}>
-          <Feather
-            name='search'
-            size={SearchBox_MAP_HEIGHT}
-            color={colors.darkGray}
-            style={{ paddingRight: 5 }}
-          />
+          <GooglePlacesAutocomplete
+            placeholder='Search'
+            minLength={2} // minimum length of text to search
+            autoFocus={false}
+            enablePoweredByContainer={false}
+            fetchDetails={true}
+            GooglePlacesDetailsQuery={{
+              fields: ["geometry"],
+            }}
+            query={{
+              key: config.MAP_API_KEY,
+              language: "en", // language of the results
+              components: "country:us",
+            }}
+            styles={{
+              description: {
+                fontWeight: "bold",
+              },
 
-          <TextInput
-            placeholder='Search here'
-            placeholderTextColor='#000'
-            autoCapitalize='none'
+              textInput: {
+                height: 40,
+              },
+            }}
+            renderLeftButton={() => (
+              <Feather
+                name='search'
+                size={ICON_SIZE}
+                color='black'
+                style={{ alignSelf: "center", paddingBottom: 5 }}
+              />
+            )}
+            onPress={(data, details) => moveToPlace(details.geometry.location)}
           />
         </View>
       </View>
@@ -148,7 +175,6 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
     borderRadius: 5,
-    padding: 10,
     shadowColor: "#ccc",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.5,
