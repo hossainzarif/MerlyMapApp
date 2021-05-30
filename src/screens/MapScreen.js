@@ -1,48 +1,49 @@
-import React, { useContext, useState, useEffect } from "react";
-import { Text, View, StyleSheet, TextInput } from "react-native";
-import { AuthContext } from "../Providers/AuthProvider";
-import { FAB } from "react-native-paper";
-import colors from "../../assets/data/colors";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import * as Location from "expo-location";
-import { Feather } from "@expo/vector-icons";
-import Loading from "../custom/Loading";
-import { Alert } from "react-native";
+import React, { useContext, useState, useEffect } from "react"
+import { Text, View, StyleSheet, TextInput } from "react-native"
+import { AuthContext } from "../Providers/AuthProvider"
+import { FAB } from "react-native-paper"
+import colors from "../../assets/data/colors"
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps"
+import * as Location from "expo-location"
+import { Feather } from "@expo/vector-icons"
+import Loading from "../custom/Loading"
+import { Alert } from "react-native"
+import { SearchBox_MAP_HEIGHT } from "../constants/Height_Width"
 
 const MapScreen = ({ navigation }) => {
-  const mapRef = React.createRef();
+  const mapRef = React.createRef()
 
-  const { user } = useContext(AuthContext);
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [loadingMap, setloadingMap] = useState(false);
+  const { user } = useContext(AuthContext)
+  const [location, setLocation] = useState(null)
+  const [errorMsg, setErrorMsg] = useState(null)
+  const [loadingMap, setloadingMap] = useState(false)
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
+    ;(async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync()
       if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
+        setErrorMsg("Permission to access location was denied")
+        return
       }
-    })();
-  }, []);
+    })()
+  }, [])
 
   const loadCoordinates = async () => {
     try {
-      setloadingMap(true);
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
+      setloadingMap(true)
+      let location = await Location.getCurrentPositionAsync({})
+      setLocation(location)
 
-      setloadingMap(false);
+      setloadingMap(false)
 
-      console.log(location);
+      console.log(location)
     } catch (error) {
-      setloadingMap(true);
+      setloadingMap(true)
     }
-  };
+  }
 
   useEffect(() => {
-    loadCoordinates();
-  }, []);
+    loadCoordinates()
+  }, [])
 
   // const changeRegion = async () => {
   //   let locationnew = await Location.getCurrentPositionAsync({});
@@ -56,7 +57,7 @@ const MapScreen = ({ navigation }) => {
   // };
 
   if (errorMsg) {
-    Alert.alert("OK");
+    Alert.alert("OK")
   } else if (location) {
     return (
       <View style={styles.container}>
@@ -96,20 +97,26 @@ const MapScreen = ({ navigation }) => {
           onPress={() => navigation.navigate("PostSales")}
           color={colors.white}
         />
-        {/* <View style={styles.searchBox}>
+        <View style={styles.searchBox}>
+          <Feather
+            name='search'
+            size={SearchBox_MAP_HEIGHT}
+            color={colors.darkGray}
+            style={{ paddingRight: 5 }}
+          />
+
           <TextInput
             placeholder='Search here'
             placeholderTextColor='#000'
             autoCapitalize='none'
           />
-          <Feather name='search' size={24} color='black' />{" "}
-        </View> */}
+        </View>
       </View>
-    );
+    )
   } else {
-    return <Loading />;
+    return <Loading />
   }
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -142,7 +149,13 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     borderRadius: 5,
     padding: 10,
+    shadowColor: "#ccc",
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
     elevation: 10,
+    paddingHorizontal: 10,
+    alignItems: "center",
   },
-});
-export default MapScreen;
+})
+export default MapScreen
