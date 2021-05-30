@@ -1,8 +1,8 @@
-import React from 'react'
-import { View, TouchableOpacity, Image } from 'react-native'
-import { Card } from 'react-native-elements'
-import { Entypo } from '@expo/vector-icons'
-import colors from '../../assets/data/colors'
+import React from "react";
+import { View, TouchableOpacity, Image } from "react-native";
+import { Card } from "react-native-elements";
+import { Entypo } from "@expo/vector-icons";
+import colors from "../../assets/data/colors";
 const ImageCard = (props) => {
   return (
     <Card
@@ -13,13 +13,13 @@ const ImageCard = (props) => {
         borderColor: colors.primary,
       }}
     >
-      <View style={{ alignItems: 'flex-end' }}>
+      <View style={{ alignItems: "flex-end" }}>
         <TouchableOpacity onPress={props.onPress}>
           <Entypo name='cross' size={20} color={colors.warning} />
         </TouchableOpacity>
       </View>
 
-      <View style={{ alignItems: 'center', padding: 10 }}>
+      <View style={{ alignItems: "center", padding: 10 }}>
         <Image
           source={{
             uri: props.uri,
@@ -27,13 +27,13 @@ const ImageCard = (props) => {
           style={{
             width: 110,
             height: 110,
-            alignItems: 'center',
-            resizeMode: 'contain',
+            alignItems: "center",
+            resizeMode: "contain",
           }}
         ></Image>
       </View>
     </Card>
-  )
-}
+  );
+};
 
-export default ImageCard
+export default ImageCard;

@@ -1,139 +1,148 @@
-import React, { useContext,useState,useEffect } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
-import { AuthContext } from '../Providers/AuthProvider'
-import { FAB } from 'react-native-paper'
-import colors from '../../assets/data/colors'
-import MapView ,{PROVIDER_GOOGLE} from 'react-native-maps';
-import * as Location from 'expo-location';
-
-import Loading from '../custom/Loading'
-import { Alert } from 'react-native'
-
+import React, { useContext, useState, useEffect } from "react";
+import { Text, View, StyleSheet, TextInput } from "react-native";
+import { AuthContext } from "../Providers/AuthProvider";
+import { FAB } from "react-native-paper";
+import colors from "../../assets/data/colors";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import * as Location from "expo-location";
+import { Feather } from "@expo/vector-icons";
+import Loading from "../custom/Loading";
+import { Alert } from "react-native";
 
 const MapScreen = ({ navigation }) => {
-  const { user } = useContext(AuthContext)
+  const mapRef = React.createRef();
+
+  const { user } = useContext(AuthContext);
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
-  const [loadingMap, setloadingMap] = useState(false)
+  const [loadingMap, setloadingMap] = useState(false);
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
         return;
       }
-     
     })();
   }, []);
 
-
-  const loadCoordinates = async ()=>
-  {
+  const loadCoordinates = async () => {
     try {
-      setloadingMap(true)
+      setloadingMap(true);
       let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
 
-      
-        setloadingMap(false)
+      setloadingMap(false);
 
-      
-
-      console.log(location)
-
+      console.log(location);
     } catch (error) {
-      setloadingMap(true)
-
+      setloadingMap(true);
     }
-    
-
-  }
+  };
 
   useEffect(() => {
-    loadCoordinates()
-  
-  }, [])
+    loadCoordinates();
+  }, []);
 
+  // const changeRegion = async () => {
+  //   let locationnew = await Location.getCurrentPositionAsync({});
 
+  //   setLocation(locationnew);
 
-  let text = 'Waiting..';
+  //   const latitude = location.coords.latitude;
+  //   const longitude = location.coords.longitude;
+
+  //   console.log(location);
+  // };
+
   if (errorMsg) {
-    return <Loading />
+    Alert.alert("OK");
   } else if (location) {
+    return (
+      <View style={styles.container}>
+        <MapView
+          ref={mapRef}
+          provider={PROVIDER_GOOGLE}
+          zoomEnabled={true}
+          loadingEnabled={true}
+          loadingIndicatorColor={colors.primary}
+          loadingBackgroundColor='#eeeeee'
+          moveOnMarkerPress={false}
+          showsUserLocation={true}
+          showsCompass={false}
+          showsPointsOfInterest={false}
+          showsMyLocationButton={false}
+          style={styles.mapStyle}
+          region={{
+            latitude: location.coords.latitude,
+            longitude: location.coords.longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        ></MapView>
 
-  return (
-    <View style={styles.container}>
+        <FAB
+          style={styles.fab_loc}
+          small
+          icon='map-marker'
+          onPress={() => loadCoordinates()}
+          color={colors.white}
+        />
 
-
-    
-      <MapView
-                provider={PROVIDER_GOOGLE}
-                zoomEnabled={true}
-                loadingEnabled={true}
-                loadingIndicatorColor= {colors.primary}
-                loadingBackgroundColor="#eeeeee"
-                moveOnMarkerPress={false}
-                showsUserLocation={true}
-                showsCompass={false}
-                showsPointsOfInterest={false}
-                showsMyLocationButton={false}
-              
-                
-
-                style={styles.mapStyle}
-                region={{
-                    latitude:location.coords.latitude,
-                    longitude:location.coords.longitude,
-                    latitudeDelta: 0.0922,
-                    longitudeDelta: 0.0421,
-                }}>
-                  
-</MapView>
-
-<FAB
-        style={styles.fab_loc}
-        small
-        icon='map-marker'
-        onPress={() => console.log(location.coords.latitude)}
-        color={colors.white}
-      />
-
-      <FAB
-        style={styles.fab}
-        large
-        icon='plus'
-        onPress={() => navigation.navigate('PostSales')}
-        color={colors.white}
-      />
-    </View>
-  )
-              }
-
-              else{
-               return <Loading/>
-              }
-}
+        <FAB
+          style={styles.fab}
+          large
+          icon='plus'
+          onPress={() => navigation.navigate("PostSales")}
+          color={colors.white}
+        />
+        {/* <View style={styles.searchBox}>
+          <TextInput
+            placeholder='Search here'
+            placeholderTextColor='#000'
+            autoCapitalize='none'
+          />
+          <Feather name='search' size={24} color='black' />{" "}
+        </View> */}
+      </View>
+    );
+  } else {
+    return <Loading />;
+  }
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:colors.white
+    backgroundColor: colors.white,
   },
   fab_loc: {
-    position: 'absolute',
+    position: "absolute",
     margin: 16,
     right: 10,
     bottom: 100,
     backgroundColor: colors.primary,
-  }, fab: {
-    position: 'absolute',
+  },
+  fab: {
+    position: "absolute",
     margin: 16,
     right: 0,
     bottom: 20,
     backgroundColor: colors.primary,
   },
-  mapStyle:{
-    flex:1
-  }
-})
-export default MapScreen
+  mapStyle: {
+    flex: 1,
+  },
+  searchBox: {
+    position: "absolute",
+    marginTop: Platform.OS === "ios" ? 40 : 20,
+    flexDirection: "row",
+    backgroundColor: "#fff",
+    width: "90%",
+    alignSelf: "center",
+    borderRadius: 5,
+    padding: 10,
+    elevation: 10,
+  },
+});
+export default MapScreen;
