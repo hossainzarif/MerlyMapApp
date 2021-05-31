@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
   },
   searchBox: {
     position: "absolute",
-    marginTop: Platform.OS === "ios" ? 40 : 20,
+    marginTop: Platform.OS === "ios" ? 40 : 10,
     flexDirection: "row",
     backgroundColor: "#fff",
     width: "90%",
