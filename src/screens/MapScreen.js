@@ -44,7 +44,11 @@ const MapScreen = ({ navigation }) => {
   }
 
   const moveToPlace = (loc) => {
-    setLocation({ coords: { latitude: loc.lat, longitude: loc.lng } })
+    if (loc) {
+      setLocation({ coords: { latitude: loc.lat, longitude: loc.lng } })
+    } else {
+      Alert.alert("Please Turn on Location and try again")
+    }
   }
 
   useEffect(() => {
@@ -63,7 +67,7 @@ const MapScreen = ({ navigation }) => {
   // };
 
   if (errorMsg) {
-    Alert.alert("OK")
+    Alert.alert("Please Turn on Location.")
   } else if (location) {
     return (
       <View style={styles.container}>
@@ -135,7 +139,13 @@ const MapScreen = ({ navigation }) => {
                 style={{ alignSelf: "center", paddingBottom: 5 }}
               />
             )}
-            onPress={(data, details) => moveToPlace(details.geometry.location)}
+            onPress={(data, details) => {
+              if (details.geometry.location) {
+                moveToPlace(details.geometry.location)
+              } else {
+                Alert.alert("This Specific location was not found")
+              }
+            }}
           />
         </View>
       </View>
