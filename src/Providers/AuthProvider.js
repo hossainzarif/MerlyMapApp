@@ -1,7 +1,8 @@
-import React, { createContext, useState } from 'react'
-import { Alert } from 'react-native'
-import { auth } from '../utils/firebase'
-import * as firebase from 'firebase'
+import React, { createContext, useState } from "react"
+import { Alert } from "react-native"
+import { auth } from "../utils/firebase"
+import * as firebase from "firebase"
+import * as Google from "expo-google-app-auth"
 
 export const AuthContext = createContext()
 
@@ -22,7 +23,7 @@ export const AuthProvider = ({ children }) => {
             setLoading(false)
           } catch (e) {
             setLoading(false)
-            Alert.alert('Error', e.message)
+            Alert.alert("Error", e.message)
           }
         },
         register: async (email, password, name) => {
@@ -41,7 +42,7 @@ export const AuthProvider = ({ children }) => {
           } catch (e) {
             setLoading(false)
 
-            Alert.alert('Error', e.message)
+            Alert.alert("Error", e.message)
           }
         },
         logout: async () => {
@@ -51,7 +52,7 @@ export const AuthProvider = ({ children }) => {
             await auth.signOut()
             setLoading(false)
           } catch (e) {
-            Alert.alert('Error', e.message)
+            Alert.alert("Error", e.message)
             setLoading(false)
           }
         },
@@ -62,10 +63,10 @@ export const AuthProvider = ({ children }) => {
             await auth.sendPasswordResetEmail(email).then(() => {
               setLoading(false)
 
-              Alert.alert('Sent', 'Password reset email has been sent')
+              Alert.alert("Sent", "Password reset email has been sent")
             })
           } catch (e) {
-            Alert.alert('Error', e.message)
+            Alert.alert("Error", e.message)
             setLoading(false)
           }
         },
@@ -84,23 +85,23 @@ export const AuthProvider = ({ children }) => {
                 user
                   .updatePassword(newPassword)
                   .then(function () {
-                    Alert.alert('Updated', 'Password has been Updated')
+                    Alert.alert("Updated", "Password has been Updated")
                     setLoading(false)
                   })
                   .catch(function (error) {
-                    Alert.alert('Error', error.message)
+                    Alert.alert("Error", error.message)
                     setLoading(false)
                   })
                 setLoading(false)
               })
               .catch(function (error) {
                 // An error happened.
-                Alert.alert('Error', error.message)
+                Alert.alert("Error", error.message)
 
                 setLoading(false)
               })
           } catch (e) {
-            Alert.alert('Error', e.message)
+            Alert.alert("Error", e.message)
 
             setLoading(false)
           }
@@ -117,14 +118,14 @@ export const AuthProvider = ({ children }) => {
               .then(function () {
                 setLoading(false)
 
-                Alert.alert('Uploaded', 'Profile Picture Uploaded')
+                Alert.alert("Uploaded", "Profile Picture Uploaded")
               })
               .catch(function (error) {
-                Alert.alert('Error', error.message)
+                Alert.alert("Error", error.message)
                 setLoading(false)
               })
           } catch (error) {
-            Alert.alert('Error', error.message)
+            Alert.alert("Error", error.message)
             setLoading(false)
           }
         },
@@ -138,12 +139,46 @@ export const AuthProvider = ({ children }) => {
             .then(function () {
               setLoading(false)
 
-              Alert.alert('Deleted', 'Profile Picture Deleted')
+              Alert.alert("Deleted", "Profile Picture Deleted")
             })
             .catch(function (error) {
-              Alert.alert('Error', error.message)
+              Alert.alert("Error", error.message)
               setLoading(false)
             })
+        },
+
+        loginWithGoogle: async () => {
+          try {
+            const result = await Google.logInAsync({
+              behavior: "web",
+              androidClientId:
+                "888836721819-h3st1q989k82t3a3f4ht38r7un5461e0.apps.googleusercontent.com",
+              // iosClientId: YOUR_CLIENT_ID_HERE,
+              scopes: ["profile", "email"],
+            })
+
+            if (result.type === "success") {
+              setLoading(true)
+              const { idToken, accessToken } = result
+              const credential = firebase.auth.GoogleAuthProvider.credential(
+                idToken,
+                accessToken
+              )
+
+              firebase
+                .auth()
+                .signInWithCredential(credential)
+                .then(function () {
+                  console.log(user)
+                  setLoading(false)
+                })
+            } else {
+              setLoading(false)
+            }
+          } catch (e) {
+            Alert.alert(e)
+            setLoading(false)
+          }
         },
       }}
     >
