@@ -36,7 +36,7 @@ const PostSalesScreen = () => {
   const [dateTimearr, setdateTimearr] = useState([])
   const [images, setimages] = useState([])
   const [image, setImage] = useState(null)
-
+  const [allLocation, setallLocation] = useState(null)
   const showDatePicker = () => {
     setDatePickerVisibility(true)
   }
@@ -97,15 +97,6 @@ const PostSalesScreen = () => {
     }
   }
 
-  const homePlace = {
-    description: "Home",
-    geometry: { location: { lat: 48.8152937, lng: 2.4597668 } },
-  }
-  const workPlace = {
-    description: "Work",
-    geometry: { location: { lat: 48.8496818, lng: 2.2940881 } },
-  }
-
   return (
     <SafeAreaView style={styles.container}>
       {/* <GooglePlacesAutocomplete
@@ -139,7 +130,15 @@ const PostSalesScreen = () => {
             fetchDetails={true}
             // renderDescription={(row) => row.description} // custom description render
             onPress={(data, details = null) => {
-              console.log(JSON.stringify(details.geometry.location))
+              // console.log(JSON.stringify(details.geometry.location))
+
+              setallLocation({
+                coords: {
+                  latitude: details.geometry.location.lat,
+                  longitude: details.geometry.location.lng,
+                  address: details.formatted_address,
+                },
+              })
             }}
             query={{
               // available options: https://developers.google.com/places/web-service/autocomplete
@@ -251,7 +250,7 @@ const PostSalesScreen = () => {
         </View>
 
         <View style={{ width: "90%" }}>
-          <Text style={styles.headerText}>Add Images</Text>
+          <Text style={styles.headerText}>Add Images (max 5)</Text>
 
           <TouchableOpacity style={styles.userBtn} onPress={pickImage}>
             <Entypo name='camera' size={24} color={colors.primary} />
@@ -282,7 +281,7 @@ const PostSalesScreen = () => {
           <CurvedButton
             btnText='Create Post'
             onPress={() => {
-              console.log(dateTimeArray)
+              console.log(allLocation)
             }}
           />
         </View>

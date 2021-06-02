@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, TextInput } from "react-native"
 import { AuthContext } from "../Providers/AuthProvider"
 import { FAB } from "react-native-paper"
 import colors from "../../assets/data/colors"
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps"
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps"
 import * as Location from "expo-location"
 import { Feather } from "@expo/vector-icons"
 import Loading from "../custom/Loading"
@@ -67,7 +67,7 @@ const MapScreen = ({ navigation }) => {
   // };
 
   if (errorMsg) {
-    Alert.alert("Please Turn on Location.")
+    Alert.alert("Please give access to Location.")
   } else if (location) {
     return (
       <View style={styles.container}>
@@ -90,7 +90,14 @@ const MapScreen = ({ navigation }) => {
             latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,
           }}
-        ></MapView>
+        >
+          <Marker
+            coordinate={{
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+            }}
+          ></Marker>
+        </MapView>
 
         <FAB
           style={styles.fab_loc}
