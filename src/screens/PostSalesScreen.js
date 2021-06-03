@@ -93,7 +93,6 @@ const PostSalesScreen = () => {
     if (!result.cancelled) {
       setImage(result.uri)
       setimages((images) => [...images, result.uri])
-      console.log(image)
     }
   }
 
