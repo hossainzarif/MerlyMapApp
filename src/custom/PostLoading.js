@@ -1,10 +1,11 @@
 import React from "react"
 import { View, ActivityIndicator, StyleSheet, Text } from "react-native"
 import colors from "../../assets/data/colors"
-const Loading = () => {
+const PostLoading = (props) => {
   return (
     <View style={styles.container}>
       <ActivityIndicator size='large' color={colors.primary} animating={true} />
+      <Text style={{ marginTop: 20, fontSize: 20 }}>{props.loderText}</Text>
     </View>
   )
 }
@@ -17,4 +18,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Loading
+export default PostLoading

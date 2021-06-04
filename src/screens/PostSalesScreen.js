@@ -26,6 +26,9 @@ import ImageCard from "../cards/ImageCard"
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
 import * as Location from "expo-location"
 import config from "../../config"
+import * as firebase from "firebase"
+import Loading from "../custom/Loading"
+import PostLoading from "../custom/PostLoading"
 
 const PostSalesScreen = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
@@ -37,6 +40,10 @@ const PostSalesScreen = () => {
   const [images, setimages] = useState([])
   const [image, setImage] = useState(null)
   const [allLocation, setallLocation] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [LoadText, setLoadText] = useState("")
+  const { user } = useContext(AuthContext)
+
   const showDatePicker = () => {
     setDatePickerVisibility(true)
   }
@@ -88,17 +95,70 @@ const PostSalesScreen = () => {
       quality: 0.7,
     })
 
-    console.log(result)
-
     if (!result.cancelled) {
       setImage(result.uri)
       setimages((images) => [...images, result.uri])
     }
   }
 
-  return (
-    <SafeAreaView style={styles.container}>
-      {/* <GooglePlacesAutocomplete
+  const uploadIndividual = async (image) => {
+    const imgname = image.substring(image.lastIndexOf("/") + 1)
+    const response = await fetch(image)
+    const blob = await response.blob()
+    var ref = firebase
+      .storage()
+      .ref()
+      .child("images/postImages/" + imgname + "-" + String(moment()))
+
+    ref.put(blob).then(() => {
+      ref.getDownloadURL().then((downloadURL) => {})
+    })
+  }
+
+  const uploadImagePost = (pictures) => {
+    setIsLoading(true)
+    setLoadText("Uploading Image")
+    const promises = pictures.map(async (file) => {
+      const imgname = file.substring(file.lastIndexOf("/") + 1)
+      const response = await fetch(file)
+      const blob = await response.blob()
+
+      const ref = firebase
+        .storage()
+        .ref()
+        .child("images/postImages/" + imgname + "-" + String(moment()))
+
+      return ref.put(blob).then(() => ref.getDownloadURL())
+    })
+
+    Promise.all(promises)
+      .then((fileDownloadUrls) => {
+        setLoadText("Creating Post")
+
+        firebase
+          .firestore()
+          .collection("properties")
+          .add({
+            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+            pictures: fileDownloadUrls,
+            user: user.uid,
+          })
+          .then(() => {
+            setIsLoading(false)
+          })
+      })
+      .catch((err) => {
+        setIsLoading(false)
+        console.log(err)
+      })
+  }
+
+  if (isLoading) {
+    return <PostLoading loderText={LoadText} />
+  } else {
+    return (
+      <SafeAreaView style={styles.container}>
+        {/* <GooglePlacesAutocomplete
         placeholder='Search'
         onPress={(data, details = null) => {
           // 'details' is provided when fetchDetails = true
@@ -113,188 +173,187 @@ const PostSalesScreen = () => {
         onFail={(error) => console.error(error)}
       /> */}
 
-      <ScrollView
-        contentContainerStyle={{ alignItems: "center" }}
-        keyboardShouldPersistTaps={"handled"}
-      >
-        <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
-          <Text style={styles.headerText}>Location</Text>
+        <ScrollView
+          contentContainerStyle={{ alignItems: "center" }}
+          keyboardShouldPersistTaps={"handled"}
+        >
+          <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
+            <Text style={styles.headerText}>Location</Text>
 
-          <GooglePlacesAutocomplete
-            placeholder='Search'
-            minLength={2} // minimum length of text to search
-            autoFocus={false}
-            returnKeyType={"search"} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
-            listViewDisplayed='auto' // true/false/undefined
-            fetchDetails={true}
-            // renderDescription={(row) => row.description} // custom description render
-            onPress={(data, details = null) => {
-              // console.log(JSON.stringify(details.geometry.location))
+            <GooglePlacesAutocomplete
+              placeholder='Search'
+              minLength={2} // minimum length of text to search
+              autoFocus={false}
+              returnKeyType={"search"} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
+              listViewDisplayed='auto' // true/false/undefined
+              fetchDetails={true}
+              // renderDescription={(row) => row.description} // custom description render
+              onPress={(data, details = null) => {
+                // console.log(JSON.stringify(details.geometry.location))
 
-              setallLocation({
-                coords: {
-                  latitude: details.geometry.location.lat,
-                  longitude: details.geometry.location.lng,
-                  address: details.formatted_address,
+                setallLocation({
+                  coords: {
+                    latitude: details.geometry.location.lat,
+                    longitude: details.geometry.location.lng,
+                    address: details.formatted_address,
+                  },
+                })
+              }}
+              query={{
+                // available options: https://developers.google.com/places/web-service/autocomplete
+                key: config.MAP_API_KEY,
+                language: "en", // language of the results
+                components: "country:us",
+              }}
+              styles={{
+                description: {
+                  fontWeight: "bold",
                 },
-              })
-            }}
-            query={{
-              // available options: https://developers.google.com/places/web-service/autocomplete
-              key: config.MAP_API_KEY,
-              language: "en", // language of the results
-              components: "country:us",
-            }}
-            styles={{
-              description: {
-                fontWeight: "bold",
-              },
 
-              predefinedPlacesDescription: {
-                color: colors.primary,
-              },
+                predefinedPlacesDescription: {
+                  color: colors.primary,
+                },
 
-              textInput: {
-                backgroundColor: colors.primary_fade,
-                borderColor: colors.primary,
-                height: 44,
-                borderRadius: 30,
-                paddingVertical: 5,
-                paddingHorizontal: 15,
-                fontSize: 15,
-                flex: 1,
-                borderColor: colors.primary,
-                borderWidth: 2,
-              },
-              poweredContainer: {
-                justifyContent: "flex-end",
+                textInput: {
+                  backgroundColor: colors.primary_fade,
+                  borderColor: colors.primary,
+                  height: 44,
+                  borderRadius: 30,
+                  paddingVertical: 5,
+                  paddingHorizontal: 15,
+                  fontSize: 15,
+                  flex: 1,
+                  borderColor: colors.primary,
+                  borderWidth: 2,
+                },
+                poweredContainer: {
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  borderBottomRightRadius: 5,
+                  borderBottomLeftRadius: 5,
+                  borderColor: colors.primary,
+                  borderTopWidth: 0.5,
+                },
+              }}
+              currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
+              currentLocationLabel='Current location'
+              nearbyPlacesAPI='GoogleReverseGeocoding' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+              GooglePlacesSearchQuery={{
+                // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+                rankby: "distance",
+              }}
+              // filterReverseGeocodingByTypes={[
+              //   "locality",
+              //   "administrative_area_level_3",
+              // ]} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+              enablePoweredByContainer={false}
+              debounce={200}
+              GooglePlacesDetailsQuery={{
+                fields: ["geometry"],
+              }}
+              onFail={(error) => console.error(error)}
+            />
+          </View>
+          <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
+            <Text style={styles.headerText}>Date & Time Range (Optional)</Text>
+
+            <CalendarStrip
+              style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
+              calendarColor={"white"}
+              calendarHeaderStyle={{ color: "black" }}
+              dateNumberStyle={{ color: "black" }}
+              dateNameStyle={{ color: "black" }}
+              iconContainer={{ flex: 0.1 }}
+              highlightDateNumberStyle={{
+                color: "#fff",
+                backgroundColor: colors.primary,
+                marginTop: 10,
+                height: 35,
+                width: 35,
+                textAlign: "center",
+                borderRadius: 17.5,
+                overflow: "hidden",
+                paddingTop: 6,
+                fontWeight: "400",
+                justifyContent: "center",
                 alignItems: "center",
-                borderBottomRightRadius: 5,
-                borderBottomLeftRadius: 5,
-                borderColor: colors.primary,
-                borderTopWidth: 0.5,
-              },
-            }}
-            currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
-            currentLocationLabel='Current location'
-            nearbyPlacesAPI='GoogleReverseGeocoding' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-            GooglePlacesSearchQuery={{
-              // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-              rankby: "distance",
-            }}
-            // filterReverseGeocodingByTypes={[
-            //   "locality",
-            //   "administrative_area_level_3",
-            // ]} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-            enablePoweredByContainer={false}
-            debounce={200}
-            GooglePlacesDetailsQuery={{
-              fields: ["geometry"],
-            }}
-            onFail={(error) => console.error(error)}
-          />
-        </View>
-        <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
-          <Text style={styles.headerText}>Date & Time Range (Optional)</Text>
+              }}
+              onDateSelected={(date) => {
+                setselectedDates(date)
+              }}
+              highlightDateNameStyle={{ color: colors.primary }}
+              disabledDateNameStyle={{ color: "red" }}
+              disabledDateNumberStyle={{ color: "red", paddingTop: 10 }}
+              selectedDate={selectedDates}
+            />
+            <TouchableOpacity style={styles.userBtn} onPress={showDatePicker}>
+              <Entypo name='plus' size={24} color={colors.primary} />
+              <Text style={styles.userBtnTxt}>Add day</Text>
+            </TouchableOpacity>
 
-          <CalendarStrip
-            style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
-            calendarColor={"white"}
-            calendarHeaderStyle={{ color: "black" }}
-            dateNumberStyle={{ color: "black" }}
-            dateNameStyle={{ color: "black" }}
-            iconContainer={{ flex: 0.1 }}
-            highlightDateNumberStyle={{
-              color: "#fff",
-              backgroundColor: colors.primary,
-              marginTop: 10,
-              height: 35,
-              width: 35,
-              textAlign: "center",
-              borderRadius: 17.5,
-              overflow: "hidden",
-              paddingTop: 6,
-              fontWeight: "400",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onDateSelected={(date) => {
-              setselectedDates(date)
-            }}
-            highlightDateNameStyle={{ color: colors.primary }}
-            disabledDateNameStyle={{ color: "red" }}
-            disabledDateNumberStyle={{ color: "red", paddingTop: 10 }}
-            selectedDate={selectedDates}
-          />
-          <TouchableOpacity style={styles.userBtn} onPress={showDatePicker}>
-            <Entypo name='plus' size={24} color={colors.primary} />
-            <Text style={styles.userBtnTxt}>Add day</Text>
-          </TouchableOpacity>
+            <FlatList
+              data={dateTimearr}
+              renderItem={({ item, index }) => (
+                <DateCard
+                  time={item}
+                  onPress={() => {
+                    setdateTimearr((dateTimearr) =>
+                      dateTimearr.filter((_item, _Index) => _Index !== index)
+                    )
+                  }}
+                />
+              )}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+            />
+          </View>
 
-          <FlatList
-            data={dateTimearr}
-            renderItem={({ item, index }) => (
-              <DateCard
-                time={item}
-                onPress={() => {
-                  setdateTimearr((dateTimearr) =>
-                    dateTimearr.filter((_item, _Index) => _Index !== index)
-                  )
-                }}
-              />
-            )}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-          />
-        </View>
+          <View style={{ width: "90%" }}>
+            <Text style={styles.headerText}>Add Images (max 5)</Text>
 
-        <View style={{ width: "90%" }}>
-          <Text style={styles.headerText}>Add Images (max 5)</Text>
+            <TouchableOpacity style={styles.userBtn} onPress={pickImage}>
+              <Entypo name='camera' size={24} color={colors.primary} />
+              <Text style={styles.userBtnTxt}> Add Images</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity style={styles.userBtn} onPress={pickImage}>
-            <Entypo name='camera' size={24} color={colors.primary} />
-            <Text style={styles.userBtnTxt}> Add Images</Text>
-          </TouchableOpacity>
-
-          <FlatList
-            data={images}
-            renderItem={({ item, index }) => (
-              <ImageCard
-                uri={item}
-                onPress={() => {
-                  setimages((images) =>
-                    images.filter((_item, _Index) => _Index !== index)
-                  )
-                }}
-              />
-            )}
-            horizontal
-            showsHorizontalScrollIndicator={false}
+            <FlatList
+              data={images}
+              renderItem={({ item, index }) => (
+                <ImageCard
+                  uri={item}
+                  onPress={() => {
+                    setimages((images) =>
+                      images.filter((_item, _Index) => _Index !== index)
+                    )
+                  }}
+                />
+              )}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+            />
+          </View>
+          <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
+            <Text style={styles.headerText}>Details (Optional)</Text>
+            <DetailsInputTaker />
+          </View>
+          <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
+            <CurvedButton
+              btnText='Create Post'
+              onPress={() => uploadImagePost(images)}
+            />
+          </View>
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible}
+            mode='time'
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+            locale='en_GB'
+            is24Hour={true}
           />
-        </View>
-        <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
-          <Text style={styles.headerText}>Details (Optional)</Text>
-          <DetailsInputTaker />
-        </View>
-        <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
-          <CurvedButton
-            btnText='Create Post'
-            onPress={() => {
-              console.log(allLocation)
-            }}
-          />
-        </View>
-        <DateTimePickerModal
-          isVisible={isDatePickerVisible}
-          mode='time'
-          onConfirm={handleConfirm}
-          onCancel={hideDatePicker}
-          locale='en_GB'
-          is24Hour={true}
-        />
-      </ScrollView>
-    </SafeAreaView>
-  )
+        </ScrollView>
+      </SafeAreaView>
+    )
+  }
 }
 const styles = StyleSheet.create({
   container: {
