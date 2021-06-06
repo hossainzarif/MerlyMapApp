@@ -1,5 +1,5 @@
 export const HEIGHT_BUTTON = 45
-export const HEIGHT_INPUT = 47
+export const HEIGHT_INPUT = 44
 export const BUTTON_RADIUS = 30
 export const INPUT_RADIUS = 30
 export const ICON_SIZE = 22

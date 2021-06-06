@@ -13,7 +13,11 @@ import TextInputTaker from "../components/inputs/TextInputTaker"
 import { ScrollView } from "react-native"
 import CurvedButton from "../components/buttons/CurvedButton"
 import { Entypo } from "@expo/vector-icons"
-import { BUTTON_RADIUS, HEIGHT_BUTTON } from "../constants/Height_Width"
+import {
+  BUTTON_RADIUS,
+  HEIGHT_BUTTON,
+  ICON_SIZE,
+} from "../constants/Height_Width"
 import DateTimePickerModal from "react-native-modal-datetime-picker"
 import DateCard from "../cards/DateCard"
 import { SafeAreaView } from "react-native"
@@ -29,7 +33,9 @@ import config from "../../config"
 import * as firebase from "firebase"
 import Loading from "../custom/Loading"
 import PostLoading from "../custom/PostLoading"
-
+import { MaterialIcons } from "@expo/vector-icons"
+import { Alert } from "react-native"
+import { addPost } from "../Providers/FirebaseFunc"
 const PostSalesScreen = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
   const [dateTimeArray, setdateTimeArray] = useState([])
@@ -42,6 +48,9 @@ const PostSalesScreen = () => {
   const [allLocation, setallLocation] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [LoadText, setLoadText] = useState("")
+  const [DetailsText, setDetailsText] = useState("")
+  const [titlePost, settitlePost] = useState("")
+
   const { user } = useContext(AuthContext)
 
   const showDatePicker = () => {
@@ -101,20 +110,6 @@ const PostSalesScreen = () => {
     }
   }
 
-  const uploadIndividual = async (image) => {
-    const imgname = image.substring(image.lastIndexOf("/") + 1)
-    const response = await fetch(image)
-    const blob = await response.blob()
-    var ref = firebase
-      .storage()
-      .ref()
-      .child("images/postImages/" + imgname + "-" + String(moment()))
-
-    ref.put(blob).then(() => {
-      ref.getDownloadURL().then((downloadURL) => {})
-    })
-  }
-
   const uploadImagePost = (pictures) => {
     setIsLoading(true)
     setLoadText("Uploading Image")
@@ -131,26 +126,22 @@ const PostSalesScreen = () => {
       return ref.put(blob).then(() => ref.getDownloadURL())
     })
 
-    Promise.all(promises)
-      .then((fileDownloadUrls) => {
-        setLoadText("Creating Post")
+    Promise.all(promises).then((fileDownloadUrls) => {
+      setLoadText("Creating Post")
 
-        firebase
-          .firestore()
-          .collection("properties")
-          .add({
-            timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-            pictures: fileDownloadUrls,
-            user: user.uid,
-          })
-          .then(() => {
-            setIsLoading(false)
-          })
-      })
-      .catch((err) => {
-        setIsLoading(false)
-        console.log(err)
-      })
+      addPost(
+        allLocation,
+        titlePost,
+        dateTimeArray,
+        DetailsText,
+        fileDownloadUrls,
+        user.uid,
+        setIsLoading,
+        setdateTimearr,
+        setallLocation,
+        setimages
+      )
+    })
   }
 
   if (isLoading) {
@@ -178,7 +169,7 @@ const PostSalesScreen = () => {
           keyboardShouldPersistTaps={"handled"}
         >
           <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
-            <Text style={styles.headerText}>Location</Text>
+            <Text style={styles.headerText}>Location *</Text>
 
             <GooglePlacesAutocomplete
               placeholder='Search'
@@ -189,7 +180,7 @@ const PostSalesScreen = () => {
               fetchDetails={true}
               // renderDescription={(row) => row.description} // custom description render
               onPress={(data, details = null) => {
-                // console.log(JSON.stringify(details.geometry.location))
+                console.log(JSON.stringify(details.geometry.location))
 
                 setallLocation({
                   coords: {
@@ -224,7 +215,7 @@ const PostSalesScreen = () => {
                   fontSize: 15,
                   flex: 1,
                   borderColor: colors.primary,
-                  borderWidth: 2,
+                  borderWidth: 1,
                 },
                 poweredContainer: {
                   justifyContent: "flex-end",
@@ -254,8 +245,18 @@ const PostSalesScreen = () => {
               onFail={(error) => console.error(error)}
             />
           </View>
+          <View style={{ width: "90%" }}>
+            <Text style={styles.headerText}>Title *</Text>
+
+            <TextInputTaker
+              place='Title'
+              onChangeText={function (currentInput) {
+                settitlePost(currentInput)
+              }}
+            />
+          </View>
           <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
-            <Text style={styles.headerText}>Date & Time Range (Optional)</Text>
+            <Text style={styles.headerText}>Date & Time Range *</Text>
 
             <CalendarStrip
               style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
@@ -333,13 +334,42 @@ const PostSalesScreen = () => {
             />
           </View>
           <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
-            <Text style={styles.headerText}>Details (Optional)</Text>
-            <DetailsInputTaker />
+            <Text style={styles.headerText}>Details *</Text>
+            <DetailsInputTaker
+              onChangeText={function (currentInput) {
+                setDetailsText(currentInput)
+              }}
+            />
+            <Text style={{ color: colors.warning }}>* marked are required</Text>
           </View>
           <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
             <CurvedButton
               btnText='Create Post'
-              onPress={() => uploadImagePost(images)}
+              onPress={() => {
+                if (allLocation == null) {
+                  Alert.alert("Please pick valid location")
+                } else if (titlePost && dateTimeArray && DetailsText) {
+                  if (images.length > 0) {
+                    uploadImagePost(images)
+                  } else {
+                    setLoadText("Creating Post")
+                    addPost(
+                      allLocation,
+                      titlePost,
+                      dateTimeArray,
+                      DetailsText,
+                      null,
+                      user.uid,
+                      setIsLoading,
+                      setdateTimearr,
+                      setallLocation,
+                      setimages
+                    )
+                  }
+                } else {
+                  Alert.alert("Please fill up the required field")
+                }
+              }}
             />
           </View>
           <DateTimePickerModal
@@ -376,6 +406,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 10,
   },
   userBtnTxt: {
     color: colors.primary,

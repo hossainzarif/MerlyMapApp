@@ -2,42 +2,39 @@ import "firebase/firestore"
 import * as firebase from "firebase"
 import { Alert } from "react-native"
 
-export function addPost() {
-  firebase.firestore().collection("posts").addPost({})
+export function addPost(
+  allLocation,
+  titlePost,
+  dateTimeArray,
+  DetailsText,
+  fileDownloadUrls,
+  uid,
+  setIsLoading,
+  setdateTimearr,
+  setallLocation
+) {
+  setIsLoading(true)
+  firebase
+    .firestore()
+    .collection("posts")
+    .add({
+      location: allLocation,
+      title: titlePost,
+      dates: dateTimeArray,
+      details: DetailsText,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      pictures: fileDownloadUrls,
+      user: uid,
+    })
+    .then(() => {
+      setdateTimearr([])
+      setallLocation(null)
+      setimages([])
+      Alert.alert("Post Created")
+      setIsLoading(false)
+    })
+    .catch((error) => {
+      Alert.alert(error)
+      setIsLoading(false)
+    })
 }
-
-// export function addBooking(date, user, isLoading) {
-//   const docDate = String(moment(date).format('LL'))
-//   const storeDate = String(moment(date).format('L'))
-//   isLoading(true)
-//   firebase
-//     .firestore()
-//     .collection('users')
-//     .doc(user)
-//     .collection('dates')
-//     .doc(docDate)
-//     .set({
-//       Bookingdate: storeDate,
-//     })
-//     .then(() => {
-//       firebase
-//         .firestore()
-//         .collection('Bookings')
-//         .doc(docDate)
-//         .collection('users')
-//         .doc(user)
-//         .set({
-//           user: user,
-//         })
-//         .then(() => {
-//           isLoading(false)
-//           Alert.alert('Ihre Buchung war erfolgreich')
-//         })
-//         .catch((error) => {
-//           alert(error)
-//         })
-//     })
-//     .catch((error) => {
-//       alert(error)
-//     })
-// }
