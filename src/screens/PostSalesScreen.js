@@ -38,13 +38,10 @@ import { Alert } from "react-native"
 import { addPost } from "../Providers/FirebaseFunc"
 const PostSalesScreen = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
-  const [dateTimeArray, setdateTimeArray] = useState([])
-  const [firstDate, setFirstDate] = useState("")
 
   const [selectedDates, setselectedDates] = useState(moment())
   const [dateTimearr, setdateTimearr] = useState([])
   const [images, setimages] = useState([])
-  const [image, setImage] = useState(null)
   const [allLocation, setallLocation] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [LoadText, setLoadText] = useState("")
@@ -105,7 +102,6 @@ const PostSalesScreen = () => {
     })
 
     if (!result.cancelled) {
-      setImage(result.uri)
       setimages((images) => [...images, result.uri])
     }
   }
@@ -132,7 +128,7 @@ const PostSalesScreen = () => {
       addPost(
         allLocation,
         titlePost,
-        dateTimeArray,
+        dateTimearr,
         DetailsText,
         fileDownloadUrls,
         user.uid,
@@ -348,7 +344,7 @@ const PostSalesScreen = () => {
               onPress={() => {
                 if (allLocation == null) {
                   Alert.alert("Please pick valid location")
-                } else if (titlePost && dateTimeArray && DetailsText) {
+                } else if (titlePost && dateTimearr.length > 0 && DetailsText) {
                   if (images.length > 0) {
                     uploadImagePost(images)
                   } else {
@@ -356,7 +352,7 @@ const PostSalesScreen = () => {
                     addPost(
                       allLocation,
                       titlePost,
-                      dateTimeArray,
+                      dateTimearr,
                       DetailsText,
                       null,
                       user.uid,

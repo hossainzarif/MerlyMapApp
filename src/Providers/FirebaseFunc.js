@@ -5,13 +5,14 @@ import { Alert } from "react-native"
 export function addPost(
   allLocation,
   titlePost,
-  dateTimeArray,
+  dateTimearr,
   DetailsText,
   fileDownloadUrls,
   uid,
   setIsLoading,
   setdateTimearr,
-  setallLocation
+  setallLocation,
+  setimages
 ) {
   setIsLoading(true)
   firebase
@@ -20,7 +21,7 @@ export function addPost(
     .add({
       location: allLocation,
       title: titlePost,
-      dates: dateTimeArray,
+      dates: dateTimearr,
       details: DetailsText,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       pictures: fileDownloadUrls,

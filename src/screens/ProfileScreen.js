@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect } from "react"
 import {
   View,
   Text,
@@ -7,16 +7,16 @@ import {
   ScrollView,
   SafeAreaView,
   Platform,
-} from 'react-native'
-import BottomSheet from 'reanimated-bottom-sheet'
-import Animated from 'react-native-reanimated'
-import colors from '../../assets/data/colors'
-import { AuthContext } from '../Providers/AuthProvider'
-import CurvedButton from '../components/buttons/CurvedButton'
-import * as ImagePicker from 'expo-image-picker'
-import * as firebase from 'firebase'
+} from "react-native"
+import BottomSheet from "reanimated-bottom-sheet"
+import Animated from "react-native-reanimated"
+import colors from "../../assets/data/colors"
+import { AuthContext } from "../Providers/AuthProvider"
+import CurvedButton from "../components/buttons/CurvedButton"
+import * as ImagePicker from "expo-image-picker"
+import * as firebase from "firebase"
 
-import { TouchableOpacity } from 'react-native-gesture-handler'
+import { TouchableOpacity } from "react-native-gesture-handler"
 
 const ProfileScreen = ({ navigation }) => {
   const { logout, user, uploadProfilePic, deleteProfilePic } =
@@ -28,11 +28,11 @@ const ProfileScreen = ({ navigation }) => {
 
   useEffect(() => {
     ;(async () => {
-      if (Platform.OS !== 'web') {
+      if (Platform.OS !== "web") {
         const { status } =
           await ImagePicker.requestMediaLibraryPermissionsAsync()
-        if (status !== 'granted') {
-          alert('Sorry, we need camera roll permissions to make this work!')
+        if (status !== "granted") {
+          alert("Sorry, we need camera roll permissions to make this work!")
         }
       }
     })()
@@ -54,7 +54,7 @@ const ProfileScreen = ({ navigation }) => {
       var ref = firebase
         .storage()
         .ref()
-        .child('images/profilepicture' + user.uid)
+        .child("images/profilepicture" + user.uid)
       ref.put(blob).then(() => {
         ref.getDownloadURL().then((downloadURL) => {
           uploadProfilePic(downloadURL)
@@ -66,7 +66,7 @@ const ProfileScreen = ({ navigation }) => {
   }
   const renderInner = () => (
     <View style={styles.panel}>
-      <View style={{ alignItems: 'center' }}>
+      <View style={{ alignItems: "center" }}>
         <Text style={styles.panelTitle}>Edit Profile</Text>
       </View>
       <TouchableOpacity style={styles.panelButton} onPress={pickImage}>
@@ -85,7 +85,7 @@ const ProfileScreen = ({ navigation }) => {
       <TouchableOpacity
         style={styles.panelButton}
         onPress={function () {
-          navigation.navigate('ChangePassword')
+          navigation.navigate("ChangePassword")
           sheetRef.current.snapTo(2)
         }}
       >
@@ -103,6 +103,45 @@ const ProfileScreen = ({ navigation }) => {
     </View>
   )
 
+  // const loadPosts = async () => {
+  //   firebase
+  //     .firestore()
+  //     .collection("posts")
+  //     .orderBy("timestamp", "desc")
+  //     .onSnapshot((querySnapshot) => {
+  //       let temp_posts = []
+  //       querySnapshot.forEach((doc) => {
+  //         temp_posts.push({
+  //           id: doc.id,
+  //           data: doc.data(),
+  //         })
+  //       })
+  //       setPosts(temp_posts)
+  //     })
+
+  //   firebase
+  //     .firestore()
+  //     .collection("groups")
+  //     .orderBy("time", "desc")
+  //     .onSnapshot((querySnapshot) => {
+  //       let temp_data = []
+  //       querySnapshot.forEach((doc) => {
+  //         temp_data.push({
+  //           id: doc.id,
+  //           data: doc.data(),
+  //         })
+  //       })
+  //       setGroups(temp_data)
+  //     })
+  //     .catch((error) => {
+  //       alert(error)
+  //     })
+  // }
+
+  // useEffect(() => {
+  //   loadPosts()
+  // }, [])
+
   const renderHeader = () => (
     <View style={styles.header}>
       <View style={styles.panelHeader}>
@@ -112,7 +151,7 @@ const ProfileScreen = ({ navigation }) => {
   )
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <BottomSheet
         ref={sheetRef}
         snapPoints={[300, 200, 0]}
@@ -124,8 +163,8 @@ const ProfileScreen = ({ navigation }) => {
       <ScrollView
         style={styles.container}
         contentContainerStyle={{
-          justifyContent: 'center',
-          alignItems: 'center',
+          justifyContent: "center",
+          alignItems: "center",
         }}
         showsVerticalScrollIndicator={false}
       >
@@ -135,7 +174,7 @@ const ProfileScreen = ({ navigation }) => {
           <Image
             style={styles.userImg}
             source={{
-              uri: 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png',
+              uri: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
             }} //photoURL should be used
           />
         )}
@@ -157,8 +196,8 @@ const ProfileScreen = ({ navigation }) => {
 
         <Text
           style={{
-            justifyContent: 'center',
-            alignItems: 'center',
+            justifyContent: "center",
+            alignItems: "center",
             padding: 100,
             fontSize: 20,
             color: colors.darkGray,
@@ -181,25 +220,25 @@ const styles = StyleSheet.create({
     height: 150,
     width: 150,
     borderRadius: 75,
-    shadowColor: 'black',
+    shadowColor: "black",
   },
   userName: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginTop: 10,
     marginBottom: 10,
   },
   aboutUser: {
     fontSize: 14,
-    fontWeight: '600',
-    color: '#666',
-    textAlign: 'center',
+    fontWeight: "600",
+    color: "#666",
+    textAlign: "center",
     marginBottom: 10,
   },
   userBtnWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "center",
+    width: "100%",
     marginBottom: 10,
   },
   userBtn: {
@@ -214,24 +253,24 @@ const styles = StyleSheet.create({
     color: colors.primary,
   },
   userInfoWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
     marginVertical: 20,
   },
   userInfoItem: {
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   userInfoTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 5,
-    textAlign: 'center',
+    textAlign: "center",
   },
   userInfoSubTitle: {
     fontSize: 12,
-    color: '#666',
-    textAlign: 'center',
+    color: "#666",
+    textAlign: "center",
   },
   panel: {
     padding: 20,
@@ -246,7 +285,7 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: colors.primary_fade,
-    shadowColor: '#333333',
+    shadowColor: "#333333",
     shadowOffset: { width: -1, height: -3 },
     shadowRadius: 2,
     shadowOpacity: 0.4,
@@ -255,13 +294,13 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
   },
   panelHeader: {
-    alignItems: 'center',
+    alignItems: "center",
   },
   panelHandle: {
     width: 40,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#00000040',
+    backgroundColor: "#00000040",
     marginBottom: 10,
   },
   panelTitle: {
@@ -270,7 +309,7 @@ const styles = StyleSheet.create({
   },
   panelSubtitle: {
     fontSize: 14,
-    color: 'gray',
+    color: "gray",
     height: 30,
     marginBottom: 10,
   },
@@ -278,12 +317,12 @@ const styles = StyleSheet.create({
     padding: 13,
     borderRadius: 30,
     backgroundColor: colors.primary,
-    alignItems: 'center',
+    alignItems: "center",
     marginVertical: 7,
   },
   panelButtonTitle: {
     fontSize: 17,
-    fontWeight: 'bold',
-    color: 'white',
+    fontWeight: "bold",
+    color: "white",
   },
 })
