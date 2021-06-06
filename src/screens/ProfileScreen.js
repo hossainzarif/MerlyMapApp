@@ -7,6 +7,8 @@ import {
   ScrollView,
   SafeAreaView,
   Platform,
+  FlatList,
+  ActivityIndicator,
 } from "react-native"
 import BottomSheet from "reanimated-bottom-sheet"
 import Animated from "react-native-reanimated"
@@ -17,13 +19,16 @@ import * as ImagePicker from "expo-image-picker"
 import * as firebase from "firebase"
 
 import { TouchableOpacity } from "react-native-gesture-handler"
+import PersonalPostCard from "../cards/PersonalPostCard"
+import { Alert } from "react-native"
 
 const ProfileScreen = ({ navigation }) => {
   const { logout, user, uploadProfilePic, deleteProfilePic } =
     useContext(AuthContext)
 
   const [image, setImage] = useState(null)
-
+  const [personalposts, setpersonalposts] = useState([])
+  const [loading, setloading] = useState(false)
   const sheetRef = React.useRef(null)
 
   useEffect(() => {
@@ -103,44 +108,34 @@ const ProfileScreen = ({ navigation }) => {
     </View>
   )
 
-  // const loadPosts = async () => {
-  //   firebase
-  //     .firestore()
-  //     .collection("posts")
-  //     .orderBy("timestamp", "desc")
-  //     .onSnapshot((querySnapshot) => {
-  //       let temp_posts = []
-  //       querySnapshot.forEach((doc) => {
-  //         temp_posts.push({
-  //           id: doc.id,
-  //           data: doc.data(),
-  //         })
-  //       })
-  //       setPosts(temp_posts)
-  //     })
+  const loadPosts = async () => {
+    try {
+      setloading(true)
+      await firebase
+        .firestore()
+        .collection("posts")
+        .where("user", "==", user.uid)
+        .orderBy("timestamp", "desc")
+        .onSnapshot((querySnapshot) => {
+          let temp_posts = []
+          querySnapshot.forEach((doc) => {
+            temp_posts.push({
+              id: doc.id,
+              data: doc.data(),
+            })
+          })
+          setpersonalposts(temp_posts)
+          setloading(false)
+        })
+    } catch (error) {
+      Alert.alert(error)
+      setloading(false)
+    }
+  }
 
-  //   firebase
-  //     .firestore()
-  //     .collection("groups")
-  //     .orderBy("time", "desc")
-  //     .onSnapshot((querySnapshot) => {
-  //       let temp_data = []
-  //       querySnapshot.forEach((doc) => {
-  //         temp_data.push({
-  //           id: doc.id,
-  //           data: doc.data(),
-  //         })
-  //       })
-  //       setGroups(temp_data)
-  //     })
-  //     .catch((error) => {
-  //       alert(error)
-  //     })
-  // }
-
-  // useEffect(() => {
-  //   loadPosts()
-  // }, [])
+  useEffect(() => {
+    loadPosts()
+  }, [])
 
   const renderHeader = () => (
     <View style={styles.header}>
@@ -149,7 +144,38 @@ const ProfileScreen = ({ navigation }) => {
       </View>
     </View>
   )
+  function CheckPostLength(props) {
+    const len = props.lengthofArr
 
+    if (len > 0) {
+      return personalposts.map((item) => (
+        <PersonalPostCard
+          key={item.id}
+          title={item.data.title}
+          details={item.data.details}
+          onPress={() => {
+            console.log(item.data.title)
+          }}
+        />
+      ))
+    } else {
+      return (
+        <View style={{ alignItems: "center" }}>
+          <Text
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              padding: 100,
+              fontSize: 20,
+              color: colors.darkGray,
+            }}
+          >
+            NO POST YET
+          </Text>
+        </View>
+      )
+    }
+  }
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <BottomSheet
@@ -189,12 +215,38 @@ const ProfileScreen = ({ navigation }) => {
           >
             <Text style={styles.userBtnTxt}>Edit Profile</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.userBtn} onPress={() => logout()}>
+          <TouchableOpacity
+            style={styles.userBtn}
+            onPress={
+              () => console.log(personalposts)
+              // logout()
+            }
+          >
             <Text style={styles.userBtnTxt}>Logout</Text>
           </TouchableOpacity>
         </View>
 
-        <Text
+        <View style={{ width: "93%", marginBottom: 40 }}>
+          {loading ? (
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 30,
+              }}
+            >
+              <ActivityIndicator
+                size='large'
+                color={colors.primary}
+                animating={true}
+              />
+            </View>
+          ) : (
+            <CheckPostLength lengthofArr={personalposts.length} />
+          )}
+        </View>
+
+        {/* <Text
           style={{
             justifyContent: "center",
             alignItems: "center",
@@ -204,7 +256,7 @@ const ProfileScreen = ({ navigation }) => {
           }}
         >
           NO POST YET
-        </Text>
+        </Text> */}
       </ScrollView>
     </SafeAreaView>
   )
@@ -214,8 +266,11 @@ export default ProfileScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    backgroundColor: "#fff",
+    paddingTop: 20,
+    paddingBottom: 20,
   },
+
   userImg: {
     height: 150,
     width: 150,

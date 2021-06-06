@@ -141,7 +141,7 @@ const PostSalesScreen = () => {
   }
 
   if (isLoading) {
-    return <PostLoading loderText={LoadText} />
+    return <PostLoading loderText={LoadText} align='center' />
   } else {
     return (
       <SafeAreaView style={styles.container}>

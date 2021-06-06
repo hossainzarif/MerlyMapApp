@@ -13,6 +13,7 @@ import { ICON_SIZE, SearchBox_MAP_HEIGHT } from "../constants/Height_Width"
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
 import { Input } from "react-native-elements"
 import config from "../../config"
+import PostLoading from "../custom/PostLoading"
 
 const MapScreen = ({ navigation }) => {
   const mapRef = React.createRef()
@@ -158,7 +159,12 @@ const MapScreen = ({ navigation }) => {
       </View>
     )
   } else {
-    return <Loading />
+    return (
+      <PostLoading
+        loderText='Checking for location, please check if your location is enabled'
+        align='justify'
+      />
+    )
   }
 }
 

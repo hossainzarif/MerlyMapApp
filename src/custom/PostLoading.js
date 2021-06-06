@@ -5,7 +5,16 @@ const PostLoading = (props) => {
   return (
     <View style={styles.container}>
       <ActivityIndicator size='large' color={colors.primary} animating={true} />
-      <Text style={{ marginTop: 20, fontSize: 20 }}>{props.loderText}</Text>
+      <Text
+        style={{
+          marginTop: 20,
+          fontSize: 20,
+          textAlign: props.align,
+          width: "80%",
+        }}
+      >
+        {props.loderText}
+      </Text>
     </View>
   )
 }
