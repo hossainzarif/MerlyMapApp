@@ -2,7 +2,7 @@ import React from "react"
 import { createStackNavigator } from "@react-navigation/stack"
 import MapScreen from "../screens/MapScreen"
 import colors from "../../assets/data/colors"
-import { Entypo } from "@expo/vector-icons"
+import { Entypo, Feather } from "@expo/vector-icons"
 
 import ProfileScreen from "../screens/ProfileScreen"
 import ChangePassword from "../screens/ChangePassword"

@@ -115,29 +115,31 @@ export const AuthProvider = ({ children }) => {
               .updateProfile({
                 photoURL: imageurl,
               })
-              .then(function () {})
+              .then(function () {
+                setLoading(false)
+              })
               .catch(function (error) {
                 Alert.alert("Error", error.message)
+                setLoading(false)
               })
           } catch (error) {
             Alert.alert("Error", error.message)
+            setLoading(false)
           }
         },
-        deleteProfilePic: async () => {
-          setLoading(true)
+        deleteProfilePic: async (setpicLoading) => {
+          setpicLoading(true)
 
           await user
             .updateProfile({
               photoURL: null,
             })
             .then(function () {
-              setLoading(false)
-
-              Alert.alert("Deleted", "Profile Picture Deleted")
+              setpicLoading(false)
             })
             .catch(function (error) {
               Alert.alert("Error", error.message)
-              setLoading(false)
+              setpicLoading(false)
             })
         },
 

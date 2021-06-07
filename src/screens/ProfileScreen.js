@@ -47,7 +47,7 @@ const ProfileScreen = ({ navigation }) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [4, 5],
       quality: 1,
     })
 
@@ -99,7 +99,14 @@ const ProfileScreen = ({ navigation }) => {
       <TouchableOpacity
         style={styles.panelButton}
         onPress={() => {
-          deleteProfilePic()
+          {
+            if (user.photoURL) {
+              deleteProfilePic(setpicLoading)
+            } else {
+              Alert.alert("No profile picture to delete")
+            }
+            sheetRef.current.snapTo(2)
+          }
         }}
       >
         <Text style={styles.panelButtonTitle}>Delete profile picture</Text>
@@ -172,7 +179,7 @@ const ProfileScreen = ({ navigation }) => {
           details={item.data.details}
           img={item.data.pictures}
           onPress={() => {
-            console.log(item.data)
+            navigation.navigate("Details")
           }}
         />
       ))
