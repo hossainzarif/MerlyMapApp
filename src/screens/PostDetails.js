@@ -15,11 +15,7 @@ import { Colors } from "react-native/Libraries/NewAppScreen"
 
 const PostDetails = ({ route }) => {
   const { address, dates, details, images } = route.params
-  const imagesArr = [
-    "https://s-media-cache-ak0.pinimg.com/originals/ee/51/39/ee5139157407967591081ee04723259a.png",
-    "https://s-media-cache-ak0.pinimg.com/originals/40/4f/83/404f83e93175630e77bc29b3fe727cbe.jpg",
-    "https://s-media-cache-ak0.pinimg.com/originals/8d/1a/da/8d1adab145a2d606c85e339873b9bb0e.jpg",
-  ]
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={{ alignItems: "center" }}>
@@ -46,26 +42,29 @@ const PostDetails = ({ route }) => {
           <Text style={styles.headerText}>Photos</Text>
 
           {images ? (
-            <View style={{ width: "100%", backgroundColor: "white" }}>
-              <SliderBox
-                images={images}
-                dotColor={colors.primary}
-                paginationBoxVerticalPadding={20}
-                circleLoop
-                resizeMethod={"resize"}
-                resizeMode={"contain"}
-                paginationBoxStyle={{
-                  alignItems: "center",
-                  alignSelf: "center",
-                  justifyContent: "center",
-                }}
-                ImageComponentStyle={{
-                  borderRadius: 15,
-                  backgroundColor: "white",
-                }}
-                imageLoadingColor={colors.primary}
-              />
-            </View>
+            <SliderBox
+              images={images}
+              dotColor={colors.primary}
+              paginationBoxVerticalPadding={10}
+              circleLoop
+              resizeMethod={"resize"}
+              resizeMode={"contain"}
+              paginationBoxStyle={{
+                alignItems: "center",
+                alignSelf: "center",
+                justifyContent: "center",
+                paddingVertical: 10,
+              }}
+              ImageComponentStyle={{
+                borderRadius: 15,
+                backgroundColor: "white",
+                alignSelf: "center",
+                alignItems: "center",
+                justifyContent: "center",
+                paddingVertical: 10,
+              }}
+              imageLoadingColor={colors.primary}
+            />
           ) : (
             <Card containerStyle={styles.cardStyle}>
               <Card.Image
@@ -102,7 +101,7 @@ const styles = StyleSheet.create({
   locationText: { textAlign: "justify", fontSize: 15 },
   cardStyle: {
     borderRadius: 10,
-    elevation: 5,
+    elevation: 2,
   },
   sections: {
     width: "90%",
