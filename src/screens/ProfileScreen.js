@@ -29,6 +29,7 @@ const ProfileScreen = ({ navigation }) => {
   const [image, setImage] = useState(null)
   const [personalposts, setpersonalposts] = useState([])
   const [loading, setloading] = useState(false)
+  const [picLoading, setpicLoading] = useState(false)
   const sheetRef = React.useRef(null)
 
   useEffect(() => {
@@ -54,21 +55,37 @@ const ProfileScreen = ({ navigation }) => {
 
     if (!result.cancelled) {
       setImage(result.uri)
+      uploadImage(result.uri)
+      sheetRef.current.snapTo(2)
+    }
+  }
+
+  const uploadImage = async (image) => {
+    try {
+      setpicLoading(true)
       const response = await fetch(image)
       const blob = await response.blob()
       var ref = firebase
         .storage()
         .ref()
         .child("images/profilepicture" + user.uid)
-      ref.put(blob).then(() => {
-        ref.getDownloadURL().then((downloadURL) => {
-          uploadProfilePic(downloadURL)
+      ref
+        .put(blob)
+        .then(() => {
+          ref.getDownloadURL().then((downloadURL) => {
+            uploadProfilePic(downloadURL)
+          })
         })
-      })
+        .then(() => {
+          setpicLoading(false)
+        })
+    } catch (error) {
+      setpicLoading(false)
 
-      sheetRef.current.snapTo(2)
+      Alert.alert(error)
     }
   }
+
   const renderInner = () => (
     <View style={styles.panel}>
       <View style={{ alignItems: "center" }}>
@@ -153,8 +170,9 @@ const ProfileScreen = ({ navigation }) => {
           key={item.id}
           title={item.data.title}
           details={item.data.details}
+          img={item.data.pictures}
           onPress={() => {
-            console.log(item.data.title)
+            console.log(item.data)
           }}
         />
       ))
@@ -176,6 +194,22 @@ const ProfileScreen = ({ navigation }) => {
       )
     }
   }
+
+  function CheckPicLoading() {
+    if (user.photoURL) {
+      return <Image style={styles.userImg} source={{ uri: user.photoURL }} />
+    } else {
+      return (
+        <Image
+          style={styles.userImg}
+          source={{
+            uri: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
+          }} //photoURL should be used
+        />
+      )
+    }
+  }
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <BottomSheet
@@ -194,15 +228,14 @@ const ProfileScreen = ({ navigation }) => {
         }}
         showsVerticalScrollIndicator={false}
       >
-        {user.photoURL ? (
-          <Image style={styles.userImg} source={{ uri: user.photoURL }} />
-        ) : (
-          <Image
-            style={styles.userImg}
-            source={{
-              uri: "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png",
-            }} //photoURL should be used
+        {picLoading ? (
+          <ActivityIndicator
+            size='large'
+            color={colors.primary}
+            animating={true}
           />
+        ) : (
+          <CheckPicLoading />
         )}
 
         <Text style={styles.userName}>{user.displayName}</Text>

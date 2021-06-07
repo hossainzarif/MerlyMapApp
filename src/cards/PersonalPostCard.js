@@ -5,10 +5,12 @@ import {
   Image,
   TouchableOpacity,
   TouchableHighlight,
+  StyleSheet,
 } from "react-native"
 import { Card, ListItem, Button, Icon } from "react-native-elements"
 const PersonalPostCard = (props) => {
-  const { onPress, title, details } = props
+  const { onPress, title, details, img } = props
+
   return (
     <TouchableOpacity onPress={onPress}>
       <Card
@@ -19,7 +21,19 @@ const PersonalPostCard = (props) => {
       >
         <Card.Title>{title}</Card.Title>
         <Card.Divider />
-        <Card.Image source={require("../../assets/map-1.png")}></Card.Image>
+
+        {img ? (
+          <Card.Image
+            style={styles.imgStyle}
+            source={{ uri: img[0] }}
+          ></Card.Image>
+        ) : (
+          <Card.Image
+            source={require("../../assets/unav.png")}
+            style={styles.imgStyle}
+          ></Card.Image>
+        )}
+
         <Card.Divider />
 
         <Text style={{ marginBottom: 10, textAlign: "justify" }}>
@@ -29,5 +43,10 @@ const PersonalPostCard = (props) => {
     </TouchableOpacity>
   )
 }
+const styles = StyleSheet.create({
+  imgStyle: {
+    resizeMode: "contain",
+  },
+})
 
 export default PersonalPostCard
