@@ -179,7 +179,12 @@ const ProfileScreen = ({ navigation }) => {
           details={item.data.details}
           img={item.data.pictures}
           onPress={() => {
-            navigation.navigate("Details")
+            navigation.navigate("Details", {
+              address: item.data.location.coords.address,
+              images: item.data.pictures,
+              details: item.data.details,
+              dates: item.data.dates,
+            })
           }}
         />
       ))

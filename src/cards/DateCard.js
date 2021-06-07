@@ -27,9 +27,12 @@ const DateCard = (props) => {
         }}
       >
         <Text> {props.time} </Text>
-        <TouchableOpacity onPress={props.onPress}>
-          <Entypo name='cross' size={20} color={colors.warning} />
-        </TouchableOpacity>
+
+        {props.showbutton ? (
+          <TouchableOpacity onPress={props.onPress}>
+            <Entypo name='cross' size={20} color={colors.warning} />
+          </TouchableOpacity>
+        ) : null}
       </View>
     </Card>
   )

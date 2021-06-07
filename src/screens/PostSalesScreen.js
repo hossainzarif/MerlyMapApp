@@ -293,6 +293,7 @@ const PostSalesScreen = () => {
               renderItem={({ item, index }) => (
                 <DateCard
                   time={item}
+                  showbutton={true}
                   onPress={() => {
                     setdateTimearr((dateTimearr) =>
                       dateTimearr.filter((_item, _Index) => _Index !== index)
