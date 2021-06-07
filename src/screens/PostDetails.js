@@ -11,22 +11,17 @@ import colors from "../../assets/data/colors"
 import { Card, ListItem, Button, Icon } from "react-native-elements"
 import DateCard from "../cards/DateCard"
 const PostDetails = ({ route }) => {
-  const { address, dates } = route.params
+  const { address, dates, details } = route.params
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={{ alignItems: "center" }}>
-        <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
+        <View style={styles.sections}>
           <Text style={styles.headerText}>Location</Text>
-          <Card
-            containerStyle={{
-              borderRadius: 10,
-              elevation: 5,
-            }}
-          >
+          <Card containerStyle={styles.cardStyle}>
             <Text style={styles.locationText}>{address}</Text>
           </Card>
         </View>
-        <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
+        <View style={styles.sections}>
           <Text style={styles.headerText}>Dates</Text>
 
           <FlatList
@@ -37,6 +32,16 @@ const PostDetails = ({ route }) => {
             horizontal
             showsHorizontalScrollIndicator={false}
           />
+        </View>
+
+        <View style={styles.sections}>
+          <Text style={styles.headerText}>Photos</Text>
+        </View>
+        <View style={styles.sections}>
+          <Text style={styles.headerText}>Details</Text>
+          <Card containerStyle={styles.cardStyle}>
+            <Text style={styles.locationText}>{details}</Text>
+          </Card>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -57,6 +62,15 @@ const styles = StyleSheet.create({
     color: colors.primary,
   },
   locationText: { textAlign: "justify", fontSize: 15 },
+  cardStyle: {
+    borderRadius: 10,
+    elevation: 5,
+  },
+  sections: {
+    width: "90%",
+    marginTop: 10,
+    marginBottom: 10,
+  },
 })
 
 export default PostDetails
