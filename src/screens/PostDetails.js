@@ -39,7 +39,7 @@ const PostDetails = ({ route }) => {
         </View>
 
         <View style={styles.sections}>
-          <Text style={styles.headerText}>Photos</Text>
+          <Text style={[styles.headerText, { marginBottom: 10 }]}>Photos</Text>
 
           {images ? (
             <SliderBox
@@ -62,6 +62,7 @@ const PostDetails = ({ route }) => {
                 alignItems: "center",
                 justifyContent: "center",
                 paddingVertical: 10,
+                marginRight: 30,
               }}
               imageLoadingColor={colors.primary}
             />

@@ -7,7 +7,6 @@ import {
   ScrollView,
   SafeAreaView,
   Platform,
-  FlatList,
   ActivityIndicator,
 } from "react-native"
 import BottomSheet from "reanimated-bottom-sheet"
@@ -21,6 +20,7 @@ import * as firebase from "firebase"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import PersonalPostCard from "../cards/PersonalPostCard"
 import { Alert } from "react-native"
+import { deletePostfirebase } from "../Providers/FirebaseFunc"
 
 const ProfileScreen = ({ navigation }) => {
   const { logout, user, uploadProfilePic, deleteProfilePic } =
@@ -68,7 +68,7 @@ const ProfileScreen = ({ navigation }) => {
       var ref = firebase
         .storage()
         .ref()
-        .child("images/profilepicture" + user.uid)
+        .child("images/profilepicture/" + user.uid)
       ref
         .put(blob)
         .then(() => {
@@ -131,7 +131,13 @@ const ProfileScreen = ({ navigation }) => {
       </TouchableOpacity>
     </View>
   )
-
+  const deletePost = (id, imgs) => {
+    if (imgs != null) {
+      console.log("ok")
+    } else {
+      deletePostfirebase(id, setloading)
+    }
+  }
   const loadPosts = async () => {
     try {
       setloading(true)
@@ -178,6 +184,25 @@ const ProfileScreen = ({ navigation }) => {
           title={item.data.title}
           details={item.data.details}
           img={item.data.pictures}
+          onPress_delete={() => {
+            Alert.alert(
+              "Delete Post",
+              "Are you sure you want to delete your post?",
+              [
+                {
+                  text: "Cancel",
+                  style: "cancel",
+                },
+                {
+                  text: "Confirm",
+                  onPress: () => {
+                    deletePost(item.id, item.data.pictures)
+                  },
+                },
+              ],
+              { cancelable: true }
+            )
+          }}
           onPress={() => {
             navigation.navigate("Details", {
               address: item.data.location.coords.address,
