@@ -29,6 +29,8 @@ const ProfileScreen = ({ navigation }) => {
   const [image, setImage] = useState(null)
   const [personalposts, setpersonalposts] = useState([])
   const [loading, setloading] = useState(false)
+  const [loadingdelete, setloadingdelete] = useState(false)
+
   const [picLoading, setpicLoading] = useState(false)
   const sheetRef = React.useRef(null)
 
@@ -135,7 +137,7 @@ const ProfileScreen = ({ navigation }) => {
     if (imgs != null) {
       console.log("ok")
     } else {
-      deletePostfirebase(id, setloading)
+      deletePostfirebase(id, setloadingdelete)
     }
   }
   const loadPosts = async () => {
@@ -291,7 +293,7 @@ const ProfileScreen = ({ navigation }) => {
         </View>
 
         <View style={{ width: "93%", marginBottom: 40 }}>
-          {loading ? (
+          {loading || loadingdelete ? (
             <View
               style={{
                 justifyContent: "center",

@@ -39,8 +39,8 @@ export function addPost(
       setIsLoading(false)
     })
 }
-export function deletePostfirebase(id, setloading) {
-  setloading(true)
+export function deletePostfirebase(id, setloadingdelete) {
+  setloadingdelete(true)
   firebase
     .firestore()
     .collection("posts")
@@ -48,10 +48,10 @@ export function deletePostfirebase(id, setloading) {
     .delete()
     .then(() => {
       Alert.alert("Post deleted")
-      setloading(false)
+      setloadingdelete(false)
     })
     .catch((error) => {
-      setloading(false)
+      setloadingdelete(false)
 
       console.error("Error", error)
     })
