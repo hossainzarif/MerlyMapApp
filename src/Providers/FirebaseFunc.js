@@ -56,20 +56,30 @@ export function deletePostFirebase(id, setloadingdelete) {
       console.error("Error", error)
     })
 }
-export function deletePostImageFirebase(id, setloadingdelete) {
+export function deletePostImageFirebase(id, setloadingdelete, imgs) {
   setloadingdelete(true)
-  firebase
-    .firestore()
-    .collection("posts")
-    .doc(id)
-    .delete()
-    .then(() => {
-      Alert.alert("Post deleted")
-      setloadingdelete(false)
-    })
-    .catch((error) => {
-      setloadingdelete(false)
 
-      console.error("Error", error)
-    })
+  const promises = imgs.map((file) => {
+    const storageRef = firebase.storage().refFromURL(file)
+    const imageRef = firebase.storage().ref(storageRef.fullPath)
+
+    return imageRef.delete()
+  })
+
+  Promise.all(promises).then(() => {
+    firebase
+      .firestore()
+      .collection("posts")
+      .doc(id)
+      .delete()
+      .then(() => {
+        Alert.alert("Post deleted")
+        setloadingdelete(false)
+      })
+      .catch((error) => {
+        setloadingdelete(false)
+
+        console.error("Error", error)
+      })
+  })
 }
