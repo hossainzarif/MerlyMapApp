@@ -39,7 +39,24 @@ export function addPost(
       setIsLoading(false)
     })
 }
-export function deletePostfirebase(id, setloadingdelete) {
+export function deletePostFirebase(id, setloadingdelete) {
+  setloadingdelete(true)
+  firebase
+    .firestore()
+    .collection("posts")
+    .doc(id)
+    .delete()
+    .then(() => {
+      Alert.alert("Post deleted")
+      setloadingdelete(false)
+    })
+    .catch((error) => {
+      setloadingdelete(false)
+
+      console.error("Error", error)
+    })
+}
+export function deletePostImageFirebase(id, setloadingdelete) {
   setloadingdelete(true)
   firebase
     .firestore()

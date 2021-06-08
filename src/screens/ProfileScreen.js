@@ -20,7 +20,7 @@ import * as firebase from "firebase"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import PersonalPostCard from "../cards/PersonalPostCard"
 import { Alert } from "react-native"
-import { deletePostfirebase } from "../Providers/FirebaseFunc"
+import { deletePostFirebase } from "../Providers/FirebaseFunc"
 
 const ProfileScreen = ({ navigation }) => {
   const { logout, user, uploadProfilePic, deleteProfilePic } =
@@ -137,7 +137,7 @@ const ProfileScreen = ({ navigation }) => {
     if (imgs != null) {
       console.log("ok")
     } else {
-      deletePostfirebase(id, setloadingdelete)
+      deletePostFirebase(id, setloadingdelete)
     }
   }
   const loadPosts = async () => {
