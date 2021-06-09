@@ -64,7 +64,6 @@ const ProfileScreen = ({ navigation }) => {
       sheetRef.current.snapTo(2)
     }
   }
-
   const uploadImage = async (image) => {
     try {
       setpicLoading(true)

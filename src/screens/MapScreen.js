@@ -3,9 +3,9 @@ import { Text, View, StyleSheet, TextInput } from "react-native"
 import { AuthContext } from "../Providers/AuthProvider"
 import { FAB } from "react-native-paper"
 import colors from "../../assets/data/colors"
-import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps"
+import MapView, { Marker, PROVIDER_GOOGLE, Callout } from "react-native-maps"
 import * as Location from "expo-location"
-import { Feather } from "@expo/vector-icons"
+import { Feather, Entypo } from "@expo/vector-icons"
 import Loading from "../custom/Loading"
 import { Alert } from "react-native"
 import { ICON_SIZE, SearchBox_MAP_HEIGHT } from "../constants/Height_Width"
@@ -14,6 +14,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import { Input } from "react-native-elements"
 import config from "../../config"
 import PostLoading from "../custom/PostLoading"
+import * as firebase from "firebase"
 
 const MapScreen = ({ navigation }) => {
   const mapRef = React.createRef()
@@ -22,6 +23,8 @@ const MapScreen = ({ navigation }) => {
   const [location, setLocation] = useState(null)
   const [errorMsg, setErrorMsg] = useState(null)
   const [loadingMap, setloadingMap] = useState(false)
+  const [posts, setPosts] = useState([])
+
   useEffect(() => {
     ;(async () => {
       let { status } = await Location.requestForegroundPermissionsAsync()
@@ -54,6 +57,7 @@ const MapScreen = ({ navigation }) => {
 
   useEffect(() => {
     loadCoordinates()
+    loadPosts()
   }, [])
 
   // const changeRegion = async () => {
@@ -66,6 +70,30 @@ const MapScreen = ({ navigation }) => {
 
   //   console.log(location);
   // };
+
+  const loadPosts = async () => {
+    try {
+      await firebase
+        .firestore()
+        .collection("posts")
+        .onSnapshot((querySnapshot) => {
+          let temp_posts = []
+          querySnapshot.forEach((doc) => {
+            temp_posts.push({
+              id: doc.id,
+              data: doc.data(),
+            })
+          })
+          setPosts(temp_posts)
+        })
+    } catch (error) {
+      Alert.alert(error)
+    }
+  }
+
+  useEffect(() => {
+    loadPosts()
+  }, [])
 
   if (errorMsg) {
     Alert.alert("Please give access to Location.")
@@ -97,7 +125,53 @@ const MapScreen = ({ navigation }) => {
               latitude: location.coords.latitude,
               longitude: location.coords.longitude,
             }}
+            icon={<Entypo name='location-pin' size={24} color='black' />}
           ></Marker>
+
+          {posts.map((pos) => (
+            <Marker
+              key={pos.id}
+              coordinate={{
+                latitude: pos.data.location.coords.latitude,
+                longitude: pos.data.location.coords.longitude,
+              }}
+              image={require("../../assets/marker_logo.png")}
+            >
+              <Callout
+                tooltip
+                onPress={() => {
+                  navigation.navigate("Details", {
+                    address: pos.data.location.coords.address,
+                    images: pos.data.pictures,
+                    details: pos.data.details,
+                    dates: pos.data.dates,
+                  })
+                }}
+              >
+                <View>
+                  <View style={styles.bubble}>
+                    <View style={{ alignItems: "center" }}>
+                      <Entypo
+                        name='location-pin'
+                        size={25}
+                        color={colors.primary}
+                      />
+                    </View>
+                    <Text numberOfLines={1} style={styles.name}>
+                      {pos.data.title}
+                    </Text>
+
+                    <Text style={{ fontSize: 13 }} numberOfLines={1}>
+                      {pos.data.details}
+                    </Text>
+                    <Text style={{ fontSize: 10 }}>click for more details</Text>
+                  </View>
+                  <View style={styles.arrowBorder} />
+                  <View style={styles.arrow} />
+                </View>
+              </Callout>
+            </Marker>
+          ))}
         </MapView>
 
         <FAB
@@ -205,6 +279,40 @@ const styles = StyleSheet.create({
     elevation: 10,
     paddingHorizontal: 10,
     alignItems: "center",
+  },
+  bubble: {
+    flexDirection: "column",
+    alignSelf: "flex-start",
+    backgroundColor: "#fff",
+    borderRadius: 6,
+    borderColor: "#ccc",
+    borderWidth: 0.5,
+    padding: 15,
+    width: 150,
+  },
+  // Arrow below the bubble
+  arrow: {
+    backgroundColor: "transparent",
+    borderColor: "transparent",
+    borderTopColor: "#fff",
+    borderWidth: 16,
+    alignSelf: "center",
+    marginTop: -40,
+  },
+  arrowBorder: {
+    backgroundColor: "transparent",
+    borderColor: "transparent",
+    borderTopColor: "#007a87",
+    borderWidth: 16,
+    alignSelf: "center",
+    marginTop: -0.5,
+    // marginBottom: -15
+  },
+  // Character name
+  name: {
+    fontSize: 16,
+    marginBottom: 5,
+    fontWeight: "bold",
   },
 })
 export default MapScreen
