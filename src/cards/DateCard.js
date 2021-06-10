@@ -9,9 +9,9 @@ const DateCard = (props) => {
     <Card
       containerStyle={{
         padding: 0,
-        borderRadius: 30,
-        height: 30,
-        width: 220,
+        borderRadius: 50,
+        height: 40,
+        // width: 330,
         justifyContent: "center",
         paddingLeft: 10,
         elevation: 3,

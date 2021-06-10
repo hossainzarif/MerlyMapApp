@@ -38,6 +38,7 @@ import { Alert } from "react-native"
 import { addPost } from "../Providers/FirebaseFunc"
 const PostSalesScreen = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
+  const [isDatePickerVisible_1, setDatePickerVisibility_1] = useState(false)
 
   const [selectedDates, setselectedDates] = useState(moment())
   const [dateTimearr, setdateTimearr] = useState([])
@@ -47,29 +48,49 @@ const PostSalesScreen = () => {
   const [LoadText, setLoadText] = useState("")
   const [DetailsText, setDetailsText] = useState("")
   const [titlePost, settitlePost] = useState("")
-
+  const [firstDate, setfirstDate] = useState("")
   const { user } = useContext(AuthContext)
 
   const showDatePicker = () => {
     setDatePickerVisibility(true)
   }
+  const showDatePicker_1 = () => {
+    setDatePickerVisibility_1(true)
+  }
 
   const hideDatePicker = () => {
     setDatePickerVisibility(false)
   }
-
+  const hideDatePicker_1 = () => {
+    setDatePickerVisibility_1(false)
+  }
   const handleConfirm = (date) => {
     let dateTime =
       String(moment(selectedDates).format("LL")) +
       " " +
-      String(moment(date).format("HH:MM"))
+      String(moment(date).format("hh:mm A"))
+
+    setfirstDate(dateTime)
+    showDatePicker_1()
+    hideDatePicker()
+  }
+
+  const handleConfirm_1 = (date) => {
+    let dateTime =
+      firstDate +
+      " " +
+      "to" +
+      " " +
+      String(moment(date).format("hh:mm A")) +
+      "  "
 
     setdateTimearr((dateTimearr) => [...dateTimearr, dateTime])
 
-    console.log(dateTimearr)
+    console.log(dateTime)
 
-    hideDatePicker()
+    hideDatePicker_1()
   }
+
   useEffect(() => {
     ;(async () => {
       let { status } = await Location.requestForegroundPermissionsAsync()
@@ -372,10 +393,20 @@ const PostSalesScreen = () => {
           <DateTimePickerModal
             isVisible={isDatePickerVisible}
             mode='time'
+            timePickerModeAndroid='spinner'
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
-            locale='en_GB'
-            is24Hour={true}
+            mode='time'
+            display='spinner'
+          />
+          <DateTimePickerModal
+            isVisible={isDatePickerVisible_1}
+            mode='time'
+            timePickerModeAndroid='spinner'
+            onConfirm={handleConfirm_1}
+            onCancel={hideDatePicker_1}
+            mode='time'
+            display='spinner'
           />
         </ScrollView>
       </SafeAreaView>
