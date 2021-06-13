@@ -16,7 +16,7 @@ import { FAB } from "react-native-paper"
 import { AuthContext } from "../Providers/AuthProvider"
 import { TouchableOpacity } from "react-native-gesture-handler"
 
-const PostDetails = ({ route }) => {
+const PostDetails = ({ route, navigation }) => {
   const { address, dates, details, images, user_id } = route.params
   const { user } = useContext(AuthContext)
 
