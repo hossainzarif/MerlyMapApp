@@ -213,6 +213,7 @@ const ProfileScreen = ({ navigation }) => {
               images: item.data.pictures,
               details: item.data.details,
               dates: item.data.dates,
+              user_id: item.data.user,
             })
           }}
         />

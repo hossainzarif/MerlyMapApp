@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import {
   View,
   ScrollView,
@@ -12,9 +12,13 @@ import { Card, ListItem, Button, Icon } from "react-native-elements"
 import DateCard from "../cards/DateCard"
 import { SliderBox } from "react-native-image-slider-box"
 import { Colors } from "react-native/Libraries/NewAppScreen"
+import { FAB } from "react-native-paper"
+import { AuthContext } from "../Providers/AuthProvider"
+import { TouchableOpacity } from "react-native-gesture-handler"
 
 const PostDetails = ({ route }) => {
-  const { address, dates, details, images } = route.params
+  const { address, dates, details, images, user_id } = route.params
+  const { user } = useContext(AuthContext)
 
   return (
     <SafeAreaView style={styles.container}>
@@ -77,10 +81,28 @@ const PostDetails = ({ route }) => {
         </View>
         <View style={styles.sections}>
           <Text style={styles.headerText}>Details</Text>
+
           <Card containerStyle={styles.cardStyle}>
             <Text style={styles.locationText}>{details}</Text>
           </Card>
         </View>
+
+        {user_id == user.uid ? null : (
+          <View
+            style={{
+              justifyContent: "flex-start",
+              alignItems: "center",
+              width: "85%",
+              paddingBottom: 20,
+              paddingTop: 10,
+              flexDirection: "row",
+            }}
+          >
+            <FAB style={styles.fab} large icon='message' color={colors.white} />
+
+            <Text style={{ paddingLeft: 10 }}>Message seller</Text>
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   )
@@ -108,6 +130,9 @@ const styles = StyleSheet.create({
     width: "90%",
     marginTop: 10,
     marginBottom: 10,
+  },
+  fab: {
+    backgroundColor: colors.primary,
   },
 })
 
