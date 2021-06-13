@@ -54,6 +54,7 @@ const PostSalesScreen = () => {
   const showDatePicker = () => {
     setDatePickerVisibility(true)
   }
+
   const showDatePicker_1 = () => {
     setDatePickerVisibility_1(true)
   }

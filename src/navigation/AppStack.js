@@ -6,6 +6,7 @@ import { Entypo } from "@expo/vector-icons"
 import PostSalesScreen from "../screens/PostSalesScreen"
 import { Feather } from "@expo/vector-icons"
 import PostDetails from "../screens/PostDetails"
+import ChatScreen from "../screens/ChatScreen"
 const AppStack = ({ navigation }) => {
   appstack = createStackNavigator()
   return (
@@ -58,6 +59,24 @@ const AppStack = ({ navigation }) => {
       <appstack.Screen
         name='Details'
         component={PostDetails}
+        options={{
+          title: "",
+          headerLeft: () => (
+            <Feather
+              name='arrow-left'
+              size={32}
+              color={colors.white}
+              style={{ padding: 10 }}
+              onPress={() => {
+                navigation.navigate("MapScreen")
+              }}
+            />
+          ),
+        }}
+      />
+      <appstack.Screen
+        name='Chat'
+        component={ChatScreen}
         options={{
           title: "",
           headerLeft: () => (

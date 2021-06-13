@@ -11,7 +11,6 @@ import { Alert } from "react-native"
 import { ICON_SIZE, SearchBox_MAP_HEIGHT } from "../constants/Height_Width"
 
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
-import { Input } from "react-native-elements"
 import config from "../../config"
 import PostLoading from "../custom/PostLoading"
 import * as firebase from "firebase"

@@ -98,7 +98,15 @@ const PostDetails = ({ route }) => {
               flexDirection: "row",
             }}
           >
-            <FAB style={styles.fab} large icon='message' color={colors.white} />
+            <FAB
+              style={styles.fab}
+              large
+              icon='message'
+              color={colors.white}
+              onPress={() => {
+                navigation.navigate("Chat")
+              }}
+            />
 
             <Text style={{ paddingLeft: 10 }}>Message seller</Text>
           </View>
