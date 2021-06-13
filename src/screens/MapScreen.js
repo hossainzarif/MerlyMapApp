@@ -135,7 +135,7 @@ const MapScreen = ({ navigation }) => {
                 latitude: pos.data.location.coords.latitude,
                 longitude: pos.data.location.coords.longitude,
               }}
-              image={require("../../assets/marker_logo.png")}
+              image={require("../../assets/marker.png")}
             >
               <Callout
                 tooltip
