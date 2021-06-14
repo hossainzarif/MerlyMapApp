@@ -9,6 +9,7 @@ export function addPost(
   DetailsText,
   fileDownloadUrls,
   uid,
+  name,
   setIsLoading,
   setdateTimearr,
   setallLocation,
@@ -26,6 +27,7 @@ export function addPost(
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       pictures: fileDownloadUrls,
       user: uid,
+      user_name: name,
     })
     .then(() => {
       setdateTimearr([])

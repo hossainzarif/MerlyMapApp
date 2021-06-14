@@ -77,8 +77,8 @@ const AppStack = ({ navigation }) => {
       <appstack.Screen
         name='Chat'
         component={ChatScreen}
-        options={{
-          title: "",
+        options={({ route }) => ({
+          title: route.params.seller_name,
           headerLeft: () => (
             <Feather
               name='arrow-left'
@@ -86,11 +86,12 @@ const AppStack = ({ navigation }) => {
               color={colors.white}
               style={{ padding: 10 }}
               onPress={() => {
-                navigation.navigate("MapScreen")
+                // navigation.navigate("MapScreen")
+                console.log(route.params)
               }}
             />
           ),
-        }}
+        })}
       />
     </appstack.Navigator>
   )

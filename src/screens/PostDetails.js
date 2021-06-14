@@ -17,7 +17,7 @@ import { AuthContext } from "../Providers/AuthProvider"
 import { TouchableOpacity } from "react-native-gesture-handler"
 
 const PostDetails = ({ route, navigation }) => {
-  const { address, dates, details, images, user_id } = route.params
+  const { address, dates, details, images, user_id, name } = route.params
   const { user } = useContext(AuthContext)
 
   return (
@@ -104,7 +104,9 @@ const PostDetails = ({ route, navigation }) => {
               icon='message'
               color={colors.white}
               onPress={() => {
-                navigation.navigate("Chat")
+                navigation.navigate("Chat", {
+                  seller_name: name,
+                })
               }}
             />
 

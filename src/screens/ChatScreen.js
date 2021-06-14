@@ -3,7 +3,7 @@ import React, { useState, useCallback, useEffect } from "react"
 import { GiftedChat, Bubble } from "react-native-gifted-chat"
 import colors from "../../assets/data/colors"
 
-const ChatScreen = () => {
+const ChatScreen = ({ route }) => {
   const [messages, setMessages] = useState([])
   useEffect(() => {
     setMessages([
@@ -14,7 +14,7 @@ const ChatScreen = () => {
         user: {
           _id: 2,
           name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
+          avatar: require("../../assets/av_ed.png"),
         },
       },
     ])
