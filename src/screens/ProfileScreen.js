@@ -290,7 +290,10 @@ const ProfileScreen = ({ navigation }) => {
           >
             <Text style={styles.userBtnTxt}>Edit Profile</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.userBtn} onPress={() => logout()}>
+          <TouchableOpacity
+            style={styles.userBtn}
+            onPress={() => console.log(user.photoURL)}
+          >
             <Text style={styles.userBtnTxt}>Logout</Text>
           </TouchableOpacity>
         </View>

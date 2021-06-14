@@ -15,19 +15,37 @@ import { Colors } from "react-native/Libraries/NewAppScreen"
 import { FAB } from "react-native-paper"
 import { AuthContext } from "../Providers/AuthProvider"
 import { TouchableOpacity } from "react-native-gesture-handler"
+import openMap from "react-native-open-maps"
+import OpenMap from "react-native-open-map"
 
 const PostDetails = ({ route, navigation }) => {
-  const { address, dates, details, images, user_id, name } = route.params
+  const { address, dates, details, images, user_id, name, coord } = route.params
   const { user } = useContext(AuthContext)
 
+  // function _goToYosemite() {}
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={{ alignItems: "center" }}>
         <View style={styles.sections}>
-          <Text style={styles.headerText}>Location</Text>
-          <Card containerStyle={styles.cardStyle}>
-            <Text style={styles.locationText}>{address}</Text>
-          </Card>
+          <Text style={styles.headerText}>
+            Location (click to open in maps)
+          </Text>
+          <TouchableOpacity
+            onPress={() => {
+              OpenMap.show({
+                latitude: coord.latitude,
+                longitude: coord.longitude,
+                // title: "dumm",
+                // cancelText: "Close",
+                // actionSheetTitle: "Chose app",
+                // actionSheetMessage: "Available applications ",
+              })
+            }}
+          >
+            <Card containerStyle={styles.cardStyle}>
+              <Text style={styles.locationText}>{address}</Text>
+            </Card>
+          </TouchableOpacity>
         </View>
         <View style={styles.sections}>
           <Text style={styles.headerText}>Dates</Text>
