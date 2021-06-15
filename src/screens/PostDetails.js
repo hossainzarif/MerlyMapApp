@@ -142,7 +142,7 @@ const PostDetails = ({ route, navigation }) => {
                 icon='alert'
                 color={colors.white}
                 onPress={() => {
-                  FlagPost(post_id, user_id, setflagLoading.user.uid)
+                  FlagPost(post_id, user_id, setflagLoading, user.uid)
                 }}
               />
               <Text style={{ paddingLeft: 10 }}>Flag the post</Text>
