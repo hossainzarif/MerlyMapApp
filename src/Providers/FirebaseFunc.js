@@ -81,20 +81,35 @@ export function deletePostImageFirebase(id, setloadingdelete, imgs) {
       })
   })
 }
-export async function FlagPost(post_id, user_id) {
+export async function FlagPost(post_id, user_id, setflagLoading, flagger) {
+  setflagLoading(true)
   const postref = db.collection("posts").doc(post_id)
   await postref
     .update({ flagged: true })
     .then(() => {
-      const userRef = db.collection("users").doc(user_id)
-      userRef.update({
-        flags: firebase.firestore.FieldValue.increment(1),
-      })
+      db.collection("users")
+        .doc(user_id)
+        .collection("flaggers")
+        .doc(flagger)
+        .set({
+          flagger_id: flagger,
+        })
+        .then(() => {
+          db.collection("posts")
+            .doc(post_id)
+            .collection("flaggers")
+            .doc(flagger)
+            .set({
+              flagger_id: flagger,
+            })
+        })
     })
     .then(() => {
-      Alert.alert("Updated")
+      Alert.alert("Flagged the post")
+      setflagLoading(false)
     })
     .catch((error) => {
       Alert.alert(error)
+      setflagLoading(false)
     })
 }

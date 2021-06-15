@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
                   .doc(authUser.user.uid)
                   .set({
                     _id: authUser.user.uid,
-                    flags: 0,
+                    email: authUser.user.email,
                   })
                   .then(() => {
                     setLoading(false)
@@ -177,7 +177,7 @@ export const AuthProvider = ({ children }) => {
                     .doc(user.uid)
                     .set({
                       _id: user.uid,
-                      flags: 0,
+                      email: user.email,
                     })
                     .then(() => {
                       setLoading(false)
