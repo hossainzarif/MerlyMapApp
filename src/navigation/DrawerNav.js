@@ -1,12 +1,13 @@
-import React from 'react'
-import AppStack from './AppStack'
+import React from "react"
+import AppStack from "./AppStack"
 
-import { createDrawerNavigator } from '@react-navigation/drawer'
-import MapScreen from '../screens/MapScreen'
+import { createDrawerNavigator } from "@react-navigation/drawer"
+import MapScreen from "../screens/MapScreen"
 
-import DrawerContent from '../custom/DrawerContent'
-import ProfileScreen from '../screens/ProfileScreen'
-import ProfileStack from './ProfileStack'
+import DrawerContent from "../custom/DrawerContent"
+import ProfileScreen from "../screens/ProfileScreen"
+import ProfileStack from "./ProfileStack"
+import AdminStack from "./AdminStack"
 const DrawerNav = () => {
   const Drawer = createDrawerNavigator()
 
@@ -14,6 +15,7 @@ const DrawerNav = () => {
     <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
       <Drawer.Screen name='Home' component={AppStack} />
       <Drawer.Screen name='Profile' component={ProfileStack} />
+      <Drawer.Screen name='AdminPanel' component={AdminStack} />
     </Drawer.Navigator>
   )
 }
