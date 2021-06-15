@@ -3,7 +3,10 @@ import { View, Text, Alert, StyleSheet } from "react-native"
 import colors from "../../assets/data/colors"
 import FlaggedPostCard from "../cards/FlaggedPostCard"
 import Loading from "../custom/Loading"
-import { deletePostFirebase } from "../Providers/FirebaseFunc"
+import {
+  deletePostFirebase,
+  deletePostImageFirebase,
+} from "../Providers/FirebaseFunc"
 import { db } from "../utils/firebase"
 
 const FlaggedPostScreen = ({ navigation }) => {
@@ -61,7 +64,15 @@ const FlaggedPostScreen = ({ navigation }) => {
                 {
                   text: "Confirm",
                   onPress: () => {
-                    deletePostFirebase(item.id, setloading)
+                    if (item.data.pictures) {
+                      deletePostImageFirebase(
+                        item.id,
+                        setloading,
+                        item.data.pictures
+                      )
+                    } else {
+                      deletePostFirebase(item.id, setloading)
+                    }
                   },
                 },
               ],
@@ -73,6 +84,7 @@ const FlaggedPostScreen = ({ navigation }) => {
               name: item.data.user_name,
               user_id: item.data.user,
               email: item.data.email,
+              postid: item.id,
             })
           }}
         />

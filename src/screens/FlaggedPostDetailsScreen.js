@@ -6,9 +6,10 @@ import { db } from "../utils/firebase"
 import { AntDesign } from "@expo/vector-icons"
 import colors from "../../assets/data/colors"
 const FlaggedPostDetailsScreen = ({ route }) => {
-  const { name, user_id, email } = route.params
+  const { name, user_id, email, postid } = route.params
   const [loading, setloading] = useState(false)
   const [flaggers, setflaggers] = useState(0)
+  const [totalflags, settotalflags] = useState(0)
 
   const loadPosts = async () => {
     try {
@@ -28,9 +29,29 @@ const FlaggedPostDetailsScreen = ({ route }) => {
       setloading(false)
     }
   }
+  const loadFlaggers = async () => {
+    try {
+      setloading(true)
+
+      await db
+        .collection("posts")
+        .doc(postid)
+        .collection("flaggers")
+        .onSnapshot((querySnapshot) => {
+          settotalflags(querySnapshot.size)
+
+          setloading(false)
+        })
+    } catch (error) {
+      Alert.alert("Error:", error.message)
+
+      setloading(false)
+    }
+  }
 
   useEffect(() => {
     loadPosts()
+    loadFlaggers()
   }, [])
 
   if (loading) {
@@ -44,7 +65,11 @@ const FlaggedPostDetailsScreen = ({ route }) => {
         <Text style={styles.textdata}>User Name : {name}</Text>
         <Text style={styles.textdata}>User Id : {user_id}</Text>
         <Text style={styles.textdata}>User Email : {email}</Text>
-        <Text style={styles.textdata}>Flagged By : {flaggers} Users</Text>
+        <Text style={styles.textdata}>
+          Post Flagged By : {totalflags} Users
+        </Text>
+
+        <Text style={styles.textdata}> User Flagged By : {flaggers} Users</Text>
       </View>
     )
   }
