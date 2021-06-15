@@ -48,7 +48,7 @@ const AdminStack = ({ navigation }) => {
               color={colors.white}
               style={{ padding: 10 }}
               onPress={() => {
-                // navigation.navigate("FlaggedPost")
+                navigation.navigate("FlaggedPost")
               }}
             />
           ),

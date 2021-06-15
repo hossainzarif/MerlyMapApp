@@ -31,8 +31,7 @@ const FlaggedPostCard = (props) => {
         </View>
         <Card.Divider />
 
-        <Text style={styles.titleText}> User Name : {name}</Text>
-        <Text style={styles.titleText}> User Id : {user_id}</Text>
+        <Text style={styles.titleText}>Click for more details</Text>
       </Card>
     </TouchableOpacity>
   )
@@ -48,7 +47,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
   },
-  titleText: { textAlign: "justify", width: "90%", fontSize: 18 },
+  titleText: { width: "90%", fontSize: 18 },
 })
 
 export default FlaggedPostCard
