@@ -79,6 +79,12 @@ export function deletePostImageFirebase(id, setloadingdelete, imgs) {
       .doc(id)
       .delete()
       .then(() => {
+        db.collection("posts")
+          .doc(id)
+          .collection("flaggers")
+          .onSnapshot((snapshot) =>
+            snapshot.forEach((result) => result.ref.delete())
+          )
         Alert.alert("Post deleted")
         setloadingdelete(false)
       })
