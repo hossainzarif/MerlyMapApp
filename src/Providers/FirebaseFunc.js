@@ -1,6 +1,7 @@
 import "firebase/firestore"
 import * as firebase from "firebase"
 import { Alert } from "react-native"
+import { db } from "../utils/firebase"
 
 export function addPost(
   allLocation,
@@ -16,9 +17,7 @@ export function addPost(
   setimages
 ) {
   setIsLoading(true)
-  firebase
-    .firestore()
-    .collection("posts")
+  db.collection("posts")
     .add({
       location: allLocation,
       title: titlePost,
@@ -28,6 +27,7 @@ export function addPost(
       pictures: fileDownloadUrls,
       user: uid,
       user_name: name,
+      flagged: false,
     })
     .then(() => {
       setdateTimearr([])
@@ -43,9 +43,7 @@ export function addPost(
 }
 export function deletePostFirebase(id, setloadingdelete) {
   setloadingdelete(true)
-  firebase
-    .firestore()
-    .collection("posts")
+  db.collection("posts")
     .doc(id)
     .delete()
     .then(() => {
@@ -69,9 +67,7 @@ export function deletePostImageFirebase(id, setloadingdelete, imgs) {
   })
 
   Promise.all(promises).then(() => {
-    firebase
-      .firestore()
-      .collection("posts")
+    db.collection("posts")
       .doc(id)
       .delete()
       .then(() => {
@@ -83,5 +79,14 @@ export function deletePostImageFirebase(id, setloadingdelete, imgs) {
 
         console.error("Error", error)
       })
+  })
+}
+export async function FlagPost(post_id, user_id) {
+  const postref = db.collection("posts").doc(user_id)
+  await postref.update({ flagged: true }).then(() => {
+    const userRef = db.collection(users).doc(post_id)
+    userRef.update({
+      flags: firebase.firestore.FieldValue.increment(1),
+    })
   })
 }

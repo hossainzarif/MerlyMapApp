@@ -7,6 +7,7 @@ const colors = {
   primary_dark: "#268621",
   primary_fade: "#deeedd",
   warning: "#C3272B",
+  flag: "#FFCC00",
 }
 
 export default colors

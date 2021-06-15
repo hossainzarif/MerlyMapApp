@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react"
 import { Alert } from "react-native"
-import { auth } from "../utils/firebase"
+import { auth, db } from "../utils/firebase"
 import * as firebase from "firebase"
 import * as Google from "expo-google-app-auth"
 
@@ -33,11 +33,19 @@ export const AuthProvider = ({ children }) => {
             await auth
               .createUserWithEmailAndPassword(email, password)
               .then((authUser) => {
-                setLoading(false)
-
                 authUser.user.updateProfile({
                   displayName: name,
                 })
+
+                db.collection("users")
+                  .doc(authUser.user.uid)
+                  .set({
+                    _id: authUser.user.uid,
+                    flags: 0,
+                  })
+                  .then(() => {
+                    setLoading(false)
+                  })
               })
           } catch (e) {
             setLoading(false)
@@ -165,7 +173,15 @@ export const AuthProvider = ({ children }) => {
                 .auth()
                 .signInWithCredential(credential)
                 .then(function () {
-                  console.log(user)
+                  db.collection("users")
+                    .doc(user.uid)
+                    .set({
+                      _id: user.uid,
+                      flags: 0,
+                    })
+                    .then(() => {
+                      setLoading(false)
+                    })
                   setLoading(false)
                 })
             } else {

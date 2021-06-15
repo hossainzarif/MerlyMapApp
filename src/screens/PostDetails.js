@@ -17,11 +17,12 @@ import { AuthContext } from "../Providers/AuthProvider"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import openMap from "react-native-open-maps"
 import OpenMap from "react-native-open-map"
+import { FlagPost } from "../Providers/FirebaseFunc"
 
 const PostDetails = ({ route, navigation }) => {
-  const { address, dates, details, images, user_id, name, coord } = route.params
+  const { address, dates, details, images, user_id, name, coord, post_id } =
+    route.params
   const { user } = useContext(AuthContext)
-
   // function _goToYosemite() {}
   return (
     <SafeAreaView style={styles.container}>
@@ -35,10 +36,6 @@ const PostDetails = ({ route, navigation }) => {
               OpenMap.show({
                 latitude: coord.latitude,
                 longitude: coord.longitude,
-                // title: "dumm",
-                // cancelText: "Close",
-                // actionSheetTitle: "Chose app",
-                // actionSheetMessage: "Available applications ",
               })
             }}
           >
@@ -108,7 +105,7 @@ const PostDetails = ({ route, navigation }) => {
         {user_id == user.uid ? null : (
           <View
             style={{
-              justifyContent: "flex-start",
+              justifyContent: "space-between",
               alignItems: "center",
               width: "85%",
               paddingBottom: 20,
@@ -128,7 +125,18 @@ const PostDetails = ({ route, navigation }) => {
               }}
             />
 
-            <Text style={{ paddingLeft: 10 }}>Message seller</Text>
+            <Text style={{ paddingLeft: 10 }}>Message sller</Text>
+
+            <FAB
+              style={styles.fab_2}
+              large
+              icon='alert'
+              color={colors.white}
+              onPress={() => {
+                FlagPost(post_id, user_id)
+              }}
+            />
+            <Text style={{ paddingLeft: 10 }}>Flag the post</Text>
           </View>
         )}
       </ScrollView>
@@ -161,6 +169,9 @@ const styles = StyleSheet.create({
   },
   fab: {
     backgroundColor: colors.primary,
+  },
+  fab_2: {
+    backgroundColor: colors.flag,
   },
 })
 

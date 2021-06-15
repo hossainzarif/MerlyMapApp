@@ -20,7 +20,7 @@ if (firebase.apps.length === 0) {
   app = firebase.app()
 }
 
-const db = app.firestore()
+const db = firebase.firestore()
 const auth = firebase.auth()
 const fireinit = firebase.firestore()
 export { db, auth, fireinit }

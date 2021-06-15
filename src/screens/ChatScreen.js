@@ -61,6 +61,7 @@ const ChatScreen = () => {
           }))
         )
       )
+    setchatLoading(false)
 
     return unsubscribe
   }, [])
