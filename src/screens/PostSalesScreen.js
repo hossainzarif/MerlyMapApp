@@ -158,7 +158,8 @@ const PostSalesScreen = () => {
         setIsLoading,
         setdateTimearr,
         setallLocation,
-        setimages
+        setimages,
+        user.email
       )
     })
   }
@@ -384,7 +385,8 @@ const PostSalesScreen = () => {
                       setIsLoading,
                       setdateTimearr,
                       setallLocation,
-                      setimages
+                      setimages,
+                      user.email
                     )
                   }
                 } else {

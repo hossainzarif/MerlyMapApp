@@ -14,7 +14,8 @@ export function addPost(
   setIsLoading,
   setdateTimearr,
   setallLocation,
-  setimages
+  setimages,
+  user_email
 ) {
   setIsLoading(true)
   db.collection("posts")
@@ -28,6 +29,7 @@ export function addPost(
       user: uid,
       user_name: name,
       flagged: false,
+      email: user_email,
     })
     .then(() => {
       setdateTimearr([])

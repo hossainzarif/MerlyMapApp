@@ -72,6 +72,7 @@ const FlaggedPostScreen = ({ navigation }) => {
             navigation.navigate("FlaggedPostDetails", {
               name: item.data.user_name,
               user_id: item.data.user,
+              email: item.data.email,
             })
           }}
         />
