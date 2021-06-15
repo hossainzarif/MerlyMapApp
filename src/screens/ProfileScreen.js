@@ -86,7 +86,7 @@ const ProfileScreen = ({ navigation }) => {
     } catch (error) {
       setpicLoading(false)
 
-      Alert.alert(error)
+      Alert.alert("Error:", error.message)
     }
   }
 

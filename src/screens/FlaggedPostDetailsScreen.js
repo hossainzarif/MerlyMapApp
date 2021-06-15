@@ -1,7 +1,7 @@
 import React from "react"
 import { View, Text } from "react-native"
 
-const FlaggedPostDetails = () => {
+const FlaggedPostDetailsScreen = () => {
   return (
     <View>
       <Text>BYE</Text>
@@ -9,4 +9,4 @@ const FlaggedPostDetails = () => {
   )
 }
 
-export default FlaggedPostDetails
+export default FlaggedPostDetailsScreen

@@ -86,7 +86,7 @@ const MapScreen = ({ navigation }) => {
           setPosts(temp_posts)
         })
     } catch (error) {
-      Alert.alert(error)
+      Alert.alert("Error:", error.message)
     }
   }
 

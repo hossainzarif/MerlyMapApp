@@ -102,7 +102,7 @@ const DrawerContent = (props) => {
               )}
               label='Contact Us'
               onPress={() => {
-                console.log(user)
+                props.navigation.navigate("AdminPanel")
               }}
             />
 
@@ -117,7 +117,7 @@ const DrawerContent = (props) => {
                 )}
                 label='Flagged'
                 onPress={() => {
-                  console.log(user)
+                  props.navigation.navigate("AdminPanel")
                 }}
               />
             ) : null}

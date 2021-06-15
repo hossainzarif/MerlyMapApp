@@ -1,11 +1,16 @@
 import { View, Text } from "react-native"
 import React from "react"
 import { createStackNavigator } from "@react-navigation/stack"
-const AdminStack = () => {
+import FlaggedPostScreen from "../screens/FlaggedPostScreen"
+import colors from "../../assets/data/colors"
+import { Feather } from "@expo/vector-icons"
+import FlaggedPostDetailsScreen from "../screens/FlaggedPostDetailsScreen"
+
+const AdminStack = ({ navigation }) => {
   adminstack = createStackNavigator()
   return (
     <adminstack.Navigator
-      initialRouteName='MapScreen'
+      initialRouteName='FlaggedPost'
       screenOptions={{
         headerStyle: {
           backgroundColor: colors.primary,
@@ -14,8 +19,8 @@ const AdminStack = () => {
       }}
     >
       <adminstack.Screen
-        name='PostSales'
-        component={PostSalesScreen}
+        name='FlaggedPost'
+        component={FlaggedPostScreen}
         options={{
           title: "",
           headerLeft: () => (
@@ -25,16 +30,15 @@ const AdminStack = () => {
               color={colors.white}
               style={{ padding: 10 }}
               onPress={() => {
-                navigation.navigate("MapScreen")
+                navigation.navigate("Home")
               }}
             />
           ),
         }}
       />
-
       <adminstack.Screen
-        name='Details'
-        component={PostDetails}
+        name='FlaggedPostDetails'
+        component={FlaggedPostDetailsScreen}
         options={{
           title: "",
           headerLeft: () => (
@@ -44,30 +48,11 @@ const AdminStack = () => {
               color={colors.white}
               style={{ padding: 10 }}
               onPress={() => {
-                navigation.navigate("MapScreen")
+                // navigation.navigate("FlaggedPost")
               }}
             />
           ),
         }}
-      />
-      <adminstack.Screen
-        name='Chat'
-        component={ChatScreen}
-        options={({ route }) => ({
-          title: route.params.seller_name,
-          headerLeft: () => (
-            <Feather
-              name='arrow-left'
-              size={32}
-              color={colors.white}
-              style={{ padding: 10 }}
-              onPress={() => {
-                // navigation.navigate("MapScreen")
-                console.log(route.params)
-              }}
-            />
-          ),
-        })}
       />
     </adminstack.Navigator>
   )

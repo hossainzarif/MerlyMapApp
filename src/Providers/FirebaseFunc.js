@@ -37,7 +37,7 @@ export function addPost(
       setIsLoading(false)
     })
     .catch((error) => {
-      Alert.alert(error)
+      Alert.alert("Error:", error.message)
       setIsLoading(false)
     })
 }
@@ -53,7 +53,7 @@ export function deletePostFirebase(id, setloadingdelete) {
     .catch((error) => {
       setloadingdelete(false)
 
-      console.error("Error", error)
+      Alert.alert("Error:", error.message)
     })
 }
 export function deletePostImageFirebase(id, setloadingdelete, imgs) {
@@ -77,7 +77,7 @@ export function deletePostImageFirebase(id, setloadingdelete, imgs) {
       .catch((error) => {
         setloadingdelete(false)
 
-        console.error("Error", error)
+        Alert.alert("Error:", error.message)
       })
   })
 }
