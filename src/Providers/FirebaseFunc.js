@@ -50,11 +50,17 @@ export function deletePostFirebase(id, setloadingdelete) {
     .delete()
     .then(() => {
       Alert.alert("Post deleted")
+      db.collection("posts")
+        .doc(id)
+        .collection("flaggers")
+        .onSnapshot((snapshot) =>
+          snapshot.forEach((result) => result.ref.delete())
+        )
       setloadingdelete(false)
     })
     .catch((error) => {
       setloadingdelete(false)
-
+      console.log(error)
       Alert.alert("Error:", error.message)
     })
 }
