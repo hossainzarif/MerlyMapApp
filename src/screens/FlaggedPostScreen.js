@@ -101,7 +101,9 @@ const FlaggedPostScreen = ({ navigation }) => {
   } else {
     return (
       <View>
-        <Text style={styles.headerText}>Flagged Post</Text>
+        {flaggedPost.length > 0 ? (
+          <Text style={styles.headerText}>Flagged Post</Text>
+        ) : null}
 
         <CheckPostLength lengthofArr={flaggedPost.length} />
       </View>
