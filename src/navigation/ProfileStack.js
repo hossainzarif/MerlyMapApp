@@ -8,6 +8,7 @@ import ProfileScreen from "../screens/ProfileScreen"
 import ChangePassword from "../screens/ChangePassword"
 import ImagePickerFunc from "../custom/ImagePicker"
 import PostDetails from "../screens/PostDetails"
+import { ICON_SIZE_HEADER } from "../constants/Height_Width"
 const ProfileStack = ({ navigation }) => {
   profilestack = createStackNavigator()
   return (
@@ -27,7 +28,7 @@ const ProfileStack = ({ navigation }) => {
           headerLeft: () => (
             <Entypo
               name='menu'
-              size={32}
+              size={ICON_SIZE_HEADER}
               color={colors.white}
               style={{ padding: 10 }}
               onPress={() => {
@@ -45,7 +46,7 @@ const ProfileStack = ({ navigation }) => {
           headerLeft: () => (
             <Entypo
               name='menu'
-              size={32}
+              size={ICON_SIZE_HEADER}
               color={colors.white}
               style={{ padding: 10 }}
               onPress={() => {
@@ -64,7 +65,7 @@ const ProfileStack = ({ navigation }) => {
           headerLeft: () => (
             <Entypo
               name='menu'
-              size={32}
+              size={ICON_SIZE_HEADER}
               color={colors.white}
               style={{ padding: 10 }}
               onPress={() => {
@@ -82,7 +83,7 @@ const ProfileStack = ({ navigation }) => {
           headerLeft: () => (
             <Feather
               name='arrow-left'
-              size={32}
+              size={ICON_SIZE_HEADER}
               color={colors.white}
               style={{ padding: 10 }}
               onPress={() => {

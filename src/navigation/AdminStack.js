@@ -5,6 +5,7 @@ import FlaggedPostScreen from "../screens/FlaggedPostScreen"
 import colors from "../../assets/data/colors"
 import { Feather } from "@expo/vector-icons"
 import FlaggedPostDetailsScreen from "../screens/FlaggedPostDetailsScreen"
+import { ICON_SIZE_HEADER } from "../constants/Height_Width"
 
 const AdminStack = ({ navigation }) => {
   adminstack = createStackNavigator()
@@ -26,7 +27,7 @@ const AdminStack = ({ navigation }) => {
           headerLeft: () => (
             <Feather
               name='arrow-left'
-              size={32}
+              size={ICON_SIZE_HEADER}
               color={colors.white}
               style={{ padding: 10 }}
               onPress={() => {
@@ -44,7 +45,7 @@ const AdminStack = ({ navigation }) => {
           headerLeft: () => (
             <Feather
               name='arrow-left'
-              size={32}
+              size={ICON_SIZE_HEADER}
               color={colors.white}
               style={{ padding: 10 }}
               onPress={() => {

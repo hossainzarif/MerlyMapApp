@@ -7,6 +7,7 @@ import PostSalesScreen from "../screens/PostSalesScreen"
 import { Feather } from "@expo/vector-icons"
 import PostDetails from "../screens/PostDetails"
 import ChatScreen from "../screens/ChatScreen"
+import { ICON_SIZE_HEADER } from "../constants/Height_Width"
 const AppStack = ({ navigation }) => {
   appstack = createStackNavigator()
   return (
@@ -27,7 +28,7 @@ const AppStack = ({ navigation }) => {
           headerLeft: () => (
             <Entypo
               name='menu'
-              size={32}
+              size={ICON_SIZE_HEADER}
               color={colors.white}
               style={{ padding: 10 }}
               onPress={() => {
@@ -45,7 +46,7 @@ const AppStack = ({ navigation }) => {
           headerLeft: () => (
             <Feather
               name='arrow-left'
-              size={32}
+              size={ICON_SIZE_HEADER}
               color={colors.white}
               style={{ padding: 10 }}
               onPress={() => {
@@ -64,7 +65,7 @@ const AppStack = ({ navigation }) => {
           headerLeft: () => (
             <Feather
               name='arrow-left'
-              size={32}
+              size={ICON_SIZE_HEADER}
               color={colors.white}
               style={{ padding: 10 }}
               onPress={() => {
@@ -78,16 +79,17 @@ const AppStack = ({ navigation }) => {
         name='Chat'
         component={ChatScreen}
         options={({ route }) => ({
+          headerTitleAlign: "center",
+
           title: route.params.seller_name,
           headerLeft: () => (
             <Feather
               name='arrow-left'
-              size={32}
+              size={ICON_SIZE_HEADER}
               color={colors.white}
               style={{ padding: 10 }}
               onPress={() => {
-                // navigation.navigate("MapScreen")
-                console.log(route.params)
+                navigation.goBack()
               }}
             />
           ),
