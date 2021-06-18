@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   StyleSheet,
   FlatList,
+  Switch,
 } from "react-native"
 import colors from "../../assets/data/colors"
 import { Card, ListItem, Button, Icon } from "react-native-elements"
@@ -17,26 +18,87 @@ import { AuthContext } from "../Providers/AuthProvider"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import openMap from "react-native-open-maps"
 import OpenMap from "react-native-open-map"
-import { FlagPost } from "../Providers/FirebaseFunc"
+import { FlagPost, updateAvailability } from "../Providers/FirebaseFunc"
 import Loading from "../custom/Loading"
+import { RadioButton } from "react-native-paper"
+import { color } from "react-native-elements/dist/helpers"
 
 const PostDetails = ({ route, navigation }) => {
-  const { address, dates, details, images, user_id, name, coord, post_id } =
-    route.params
+  const {
+    address,
+    dates,
+    details,
+    images,
+    user_id,
+    name,
+    coord,
+    post_id,
+    available,
+  } = route.params
   const { user } = useContext(AuthContext)
 
   const [flagLoading, setflagLoading] = useState(false)
   // function _goToYosemite() {}
+  const [isEnabled, setIsEnabled] = useState(available)
+  const toggleSwitch = () => {
+    setIsEnabled((previousState) => !previousState)
 
+    if (isEnabled) {
+      updateAvailability(post_id, false)
+    } else {
+      updateAvailability(post_id, true)
+    }
+  }
   if (flagLoading) {
     return <Loading />
   } else {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+          {user_id != user.uid ? (
+            <View
+              style={{
+                justifyContent: "flex-end",
+                alignItems: "center",
+                // backgroundColor: "red",
+                width: "90%",
+                marginTop: 10,
+                flexDirection: "row",
+              }}
+            >
+              <Text style={styles.checkedText}>Checked In </Text>
+              <Switch
+                trackColor={{ false: colors.darkGray, true: colors.primary }}
+                thumbColor={isEnabled ? colors.darkGray : colors.primary}
+                ios_backgroundColor='#3e3e3e'
+                onValueChange={toggleSwitch}
+                value={isEnabled}
+              />
+            </View>
+          ) : (
+            <View
+              style={{
+                justifyContent: "flex-end",
+                alignItems: "center",
+                // backgroundColor: "red",
+                width: "90%",
+                marginTop: 10,
+                flexDirection: "row",
+              }}
+            >
+              <Text style={styles.checkedText}>Sale available </Text>
+              <Switch
+                trackColor={{ false: colors.darkGray, true: colors.primary }}
+                thumbColor={isEnabled ? colors.darkGray : colors.primary}
+                ios_backgroundColor='#3e3e3e'
+                onValueChange={toggleSwitch}
+                value={isEnabled}
+              />
+            </View>
+          )}
           <View style={styles.sections}>
             <Text style={styles.headerText}>
-              Location (click to open in maps)
+              Location (tap to open in maps)
             </Text>
             <TouchableOpacity
               onPress={() => {
@@ -171,6 +233,7 @@ const styles = StyleSheet.create({
   cardStyle: {
     borderRadius: 10,
     elevation: 2,
+    marginBottom: 5,
   },
   sections: {
     width: "90%",
@@ -182,6 +245,11 @@ const styles = StyleSheet.create({
   },
   fab_2: {
     backgroundColor: colors.flag,
+  },
+  checkedText: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: colors.darkGray,
   },
 })
 

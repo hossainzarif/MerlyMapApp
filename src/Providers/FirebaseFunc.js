@@ -30,6 +30,7 @@ export function addPost(
       user_name: name,
       flagged: false,
       email: user_email,
+      available: true,
     })
     .then(() => {
       setdateTimearr([])
@@ -126,4 +127,9 @@ export async function FlagPost(post_id, user_id, setflagLoading, flagger) {
       Alert.alert(error)
       setflagLoading(false)
     })
+}
+
+export async function updateAvailability(post_id, state) {
+  const postref = db.collection("posts").doc(post_id)
+  await postref.update({ available: state })
 }

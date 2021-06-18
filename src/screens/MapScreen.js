@@ -14,7 +14,7 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import config from "../../config"
 import PostLoading from "../custom/PostLoading"
 import * as firebase from "firebase"
-
+import { FontAwesome5 } from "@expo/vector-icons"
 const MapScreen = ({ navigation }) => {
   const mapRef = React.createRef()
 
@@ -23,7 +23,8 @@ const MapScreen = ({ navigation }) => {
   const [errorMsg, setErrorMsg] = useState(null)
   const [loadingMap, setloadingMap] = useState(false)
   const [posts, setPosts] = useState([])
-
+  // const [markers, setmarkers] = useState(null)
+  const markers = []
   useEffect(() => {
     ;(async () => {
       let { status } = await Location.requestForegroundPermissionsAsync()
@@ -130,6 +131,7 @@ const MapScreen = ({ navigation }) => {
           {posts.map((pos) => (
             <Marker
               key={pos.id}
+              ref={(ref) => (markers[pos.id] = ref)}
               coordinate={{
                 latitude: pos.data.location.coords.latitude,
                 longitude: pos.data.location.coords.longitude,
@@ -139,6 +141,7 @@ const MapScreen = ({ navigation }) => {
               <Callout
                 tooltip
                 onPress={() => {
+                  markers[pos.id].hideCallout()
                   navigation.navigate("Details", {
                     address: pos.data.location.coords.address,
                     images: pos.data.pictures,
@@ -148,25 +151,56 @@ const MapScreen = ({ navigation }) => {
                     name: pos.data.user_name,
                     coord: pos.data.location.coords,
                     post_id: pos.id,
+                    available: pos.data.available,
                   })
                 }}
               >
                 <View>
                   <View style={styles.bubble}>
-                    <View style={{ alignItems: "center" }}>
-                      <Entypo
-                        name='location-pin'
-                        size={25}
-                        color={colors.primary}
-                      />
-                    </View>
+                    {pos.data.available ? (
+                      <View style={styles.avStyle}>
+                        <FontAwesome5
+                          name='dot-circle'
+                          size={24}
+                          color='green'
+                        />
+                        <Text
+                          style={{
+                            fontSize: 15,
+                            fontWeight: "bold",
+                            paddingLeft: 5,
+                          }}
+                        >
+                          Sale Available
+                        </Text>
+                      </View>
+                    ) : (
+                      <View style={styles.avStyle}>
+                        <FontAwesome5
+                          name='dot-circle'
+                          size={24}
+                          color={colors.warning}
+                        />
+                        <Text
+                          style={{
+                            fontSize: 15,
+                            fontWeight: "bold",
+                            marginLeft: 5,
+                            marginRight: 10,
+                          }}
+                        >
+                          Sale Unvailable
+                        </Text>
+                      </View>
+                    )}
+
                     <Text numberOfLines={1} style={styles.name}>
                       {pos.data.title}
                     </Text>
 
-                    <Text style={{ fontSize: 13 }} numberOfLines={1}>
+                    {/* <Text style={{ fontSize: 13 }} numberOfLines={1}>
                       {pos.data.details}
-                    </Text>
+                    </Text> */}
                     <Text style={{ fontSize: 10 }}>click for more details</Text>
                   </View>
                   <View style={styles.arrowBorder} />
@@ -313,9 +347,14 @@ const styles = StyleSheet.create({
   },
   // Character name
   name: {
-    fontSize: 16,
+    fontSize: 14,
     marginBottom: 5,
     fontWeight: "bold",
+  },
+  avStyle: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 5,
   },
 })
 export default MapScreen
