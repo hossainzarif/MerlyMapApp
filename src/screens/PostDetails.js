@@ -55,27 +55,7 @@ const PostDetails = ({ route, navigation }) => {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{ alignItems: "center" }}>
-          {user_id != user.uid ? (
-            <View
-              style={{
-                justifyContent: "flex-end",
-                alignItems: "center",
-                // backgroundColor: "red",
-                width: "90%",
-                marginTop: 10,
-                flexDirection: "row",
-              }}
-            >
-              <Text style={styles.checkedText}>Checked In </Text>
-              <Switch
-                trackColor={{ false: colors.darkGray, true: colors.primary }}
-                thumbColor={isEnabled ? colors.darkGray : colors.primary}
-                ios_backgroundColor='#3e3e3e'
-                onValueChange={toggleSwitch}
-                value={isEnabled}
-              />
-            </View>
-          ) : (
+          {user_id != user.uid ? null : (
             <View
               style={{
                 justifyContent: "flex-end",
@@ -207,7 +187,7 @@ const PostDetails = ({ route, navigation }) => {
                   FlagPost(post_id, user_id, setflagLoading, user.uid)
                 }}
               />
-              <Text style={{ paddingLeft: 10 }}>Flag the post</Text>
+              <Text style={{ paddingLeft: 10 }}>Flag/Expired</Text>
             </View>
           )}
         </ScrollView>
