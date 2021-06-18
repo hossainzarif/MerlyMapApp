@@ -24,6 +24,7 @@ import {
   deletePostFirebase,
   deletePostImageFirebase,
 } from "../Providers/FirebaseFunc"
+import { db } from "../utils/firebase"
 
 const ProfileScreen = ({ navigation }) => {
   const { logout, user, uploadProfilePic, deleteProfilePic } =
@@ -145,8 +146,7 @@ const ProfileScreen = ({ navigation }) => {
   const loadPosts = async () => {
     try {
       setloading(true)
-      await firebase
-        .firestore()
+      await db
         .collection("posts")
         .where("user", "==", user.uid)
         .orderBy("timestamp", "desc")
@@ -162,7 +162,7 @@ const ProfileScreen = ({ navigation }) => {
           setloading(false)
         })
     } catch (error) {
-      Alert.alert(error)
+      Alert.alert("Error:", error.message)
       setloading(false)
     }
   }

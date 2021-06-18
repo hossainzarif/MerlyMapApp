@@ -90,6 +90,9 @@ const DrawerContent = (props) => {
                   color='black'
                 />
               )}
+              onPress={() => {
+                props.navigation.navigate("Inbox")
+              }}
               label='Inbox'
             />
             <DrawerItem
@@ -102,7 +105,7 @@ const DrawerContent = (props) => {
               )}
               label='Contact Us'
               onPress={() => {
-                props.navigation.navigate("AdminPanel")
+                // props.navigation.navigate("AdminPanel")
               }}
             />
 

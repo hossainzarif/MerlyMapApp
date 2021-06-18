@@ -172,6 +172,7 @@ const PostDetails = ({ route, navigation }) => {
                 onPress={() => {
                   navigation.navigate("Chat", {
                     seller_name: name,
+                    seller_id: user_id,
                   })
                 }}
               />

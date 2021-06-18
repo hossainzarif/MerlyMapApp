@@ -13,11 +13,10 @@ import { db } from "../utils/firebase"
 import * as firebase from "firebase"
 import Loading from "../custom/Loading"
 
-const ChatScreen = () => {
+const ChatScreen = ({ route }) => {
   const [messages, setMessages] = useState([])
   const { user } = useContext(AuthContext)
-  const [chatLoading, setchatLoading] = useState(false)
-
+  const { seller_id } = route.params
   // useEffect(() => {
   //   setMessages([
   //     {
@@ -33,23 +32,46 @@ const ChatScreen = () => {
   //   ])
   // }, [])
   const onSend = useCallback((messages = []) => {
+    const msg = messages[0]
+    // console.log(msg)
+    const mymsg = {
+      ...msg,
+      sentBy: user.uid,
+      sentTo: seller_id,
+    }
     setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, messages)
+      GiftedChat.append(previousMessages, mymsg)
     )
 
-    const { _id, createdAt, text, user } = messages[0]
-    firebase.firestore().collection("chats").add({
-      _id,
-      createdAt,
-      text,
-      user,
-    })
+    const docid =
+      seller_id > user.uid
+        ? user.uid + "-" + seller_id
+        : seller_id + "-" + user.uid
+
+    db.collection("chatrooms")
+      .doc(docid)
+      .collection("messages")
+      .add({ ...mymsg, createdAt: firebase.firestore.Timestamp.now() })
+
+    // const { _id, createdAt, text, user } = messages[0]
+    // firebase.firestore().collection("chats").add({
+    //   _id,
+    //   createdAt,
+    //   text,
+    //   user,
+    // })
   }, [])
 
   useLayoutEffect(() => {
-    setchatLoading(true)
+    const docid =
+      seller_id > user.uid
+        ? user.uid + "-" + seller_id
+        : seller_id + "-" + user.uid
+
     const unsubscribe = db
-      .collection("chats")
+      .collection("chatrooms")
+      .doc(docid)
+      .collection("messages")
       .orderBy("createdAt", "desc")
       .onSnapshot((snapshot) =>
         setMessages(
@@ -61,8 +83,7 @@ const ChatScreen = () => {
           }))
         )
       )
-    setchatLoading(false)
-
+    console.log(messages)
     return unsubscribe
   }, [])
 
@@ -82,21 +103,17 @@ const ChatScreen = () => {
     )
   }
 
-  if (chatLoading) {
-    return <Loading />
-  } else {
-    return (
-      <GiftedChat
-        renderBubble={renderBubble}
-        messages={messages}
-        onSend={(messages) => onSend(messages)}
-        user={{
-          _id: user.uid,
-          name: user.displayName,
-        }}
-      />
-    )
-  }
+  return (
+    <GiftedChat
+      renderBubble={renderBubble}
+      messages={messages}
+      onSend={(messages) => onSend(messages)}
+      user={{
+        _id: user.uid,
+        name: user.displayName,
+      }}
+    />
+  )
 }
 
 export default ChatScreen

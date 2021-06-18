@@ -8,6 +8,7 @@ import DrawerContent from "../custom/DrawerContent"
 import ProfileScreen from "../screens/ProfileScreen"
 import ProfileStack from "./ProfileStack"
 import AdminStack from "./AdminStack"
+import ChatListScreen from "../screens/ChatListScreen"
 const DrawerNav = () => {
   const Drawer = createDrawerNavigator()
 
@@ -16,6 +17,7 @@ const DrawerNav = () => {
       <Drawer.Screen name='Home' component={AppStack} />
       <Drawer.Screen name='Profile' component={ProfileStack} />
       <Drawer.Screen name='AdminPanel' component={AdminStack} />
+      <Drawer.Screen name='Inbox' component={ChatListScreen} />
     </Drawer.Navigator>
   )
 }
