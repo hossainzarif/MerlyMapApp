@@ -97,7 +97,7 @@ const ChatScreen = ({ route }) => {
           }))
         )
       )
-    console.log(messages)
+
     return unsubscribe
   }, [])
 
@@ -122,7 +122,7 @@ const ChatScreen = ({ route }) => {
   }
   return (
     <GiftedChat
-      renderLoading={() => <ActivityIndicator size='large' color='black' />}
+      renderLoading={renderLoading}
       renderBubble={renderBubble}
       messages={messages}
       onSend={(messages) => onSend(messages)}

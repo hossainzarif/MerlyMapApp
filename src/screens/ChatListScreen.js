@@ -5,23 +5,17 @@ import { Button } from "react-native-elements"
 import { AuthContext } from "../Providers/AuthProvider"
 import { Card, ListItem } from "react-native-elements"
 import ChatCard from "../cards/ChatCard"
+import Loading from "../custom/Loading"
 
 const ChatListScreen = ({ navigation }) => {
   const [AllMessage, setAllMessage] = useState([])
   const [AllMessage_2, setAllMessage_2] = useState([])
+  const [loading, setloading] = useState(false)
 
-  const users = [
-    {
-      name: "brynn",
-      avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg",
-    },
-    {
-      name: "BLING",
-      avatar: "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg",
-    },
-  ]
   const { user } = useContext(AuthContext)
+
   const loadPosts = async () => {
+    setloading(true)
     try {
       await db
         .collection("chatrooms")
@@ -39,11 +33,15 @@ const ChatListScreen = ({ navigation }) => {
           setAllMessage(temp_posts)
         })
     } catch (error) {
+      setloading(false)
+
       Alert.alert("Error:", error.message)
     }
   }
   const loadPosts_2 = async () => {
     try {
+      setloading(true)
+
       await db
         .collection("chatrooms")
         // .where("sentTo", "==", user.uid)
@@ -59,7 +57,10 @@ const ChatListScreen = ({ navigation }) => {
           })
           setAllMessage_2(temp_posts)
         })
+      setloading(false)
     } catch (error) {
+      setloading(false)
+
       Alert.alert("Error:", error.message)
     }
   }
@@ -68,36 +69,45 @@ const ChatListScreen = ({ navigation }) => {
     loadPosts_2()
   }, [])
   const TotArr = AllMessage_2.concat(AllMessage)
-  return (
-    <View style={{ flex: 1 }}>
-      <FlatList
-        data={TotArr}
-        renderItem={({ item }) => {
-          const nm =
-            item.data.sentTo == user.uid ? item.data.sentBy : item.data.sentTo
 
-          return (
-            <ChatCard
-              name={
-                item.data.sentTo_name == user.displayName
-                  ? item.data.sentBy_name
-                  : item.data.sentTo_name
-              }
-              onPress={() => {
-                navigation.navigate("Chat", {
-                  seller_name:
-                    item.data.sentTo_name == user.displayName
-                      ? item.data.sentBy_name
-                      : item.data.sentTo_name,
-                  seller_id: nm,
-                })
-              }}
-            />
-          )
-        }}
-      ></FlatList>
-    </View>
-  )
+  if (loading) {
+    return <Loading />
+  } else {
+    return (
+      <View style={{ flex: 1, backgroundColor: "white" }}>
+        <FlatList
+          data={TotArr}
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => {
+            const nm =
+              item.data.sentTo == user.uid ? item.data.sentBy : item.data.sentTo
+
+            return (
+              <ChatCard
+                name={
+                  item.data.sentTo_name == user.displayName
+                    ? item.data.sentBy_name
+                    : item.data.sentTo_name
+                }
+                onPress={() => {
+                  navigation.navigate("Chat", {
+                    seller_name:
+                      item.data.sentTo_name == user.displayName
+                        ? item.data.sentBy_name
+                        : item.data.sentTo_name,
+                    seller_id: nm,
+                  })
+                }}
+              />
+            )
+          }}
+        ></FlatList>
+      </View>
+    )
+  }
 }
 
 export default ChatListScreen
