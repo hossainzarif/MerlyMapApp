@@ -1,4 +1,4 @@
-import { View, Text } from "react-native"
+import { View, Text, ActivityIndicator } from "react-native"
 import React, {
   useState,
   useCallback,
@@ -16,7 +16,7 @@ import Loading from "../custom/Loading"
 const ChatScreen = ({ route }) => {
   const [messages, setMessages] = useState([])
   const { user } = useContext(AuthContext)
-  const { seller_id } = route.params
+  const { seller_id, seller_name } = route.params
   // useEffect(() => {
   //   setMessages([
   //     {
@@ -48,10 +48,24 @@ const ChatScreen = ({ route }) => {
         ? user.uid + "-" + seller_id
         : seller_id + "-" + user.uid
 
+    const sender = seller_id > user.uid ? user.uid : seller_id
+    const rcv = seller_id > user.uid ? seller_id : user.uid
+    const sender_name = seller_id > user.uid ? user.displayName : seller_name
+    const rcv_name = seller_id > user.uid ? seller_name : user.displayName
     db.collection("chatrooms")
       .doc(docid)
-      .collection("messages")
-      .add({ ...mymsg, createdAt: firebase.firestore.Timestamp.now() })
+      .set({
+        sentBy: sender,
+        sentTo: rcv,
+        sentBy_name: sender_name,
+        sentTo_name: rcv_name,
+      })
+      .then(() => {
+        db.collection("chatrooms")
+          .doc(docid)
+          .collection("messages")
+          .add({ ...mymsg, createdAt: firebase.firestore.Timestamp.now() })
+      })
 
     // const { _id, createdAt, text, user } = messages[0]
     // firebase.firestore().collection("chats").add({
@@ -103,8 +117,12 @@ const ChatScreen = ({ route }) => {
     )
   }
 
+  function renderLoading() {
+    return <ActivityIndicator size='large' color='#0000ff' />
+  }
   return (
     <GiftedChat
+      renderLoading={() => <ActivityIndicator size='large' color='black' />}
       renderBubble={renderBubble}
       messages={messages}
       onSend={(messages) => onSend(messages)}
