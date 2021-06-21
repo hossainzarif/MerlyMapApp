@@ -50,7 +50,7 @@ const AppStack = ({ navigation }) => {
               color={colors.white}
               style={{ padding: 10 }}
               onPress={() => {
-                navigation.goBack()
+                navigation.navigate("MapScreen")
               }}
             />
           ),

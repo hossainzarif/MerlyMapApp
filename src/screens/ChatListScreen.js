@@ -39,9 +39,9 @@ const ChatListScreen = ({ navigation }) => {
     }
   }
   const loadPosts_2 = async () => {
-    try {
-      setloading(true)
+    setloading(true)
 
+    try {
       await db
         .collection("chatrooms")
         // .where("sentTo", "==", user.uid)
@@ -56,8 +56,8 @@ const ChatListScreen = ({ navigation }) => {
             })
           })
           setAllMessage_2(temp_posts)
+          setloading(false)
         })
-      setloading(false)
     } catch (error) {
       setloading(false)
 
