@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { NavigationContainer } from '@react-navigation/native'
-import AppStack from './AppStack'
-import AuthStack from './AuthStack'
-import OnboardStack from './OnboardStack'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { auth } from '../utils/firebase'
-import { AuthContext, AuthProvider } from '../Providers/AuthProvider'
-import DrawerNav from './DrawerNav'
-import * as Google from 'expo-google-app-auth'
+import React, { useState, useEffect, useContext } from "react"
+import { NavigationContainer } from "@react-navigation/native"
+import AppStack from "./AppStack"
+import AuthStack from "./AuthStack"
+import OnboardStack from "./OnboardStack"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import { auth } from "../utils/firebase"
+import { AuthContext, AuthProvider } from "../Providers/AuthProvider"
+import DrawerNav from "./DrawerNav"
+import * as Google from "expo-google-app-auth"
 
 const RootNav = () => {
   const [isFirstLaunch, setIsFirstLaunch] = useState(null)
@@ -26,9 +26,9 @@ const RootNav = () => {
 
   // Firebase Init
   useEffect(() => {
-    AsyncStorage.getItem('alreadyLaunched').then((value) => {
+    AsyncStorage.getItem("alreadyLaunched").then((value) => {
       if (value == null) {
-        AsyncStorage.setItem('alreadyLaunched', 'true')
+        AsyncStorage.setItem("alreadyLaunched", "true")
         setIsFirstLaunch(true)
       } else {
         setIsFirstLaunch(false)
@@ -46,7 +46,7 @@ const RootNav = () => {
     } else if (isFirstLaunch == true) {
       return (
         <NavigationContainer>
-          <OnboardStack />
+          {user ? <DrawerNav /> : <OnboardStack />}
         </NavigationContainer>
       )
     } else {

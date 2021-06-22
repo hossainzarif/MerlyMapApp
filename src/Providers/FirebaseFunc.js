@@ -124,7 +124,7 @@ export async function FlagPost(post_id, user_id, setflagLoading, flagger) {
       setflagLoading(false)
     })
     .catch((error) => {
-      Alert.alert(error)
+      Alert.alert("Error:", error.message)
       setflagLoading(false)
     })
 }

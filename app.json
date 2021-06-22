@@ -2,7 +2,7 @@
   "expo": {
     "name": "GarageSalesMap",
     "slug": "GarageSalesMap",
-    "version": "1.0.0",
+    "version": "3.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -22,7 +22,20 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.garagesellmap"
+
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "READ_EXTERNAL_STORAGE"
+      ],
+      "package": "com.garagesellmap",
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-7678132413484537~6414445824",
+        "googleMaps": {
+          "apiKey": "AIzaSyBBAxNJbe9wYcgUk8tN9VGzFEDMcXbaATU"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

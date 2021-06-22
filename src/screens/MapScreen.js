@@ -9,20 +9,32 @@ import { Feather, Entypo } from "@expo/vector-icons"
 import Loading from "../custom/Loading"
 import { Alert } from "react-native"
 import { ICON_SIZE, SearchBox_MAP_HEIGHT } from "../constants/Height_Width"
-
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded,
+  setTestDeviceIDAsync,
+} from "expo-ads-admob"
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
 import config from "../../config"
 import PostLoading from "../custom/PostLoading"
 import * as firebase from "firebase"
 import { FontAwesome5 } from "@expo/vector-icons"
+import { LogBox } from "react-native"
+
 const MapScreen = ({ navigation }) => {
   const mapRef = React.createRef()
 
   const { user } = useContext(AuthContext)
-  const [location, setLocation] = useState(null)
+  const [location, setLocation] = useState({
+    coords: { latitude: 23.93, longitude: 93.2 },
+  })
   const [errorMsg, setErrorMsg] = useState(null)
   const [loadingMap, setloadingMap] = useState(false)
   const [posts, setPosts] = useState([])
+  const [ad, setad] = useState(false)
+
   // const [markers, setmarkers] = useState(null)
   const markers = []
   useEffect(() => {
@@ -40,10 +52,9 @@ const MapScreen = ({ navigation }) => {
       setloadingMap(true)
       let location = await Location.getCurrentPositionAsync({})
       setLocation(location)
-
-      setloadingMap(false)
+      // Adafter5()
     } catch (error) {
-      setloadingMap(true)
+      Alert.alert("Error:", error.message)
     }
   }
 
@@ -56,20 +67,33 @@ const MapScreen = ({ navigation }) => {
   }
 
   useEffect(() => {
-    loadCoordinates()
+    // loadCoordinates()
     loadPosts()
+    // Adafter10()
+    // Adafter10()
   }, [])
 
-  // const changeRegion = async () => {
-  //   let locationnew = await Location.getCurrentPositionAsync({});
+  // const loadAd = async () => {
+  //   await AdMobInterstitial.setAdUnitID(
+  //     "ca-app-pub-3940256099942544/1033173712"
+  //   ) // Test ID, Replace with your-admob-unit-id
+  //   await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false })
+  //   ShowAd()
+  // }
 
-  //   setLocation(locationnew);
-
-  //   const latitude = location.coords.latitude;
-  //   const longitude = location.coords.longitude;
-
-  //   console.log(location);
-  // };
+  // const ShowAd = async () => {
+  //   await AdMobInterstitial.showAdAsync()
+  // }
+  // const Adafter10 = () => {
+  //   setTimeout(() => {
+  //     loadAd()
+  //   }, 40000)
+  // }
+  // const Adafter5 = () => {
+  //   setTimeout(() => {
+  //     loadAd()
+  //   }, 10000)
+  // }
 
   const loadPosts = async () => {
     try {
@@ -91,12 +115,14 @@ const MapScreen = ({ navigation }) => {
     }
   }
 
-  useEffect(() => {
-    loadPosts()
-  }, [])
-
   if (errorMsg) {
-    Alert.alert("Please give access to Location.")
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <Text style={{ fontSize: 15 }}>
+          Permission was denied please give permission
+        </Text>
+      </View>
+    )
   } else if (location) {
     return (
       <View style={styles.container}>
@@ -125,11 +151,12 @@ const MapScreen = ({ navigation }) => {
               latitude: location.coords.latitude,
               longitude: location.coords.longitude,
             }}
-            icon={<Entypo name='location-pin' size={24} color='black' />}
+            icon={<Entypo name='location-pin' size={20} color='black' />}
           ></Marker>
 
           {posts.map((pos) => (
             <Marker
+              tracksViewChanges={false}
               key={pos.id}
               ref={(ref) => (markers[pos.id] = ref)}
               coordinate={{
@@ -210,6 +237,13 @@ const MapScreen = ({ navigation }) => {
             </Marker>
           ))}
         </MapView>
+
+        <AdMobBanner
+          bannerSize='fullBanner'
+          adUnitID='ca-app-pub-3940256099942544/6300978111' // Test ID, Replace with your-admob-unit-id
+          servePersonalizedAds={false} // true or false
+          // onDidFailToReceiveAdWithError={this.bannerError}
+        />
 
         <FAB
           style={styles.fab_loc}
