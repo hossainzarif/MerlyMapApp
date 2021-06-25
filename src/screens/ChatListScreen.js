@@ -13,7 +13,7 @@ const ChatListScreen = ({ navigation }) => {
   const [loading, setloading] = useState(false)
 
   const { user } = useContext(AuthContext)
-
+  const [sorted, setSorted] = useState([])
   const loadPosts = async () => {
     setloading(true)
     try {
@@ -70,16 +70,24 @@ const ChatListScreen = ({ navigation }) => {
   useEffect(() => {
     loadPosts()
     loadPosts_2()
+
+    const Ax = TotArr.sort(function (x, y) {
+      return x.data.recent_Update - y.data.recent_Update
+    })
+
+    // setSorted(Ax)
+    console.log(Ax)
   }, [])
   const TotArr = AllMessage_2.concat(AllMessage)
-  console.log(TotArr)
-
-  // sortedArr = TotArr.sort(
+  // const sortedArr = TotArr.sort(
   //   (a, b) =>
-  //     b.recent_Update.localeCompare(a.recent_Update) ||
-  //     b.recent_Update.localeCompare(a.recent_Update)
+  //     b.data.recent_Update.localeCompare.toDate()(
+  //       a.data.recent_Update.toDate()
+  //     ) ||
+  //     b.data.recent_Update.localeCompare.toDate()(a.data.recent_Update.toDate())
   // )
   // console.log(sortedArr)
+  // console.log(TotArr)
 
   if (loading) {
     return <Loading />
@@ -118,6 +126,7 @@ const ChatListScreen = ({ navigation }) => {
             )
           }}
         ></FlatList>
+        {/* {console.log(TotArr[0].data.recent_Update.toDate())} */}
       </View>
     )
   }

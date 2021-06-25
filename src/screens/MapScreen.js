@@ -62,7 +62,7 @@ const MapScreen = ({ navigation }) => {
       setloadingMap(true)
       let location = await Location.getCurrentPositionAsync({})
       setLocation(location)
-      // Adafter5()
+      Adafter5()
     } catch (error) {
       Alert.alert("Error:", error.message)
     }
@@ -79,30 +79,30 @@ const MapScreen = ({ navigation }) => {
     loadCoordinates_initial()
     loadPosts()
     // Adafter10()
-    // Adafter10()
+    Adafter10()
   }, [])
 
-  // const loadAd = async () => {
-  //   await AdMobInterstitial.setAdUnitID(
-  //     "ca-app-pub-3940256099942544/1033173712"
-  //   ) // Test ID, Replace with your-admob-unit-id
-  //   await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false })
-  //   ShowAd()
-  // }
+  const loadAd = async () => {
+    await AdMobInterstitial.setAdUnitID(
+      "ca-app-pub-3940256099942544/1033173712"
+    ) // Test ID, Replace with your-admob-unit-id
+    await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false })
+    ShowAd()
+  }
 
-  // const ShowAd = async () => {
-  //   await AdMobInterstitial.showAdAsync()
-  // }
-  // const Adafter10 = () => {
-  //   setTimeout(() => {
-  //     loadAd()
-  //   }, 40000)
-  // }
-  // const Adafter5 = () => {
-  //   setTimeout(() => {
-  //     loadAd()
-  //   }, 10000)
-  // }
+  const ShowAd = async () => {
+    await AdMobInterstitial.showAdAsync()
+  }
+  const Adafter10 = () => {
+    setTimeout(() => {
+      loadAd()
+    }, 40000)
+  }
+  const Adafter5 = () => {
+    setTimeout(() => {
+      loadAd()
+    }, 10000)
+  }
 
   const loadPosts = async () => {
     try {

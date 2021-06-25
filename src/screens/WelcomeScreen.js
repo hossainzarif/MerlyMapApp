@@ -33,7 +33,7 @@ const WelcomeScreen = ({ navigation }) => {
         // behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
       >
         <View style={styles.header}>
-          <Text style={styles.text_header}>Welcome to MerlyApp</Text>
+          <Text style={styles.text_header}>Welcome to Garage Sell Map</Text>
         </View>
 
         <View style={styles.footer}>

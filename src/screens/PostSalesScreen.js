@@ -36,6 +36,13 @@ import PostLoading from "../custom/PostLoading"
 import { MaterialIcons } from "@expo/vector-icons"
 import { Alert } from "react-native"
 import { addPost } from "../Providers/FirebaseFunc"
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded,
+  setTestDeviceIDAsync,
+} from "expo-ads-admob"
 const PostSalesScreen = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
   const [isDatePickerVisible_1, setDatePickerVisibility_1] = useState(false)
@@ -124,6 +131,27 @@ const PostSalesScreen = () => {
       setimages((images) => [...images, result.uri])
     }
   }
+  const loadAd = async () => {
+    await AdMobInterstitial.setAdUnitID(
+      "ca-app-pub-3940256099942544/1033173712"
+    ) // Test ID, Replace with your-admob-unit-id
+    await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false })
+    ShowAd()
+  }
+
+  const ShowAd = async () => {
+    await AdMobInterstitial.showAdAsync()
+  }
+  const Adafter10 = () => {
+    setTimeout(() => {
+      loadAd()
+    }, 15000)
+  }
+  const Adafter5 = () => {
+    setTimeout(() => {
+      loadAd()
+    }, 10000)
+  }
 
   const uploadImagePost = (pictures) => {
     setIsLoading(true)
@@ -159,6 +187,7 @@ const PostSalesScreen = () => {
         user.email
       )
     })
+    Adafter10()
   }
 
   if (isLoading) {
@@ -385,6 +414,7 @@ const PostSalesScreen = () => {
                       setimages,
                       user.email
                     )
+                    Adafter5()
                   }
                 } else {
                   Alert.alert("Please fill up the required field")
