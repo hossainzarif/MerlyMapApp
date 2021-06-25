@@ -52,6 +52,7 @@ const ChatScreen = ({ route }) => {
     const rcv = seller_id > user.uid ? seller_id : user.uid
     const sender_name = seller_id > user.uid ? user.displayName : seller_name
     const rcv_name = seller_id > user.uid ? seller_name : user.displayName
+    console.log(mymsg.text)
     db.collection("chatrooms")
       .doc(docid)
       .set({
@@ -59,6 +60,9 @@ const ChatScreen = ({ route }) => {
         sentTo: rcv,
         sentBy_name: sender_name,
         sentTo_name: rcv_name,
+        recent_Update: firebase.firestore.Timestamp.now(),
+        recent_message: mymsg.text,
+        recent_sender: mymsg.user.name,
       })
       .then(() => {
         db.collection("chatrooms")

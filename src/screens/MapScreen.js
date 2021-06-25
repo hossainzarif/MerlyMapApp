@@ -47,6 +47,16 @@ const MapScreen = ({ navigation }) => {
     })()
   }, [])
 
+  const loadCoordinates_initial = async () => {
+    try {
+      setloadingMap(true)
+      let location = await Location.getCurrentPositionAsync({})
+      setLocation(location)
+      // Adafter5()
+    } catch (error) {
+      Alert.alert("Error:", error.message)
+    }
+  }
   const loadCoordinates = async () => {
     try {
       setloadingMap(true)
@@ -57,7 +67,6 @@ const MapScreen = ({ navigation }) => {
       Alert.alert("Error:", error.message)
     }
   }
-
   const moveToPlace = (loc) => {
     if (loc) {
       setLocation({ coords: { latitude: loc.lat, longitude: loc.lng } })
@@ -67,7 +76,7 @@ const MapScreen = ({ navigation }) => {
   }
 
   useEffect(() => {
-    // loadCoordinates()
+    loadCoordinates_initial()
     loadPosts()
     // Adafter10()
     // Adafter10()
@@ -163,7 +172,7 @@ const MapScreen = ({ navigation }) => {
                 latitude: pos.data.location.coords.latitude,
                 longitude: pos.data.location.coords.longitude,
               }}
-              image={require("../../assets/marker.png")}
+              image={require("../../assets/sell_icon_2.png")}
             >
               <Callout
                 tooltip

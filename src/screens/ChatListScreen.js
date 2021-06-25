@@ -21,6 +21,7 @@ const ChatListScreen = ({ navigation }) => {
         .collection("chatrooms")
         // .where("sentTo", "==", user.uid)
         .where("sentBy", "==", user.uid)
+        .orderBy("recent_Update", "desc")
 
         .onSnapshot((querySnapshot) => {
           let temp_posts = []
@@ -46,6 +47,7 @@ const ChatListScreen = ({ navigation }) => {
         .collection("chatrooms")
         // .where("sentTo", "==", user.uid)
         .where("sentTo", "==", user.uid)
+        .orderBy("recent_Update", "desc")
 
         .onSnapshot((querySnapshot) => {
           let temp_posts = []
@@ -64,11 +66,20 @@ const ChatListScreen = ({ navigation }) => {
       Alert.alert("Error:", error.message)
     }
   }
+
   useEffect(() => {
     loadPosts()
     loadPosts_2()
   }, [])
   const TotArr = AllMessage_2.concat(AllMessage)
+  console.log(TotArr)
+
+  // sortedArr = TotArr.sort(
+  //   (a, b) =>
+  //     b.recent_Update.localeCompare(a.recent_Update) ||
+  //     b.recent_Update.localeCompare(a.recent_Update)
+  // )
+  // console.log(sortedArr)
 
   if (loading) {
     return <Loading />
@@ -92,6 +103,8 @@ const ChatListScreen = ({ navigation }) => {
                     ? item.data.sentBy_name
                     : item.data.sentTo_name
                 }
+                sender={item.data.recent_sender}
+                msg_text={item.data.recent_message}
                 onPress={() => {
                   navigation.navigate("Chat", {
                     seller_name:
