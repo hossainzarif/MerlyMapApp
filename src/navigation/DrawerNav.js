@@ -10,6 +10,7 @@ import ProfileStack from "./ProfileStack"
 import AdminStack from "./AdminStack"
 import ChatListScreen from "../screens/ChatListScreen"
 import ChatStack from "./ChatStack"
+import ContactScreen from "../screens/ContactScreen"
 const DrawerNav = () => {
   const Drawer = createDrawerNavigator()
 
@@ -19,6 +20,7 @@ const DrawerNav = () => {
       <Drawer.Screen name='Profile' component={ProfileStack} />
       <Drawer.Screen name='AdminPanel' component={AdminStack} />
       <Drawer.Screen name='Inbox' component={ChatStack} />
+      <Drawer.Screen name='Contact' component={ContactScreen} />
     </Drawer.Navigator>
   )
 }
