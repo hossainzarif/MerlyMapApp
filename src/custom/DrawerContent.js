@@ -105,7 +105,7 @@ const DrawerContent = (props) => {
               )}
               label='Contact Us'
               onPress={() => {
-                // props.navigation.navigate("AdminPanel")
+                props.navigation.navigate("Contact")
               }}
             />
 

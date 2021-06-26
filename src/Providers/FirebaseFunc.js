@@ -133,3 +133,22 @@ export async function updateAvailability(post_id, state) {
   const postref = db.collection("posts").doc(post_id)
   await postref.update({ available: state })
 }
+
+export function sendNote(name, email, message, setLoading) {
+  try {
+    setLoading(true)
+    db.collection("notes")
+      .add({
+        sender_name: name,
+        sender_email: email,
+        sender_message: message,
+      })
+      .then(() => {
+        Alert.alert("Message Sent")
+        setLoading(false)
+      })
+  } catch (error) {
+    Alert.alert("Error:", error.message)
+    setLoading(false)
+  }
+}
