@@ -4,19 +4,15 @@ import { View, Text, StyleSheet } from "react-native"
 import { Card } from "react-native-elements"
 import colors from "../../assets/data/colors"
 const NoteCard = (props) => {
-  const { name, email } = props
+  const { name, email, onPres, messages } = props
   return (
-    <TouchableOpacity
-      onPress={() => {
-        console.log("AXED")
-      }}
-    >
+    <TouchableOpacity onPress={onPres}>
       <Card containerStyle={{ borderRadius: 5, elevation: 5 }}>
         <Text style={styles.textdata}> Name: {name}</Text>
         <Text style={styles.textdata}> Email: {email}</Text>
         <Text numberOfLines={1} style={styles.textdata}>
           {" "}
-          Messages: {email}
+          Messages: {messages}
         </Text>
       </Card>
     </TouchableOpacity>

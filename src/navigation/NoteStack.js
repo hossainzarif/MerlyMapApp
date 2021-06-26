@@ -11,6 +11,7 @@ import { ICON_SIZE_HEADER } from "../constants/Height_Width"
 import ChatListScreen from "../screens/ChatListScreen"
 import ContactScreen from "../screens/ContactScreen"
 import AdminContacts from "../screens/AdminContacts"
+import AllNotes from "../screens/AllNotes"
 const NoteStack = ({ navigation }) => {
   adminnote = createStackNavigator()
   return (
@@ -36,6 +37,24 @@ const NoteStack = ({ navigation }) => {
               style={{ padding: 10 }}
               onPress={() => {
                 navigation.openDrawer()
+              }}
+            />
+          ),
+        }}
+      />
+      <adminnote.Screen
+        name='AllNotes'
+        component={AllNotes}
+        options={{
+          title: "",
+          headerLeft: () => (
+            <Feather
+              name='arrow-left'
+              size={ICON_SIZE_HEADER}
+              color={colors.white}
+              style={{ padding: 10 }}
+              onPress={() => {
+                navigation.navigate("AdminContact")
               }}
             />
           ),

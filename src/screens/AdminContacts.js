@@ -4,7 +4,8 @@ import { View, Text, FlatList } from "react-native"
 import NoteCard from "../cards/NoteCard"
 import { Button } from "react-native-elements"
 import { db } from "../utils/firebase"
-const AdminContacts = () => {
+import Loading from "../custom/Loading"
+const AdminContacts = ({ navigation }) => {
   const [loading, setloading] = useState(false)
   const [notes, setNotes] = useState([])
 
@@ -35,34 +36,46 @@ const AdminContacts = () => {
     loadPosts()
   }, [])
 
-  return (
-    // <View>
-    //   <NoteCard />
-    //   <Button
-    //     onPress={() => {
-    //       console.log(notes)
-    //     }}
-    //   ></Button>
-    // </View>
-    <View style={{ flex: 1, backgroundColor: "white" }}>
-      <FlatList
-        data={notes}
-        contentContainerStyle={{
-          flexGrow: 1,
-        }}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => {
-          return (
-            <NoteCard
-              name={item.data.sender_name}
-              email={item.data.sender_email}
-            />
-          )
-        }}
-      ></FlatList>
-      {/* {console.log(TotArr[0].data.recent_Update.toDate())} */}
-    </View>
-  )
+  if (loading) {
+    return <Loading />
+  } else {
+    return (
+      // <View>
+      //   <NoteCard />
+      //   <Button
+      //     onPress={() => {
+      //       console.log(notes)
+      //     }}
+      //   ></Button>
+      // </View>
+      <View style={{ flex: 1, backgroundColor: "white" }}>
+        <FlatList
+          data={notes}
+          contentContainerStyle={{
+            flexGrow: 1,
+          }}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => {
+            return (
+              <NoteCard
+                name={item.data.sender_name}
+                email={item.data.sender_email}
+                messages={item.data.sender_message}
+                onPres={() => {
+                  navigation.navigate("AllNotes", {
+                    name: item.data.sender_name,
+                    email: item.data.sender_email,
+                    messages: item.data.sender_message,
+                  })
+                }}
+              />
+            )
+          }}
+        ></FlatList>
+        {/* {console.log(TotArr[0].data.recent_Update.toDate())} */}
+      </View>
+    )
+  }
 }
 
 export default AdminContacts
