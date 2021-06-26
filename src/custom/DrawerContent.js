@@ -108,6 +108,19 @@ const DrawerContent = (props) => {
                 props.navigation.navigate("Contact")
               }}
             />
+            <DrawerItem
+              icon={() => (
+                <FontAwesome5
+                  name='telegram-plane'
+                  size={DRAWER_ICON_SIZE}
+                  color='black'
+                />
+              )}
+              label='Contact Us'
+              onPress={() => {
+                props.navigation.navigate("Notes")
+              }}
+            />
 
             {user.email == "admin@gmail.com" ? (
               <DrawerItem

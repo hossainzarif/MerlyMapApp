@@ -142,6 +142,7 @@ export function sendNote(name, email, message, setLoading) {
         sender_name: name,
         sender_email: email,
         sender_message: message,
+        timestamp: firebase.firestore.Timestamp.now(),
       })
       .then(() => {
         Alert.alert("Message Sent")
