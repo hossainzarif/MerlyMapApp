@@ -19,7 +19,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/app_icon_main.png",
         "backgroundColor": "#FFFFFF"
       },
 
@@ -34,6 +34,11 @@
         "googleMobileAdsAppId": "ca-app-pub-7678132413484537~6414445824",
         "googleMaps": {
           "apiKey": "AIzaSyBBAxNJbe9wYcgUk8tN9VGzFEDMcXbaATU"
+        },
+        "googleSignIn": {
+          "apiKey": "AIzaSyBBAxNJbe9wYcgUk8tN9VGzFEDMcXbaATU",
+
+          "certificateHash": "E9FE61409C2DB6D3432B8480AC8FB338076588A2"
         }
       }
     },

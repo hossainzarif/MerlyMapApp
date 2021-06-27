@@ -95,34 +95,23 @@ const DrawerContent = (props) => {
               }}
               label='Inbox'
             />
-            <DrawerItem
-              icon={() => (
-                <FontAwesome5
-                  name='telegram-plane'
-                  size={DRAWER_ICON_SIZE}
-                  color='black'
-                />
-              )}
-              label='Contact Us'
-              onPress={() => {
-                props.navigation.navigate("Contact")
-              }}
-            />
-            <DrawerItem
-              icon={() => (
-                <FontAwesome5
-                  name='telegram-plane'
-                  size={DRAWER_ICON_SIZE}
-                  color='black'
-                />
-              )}
-              label='Contact Us'
-              onPress={() => {
-                props.navigation.navigate("Notes")
-              }}
-            />
 
-            {user.email == "admin@gmail.com" ? (
+            {user.email == "garagesalesmap1@gmail.com" ? null : (
+              <DrawerItem
+                icon={() => (
+                  <FontAwesome5
+                    name='telegram-plane'
+                    size={DRAWER_ICON_SIZE}
+                    color='black'
+                  />
+                )}
+                label='Contact Us'
+                onPress={() => {
+                  props.navigation.navigate("Contact")
+                }}
+              />
+            )}
+            {user.email == "garagesalesmap1@gmail.com" ? (
               <DrawerItem
                 icon={() => (
                   <FontAwesome5
@@ -134,6 +123,21 @@ const DrawerContent = (props) => {
                 label='Flagged'
                 onPress={() => {
                   props.navigation.navigate("AdminPanel")
+                }}
+              />
+            ) : null}
+            {user.email == "garagesalesmap1@gmail.com" ? (
+              <DrawerItem
+                icon={() => (
+                  <FontAwesome5
+                    name='sticky-note'
+                    size={DRAWER_ICON_SIZE}
+                    color='black'
+                  />
+                )}
+                label='Notes'
+                onPress={() => {
+                  props.navigation.navigate("Notes")
                 }}
               />
             ) : null}
@@ -193,8 +197,9 @@ const styles = StyleSheet.create({
   },
   caption: {
     fontSize: 14,
-    lineHeight: 14,
+    // lineHeight: 20,
     paddingRight: 10,
+    width: "90%",
   },
   row: {
     marginTop: 20,

@@ -150,7 +150,7 @@ const PostSalesScreen = () => {
   const Adafter5 = () => {
     setTimeout(() => {
       loadAd()
-    }, 10000)
+    }, 5000)
   }
 
   const uploadImagePost = (pictures) => {

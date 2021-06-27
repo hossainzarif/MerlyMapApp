@@ -155,8 +155,10 @@ export const AuthProvider = ({ children }) => {
           try {
             const result = await Google.logInAsync({
               behavior: "web",
-              androidClientId:
-                "888836721819-h3st1q989k82t3a3f4ht38r7un5461e0.apps.googleusercontent.com",
+              androidStandaloneAppClientId:
+                "888836721819-ijtk58euricficsqlplv82g05vk890i5.apps.googleusercontent.com",
+              // androidClientId:
+              //   "888836721819-h3st1q989k82t3a3f4ht38r7un5461e0.apps.googleusercontent.com",
               // iosClientId: YOUR_CLIENT_ID_HERE,
               scopes: ["profile", "email"],
             })
@@ -172,23 +174,22 @@ export const AuthProvider = ({ children }) => {
               firebase
                 .auth()
                 .signInWithCredential(credential)
-                .then(function () {
+                .then((doc) => {
                   db.collection("users")
-                    .doc(user.uid)
+                    .doc(doc.user.uid)
                     .set({
-                      _id: user.uid,
-                      email: user.email,
+                      _id: doc.user.uid,
+                      email: doc.user.uid,
                     })
                     .then(() => {
                       setLoading(false)
                     })
-                  setLoading(false)
                 })
             } else {
               setLoading(false)
             }
           } catch (e) {
-            Alert.alert(e)
+            Alert.alert("Error", e.message)
             setLoading(false)
           }
         },
