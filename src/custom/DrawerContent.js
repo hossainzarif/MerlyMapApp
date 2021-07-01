@@ -22,6 +22,9 @@ import { Foundation } from "@expo/vector-icons"
 import { AuthContext } from "../Providers/AuthProvider"
 import colors from "../../assets/data/colors"
 import { TouchableOpacity } from "react-native"
+import { PRIVACY_POLICY_LINK, TERMS_SERVICES_LINK } from "../constants/WebLinks"
+import * as Linking from "expo-linking"
+
 const DrawerContent = (props) => {
   const { logout, user } = useContext(AuthContext)
 
@@ -153,6 +156,9 @@ const DrawerContent = (props) => {
               color='black'
             />
           )}
+          onPress={() => {
+            Linking.openURL(TERMS_SERVICES_LINK)
+          }}
           label='Terms and service'
         />
         <DrawerItem
@@ -160,6 +166,9 @@ const DrawerContent = (props) => {
             <Foundation name='page-pdf' size={DRAWER_ICON_SIZE} color='black' />
           )}
           label='Privacy Policy'
+          onPress={() => {
+            Linking.openURL(PRIVACY_POLICY_LINK)
+          }}
         />
         <DrawerItem
           icon={() => (

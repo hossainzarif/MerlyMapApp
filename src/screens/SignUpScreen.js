@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext } from "react"
 import {
   Text,
   StyleSheet,
@@ -7,31 +7,34 @@ import {
   SafeAreaView,
   ScrollView,
   KeyboardAvoidingView,
-} from 'react-native'
-import Modal from 'react-native-modal'
+} from "react-native"
+import Modal from "react-native-modal"
 
-import { Checkbox } from 'react-native-paper'
-import CurvedButton from '../components/buttons/CurvedButton'
-import colors from '../../assets/data/colors'
-import color from 'color'
-import TextInputTaker from '../components/inputs/TextInputTaker'
-import PasswordInputTaker from '../components/inputs/PasswordInputTaker'
-import { ICON_SIZE_MED } from '../constants/Height_Width'
+import { Checkbox } from "react-native-paper"
+import CurvedButton from "../components/buttons/CurvedButton"
+import colors from "../../assets/data/colors"
+import color from "color"
+import TextInputTaker from "../components/inputs/TextInputTaker"
+import PasswordInputTaker from "../components/inputs/PasswordInputTaker"
+import { ICON_SIZE_MED } from "../constants/Height_Width"
 import {
   MaterialCommunityIcons,
   MaterialIcons,
   Entypo,
-} from '@expo/vector-icons'
-import TextButton from '../components/buttons/TextButton'
-import IconButton from '../components/buttons/IconButton'
-import CheckButton from '../components/buttons/CheckButton'
-import { Colors } from 'react-native/Libraries/NewAppScreen'
-import ModalPrivacy from '../components/modals/ModalPrivacy'
-import ModalTerms from '../components/modals/ModalTerms'
-import { PRIVACY, TERMS } from '../constants/stringsConstants'
-import { AuthContext } from '../Providers/AuthProvider'
-import Loading from '../custom/Loading'
-import { Platform } from 'react-native'
+} from "@expo/vector-icons"
+import TextButton from "../components/buttons/TextButton"
+import IconButton from "../components/buttons/IconButton"
+import CheckButton from "../components/buttons/CheckButton"
+import { Colors } from "react-native/Libraries/NewAppScreen"
+import ModalPrivacy from "../components/modals/ModalPrivacy"
+import ModalTerms from "../components/modals/ModalTerms"
+import { PRIVACY, TERMS } from "../constants/stringsConstants"
+import { AuthContext } from "../Providers/AuthProvider"
+import Loading from "../custom/Loading"
+import * as Linking from "expo-linking"
+
+import { Platform } from "react-native"
+import { PRIVACY_POLICY_LINK, TERMS_SERVICES_LINK } from "../constants/WebLinks"
 const SignUpScreen = ({ navigation }) => {
   // const [isvisible_terms, setisvisible_terms] = useState(false)
   // const [isvisible_privacy, setisvisible_privacy] = useState(false)
@@ -40,9 +43,9 @@ const SignUpScreen = ({ navigation }) => {
   // const [isModalVisible, setModalVisible] = useState(true)
   const [modalVisible, setModalVisible] = useState(false)
   const [modalVisible_terms, setModalVisible_terms] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [username, setUsername] = useState("")
   const { register, loading } = useContext(AuthContext)
 
   if (loading) {
@@ -67,7 +70,7 @@ const SignUpScreen = ({ navigation }) => {
 
         <KeyboardAvoidingView
           style={styles.footer}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
           <View style={styles.inputContainer}>
             <TextInputTaker
@@ -106,7 +109,7 @@ const SignUpScreen = ({ navigation }) => {
 
           <View style={styles.checkContainer}>
             <Checkbox.Android
-              status={checked ? 'checked' : 'unchecked'}
+              status={checked ? "checked" : "unchecked"}
               onPress={() => {
                 setChecked(!checked)
               }}
@@ -117,14 +120,14 @@ const SignUpScreen = ({ navigation }) => {
             <TextButton
               textIn='Terms of Service'
               onPress={function () {
-                setModalVisible_terms(true)
+                Linking.openURL(TERMS_SERVICES_LINK)
               }}
             />
             <Text> and </Text>
             <TextButton
               textIn='Privacy Policy'
               onPress={function () {
-                setModalVisible(true)
+                Linking.openURL(PRIVACY_POLICY_LINK)
               }}
             />
           </View>
@@ -140,7 +143,7 @@ const SignUpScreen = ({ navigation }) => {
               <TextButton
                 textIn='Sign In'
                 onPress={function () {
-                  navigation.navigate('SignInScreen')
+                  navigation.navigate("SignInScreen")
                 }}
               />
             </View>
@@ -168,47 +171,47 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
   },
   buttoncontainer: {
-    width: '98%',
+    width: "98%",
     marginTop: 10,
   },
   header: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     paddingHorizontal: 20,
     paddingBottom: 10,
   },
   footer: {
     flex: 3,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingHorizontal: 20,
     paddingVertical: 30,
-    alignItems: 'center',
+    alignItems: "center",
   },
   text_header: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 28,
   },
   inputContainer: {
-    width: '98%',
+    width: "98%",
   },
   forgotButton: {
-    width: '95%',
+    width: "95%",
     margin: 10,
   },
   signupfirst: {
-    width: '95%',
+    width: "95%",
     margin: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
   },
   fontStyleBottom: {
     fontSize: 12,
     color: colors.primary_dark,
   },
-  textButtonContainer: { alignItems: 'flex-end' },
+  textButtonContainer: { alignItems: "flex-end" },
   textStyle: {
     fontSize: 14,
     color: colors.darkGray,
@@ -217,13 +220,13 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
   checkContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 10,
-    width: '98%',
+    width: "98%",
   },
   checkbox: {
-    alignSelf: 'flex-start',
+    alignSelf: "flex-start",
   },
 })
 
