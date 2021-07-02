@@ -240,7 +240,7 @@ const PostSalesScreen = () => {
                 // available options: https://developers.google.com/places/web-service/autocomplete
                 key: config.MAP_API_KEY,
                 language: "en", // language of the results
-                // components: "country:us",
+                components: "country:us",
               }}
               styles={{
                 description: {
@@ -335,7 +335,7 @@ const PostSalesScreen = () => {
             />
             <TouchableOpacity style={styles.userBtn} onPress={showDatePicker}>
               <Entypo name='plus' size={24} color={colors.primary} />
-              <Text style={styles.userBtnTxt}>Add day</Text>
+              <Text style={styles.userBtnTxt}>Add time</Text>
             </TouchableOpacity>
 
             <FlatList
