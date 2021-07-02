@@ -42,7 +42,7 @@ const AppStack = ({ navigation }) => {
         name='PostSales'
         component={PostSalesScreen}
         options={{
-          title: "",
+          title: "Post a sale",
           headerLeft: () => (
             <Feather
               name='arrow-left'

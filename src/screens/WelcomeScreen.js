@@ -33,17 +33,17 @@ const WelcomeScreen = ({ navigation }) => {
         // behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
       >
         <View style={styles.header}>
-          <Text style={styles.text_header}>Welcome to Garage Sell Map</Text>
+          <Text style={styles.text_header}>Welcome to Garage Sales Map</Text>
         </View>
 
         <View style={styles.footer}>
           <View style={styles.buttoncontainer}>
-            <SocialIcon
+            {/* <SocialIcon
               raised={true}
               title='Continue With Facebook'
               button
               type='facebook'
-            />
+            /> */}
             <SocialIcon
               raised={true}
               title='Continue With Google'
