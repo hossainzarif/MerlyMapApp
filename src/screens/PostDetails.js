@@ -55,27 +55,6 @@ const PostDetails = ({ route, navigation }) => {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={{ alignItems: "center" }}>
-          {user_id != user.uid ? null : (
-            <View
-              style={{
-                justifyContent: "flex-end",
-                alignItems: "center",
-                // backgroundColor: "red",
-                width: "90%",
-                marginTop: 10,
-                flexDirection: "row",
-              }}
-            >
-              <Text style={styles.checkedText}>Sale available </Text>
-              <Switch
-                trackColor={{ false: colors.darkGray, true: colors.primary }}
-                thumbColor={isEnabled ? colors.darkGray : colors.primary}
-                ios_backgroundColor='#3e3e3e'
-                onValueChange={toggleSwitch}
-                value={isEnabled}
-              />
-            </View>
-          )}
           <View style={styles.sections}>
             <Text style={styles.headerText}>
               Location (tap to open in maps)
