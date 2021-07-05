@@ -43,6 +43,8 @@ import {
   AdMobRewarded,
   setTestDeviceIDAsync,
 } from "expo-ads-admob"
+import * as Animatable from "react-native-animatable"
+
 const PostSalesScreen = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
   const [isDatePickerVisible_1, setDatePickerVisibility_1] = useState(false)
@@ -57,7 +59,14 @@ const PostSalesScreen = () => {
   const [titlePost, settitlePost] = useState("")
   const [firstDate, setfirstDate] = useState("")
   const { user } = useContext(AuthContext)
-
+  const fadeIn = {
+    from: {
+      opacity: 0,
+    },
+    to: {
+      opacity: 1,
+    },
+  }
   const showDatePicker = () => {
     setDatePickerVisibility(true)
   }
@@ -92,9 +101,11 @@ const PostSalesScreen = () => {
       String(moment(date).format("hh:mm A")) +
       "  "
 
-    setdateTimearr((dateTimearr) => [...dateTimearr, dateTime])
-
-    console.log(dateTime)
+    if (dateTimearr.length <= 6) {
+      setdateTimearr((dateTimearr) => [...dateTimearr, dateTime])
+    } else {
+      Alert.alert("Max days selected already")
+    }
 
     hideDatePicker_1()
   }
@@ -121,14 +132,18 @@ const PostSalesScreen = () => {
   }, [])
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       // aspect: [4, 5],
       quality: 0.7,
     })
 
     if (!result.cancelled) {
-      setimages((images) => [...images, result.uri])
+      if (images.length <= 19) {
+        setimages((images) => [...images, result.uri])
+      } else {
+        Alert.alert("Max images selected already")
+      }
     }
   }
   const loadAd = async () => {
@@ -352,7 +367,6 @@ const PostSalesScreen = () => {
                   }}
                 />
               )}
-              horizontal
               showsHorizontalScrollIndicator={false}
             />
           </View>
@@ -380,6 +394,25 @@ const PostSalesScreen = () => {
               horizontal
               showsHorizontalScrollIndicator={false}
             />
+            {images.length > 2 ? (
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: 5,
+                }}
+              >
+                <Animatable.Text
+                  animation={fadeIn}
+                  duration={2000}
+                  easing='ease-out'
+                  iterationCount='infinite'
+                  style={{ textAlign: "center" }}
+                >
+                  Swipe Left
+                </Animatable.Text>
+              </View>
+            ) : null}
           </View>
           <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
             <Text style={styles.headerText}>Details *</Text>

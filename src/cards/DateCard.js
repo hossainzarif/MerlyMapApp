@@ -15,7 +15,7 @@ const DateCard = (props) => {
         justifyContent: "center",
         paddingLeft: 10,
         elevation: 3,
-        marginBottom: 10,
+        marginBottom: 5,
       }}
     >
       <View
