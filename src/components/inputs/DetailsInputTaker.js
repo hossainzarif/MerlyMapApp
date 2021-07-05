@@ -11,7 +11,7 @@ import {
   HEIGHT_INPUT_DETAILS,
 } from "../../constants/Height_Width"
 const DetailsInputTaker = (props) => {
-  const { onChangeText } = props
+  const { onChangeText, len } = props
 
   return (
     <Input
@@ -21,6 +21,7 @@ const DetailsInputTaker = (props) => {
       inputContainerStyle={styles.inputcontainer}
       style={styles.fontStyle}
       onChangeText={onChangeText}
+      maxLength={len}
     />
   )
 }

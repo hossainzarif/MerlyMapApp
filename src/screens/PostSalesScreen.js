@@ -296,6 +296,7 @@ const PostSalesScreen = () => {
 
             <TextInputTaker
               place='Title'
+              len={80}
               onChangeText={function (currentInput) {
                 settitlePost(currentInput)
               }}
@@ -383,6 +384,7 @@ const PostSalesScreen = () => {
           <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
             <Text style={styles.headerText}>Details *</Text>
             <DetailsInputTaker
+              len={2000}
               onChangeText={function (currentInput) {
                 setDetailsText(currentInput)
               }}
