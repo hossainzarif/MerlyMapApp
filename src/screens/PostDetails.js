@@ -7,6 +7,7 @@ import {
   StyleSheet,
   FlatList,
   Switch,
+  TouchableWithoutFeedback,
 } from "react-native"
 import colors from "../../assets/data/colors"
 import { Card, ListItem, Button, Icon } from "react-native-elements"
@@ -22,7 +23,8 @@ import { FlagPost, updateAvailability } from "../Providers/FirebaseFunc"
 import Loading from "../custom/Loading"
 import { RadioButton } from "react-native-paper"
 import { color } from "react-native-elements/dist/helpers"
-
+import { Modal } from "react-native"
+import ImageViewer from "react-native-image-zoom-viewer"
 const PostDetails = ({ route, navigation }) => {
   const {
     address,
@@ -38,8 +40,19 @@ const PostDetails = ({ route, navigation }) => {
   const { user } = useContext(AuthContext)
 
   const [flagLoading, setflagLoading] = useState(false)
+  const [visible, setvisible] = useState(false)
   // function _goToYosemite() {}
   const [isEnabled, setIsEnabled] = useState(available)
+  const [fullImage, setfullImage] = useState([])
+
+  const img = [
+    {
+      url: "https://firebasestorage.googleapis.com/v0/b/garage-sales-map.appspot.com/o/images%2FpostImages%2F2b78b551-2865-47c9-b1a9-a4e6a0e7998f.jpg-Tue%20Jul%2006%202021%2014%3A37%3A29%20GMT%2B0600?alt=media&token=ab92f660-c070-48ab-808d-2ab966a87eed",
+    },
+    {
+      url: "https://firebasestorage.googleapis.com/v0/b/garage-sales-map.appspot.com/o/images%2FpostImages%2F2c62a776-74cf-4fdd-8589-7b822443a9e6.jpg-Tue%20Jul%2006%202021%2014%3A37%3A29%20GMT%2B0600?alt=media&token=bb0bf0e1-21cc-43f8-9ac2-d752d12febae",
+    },
+  ]
   const toggleSwitch = () => {
     setIsEnabled((previousState) => !previousState)
 
@@ -49,6 +62,28 @@ const PostDetails = ({ route, navigation }) => {
       updateAvailability(post_id, true)
     }
   }
+
+  const _renderHeader = () => {
+    return (
+      <TouchableWithoutFeedback
+        onPress={() => {
+          setvisible(false)
+        }}
+      >
+        <View
+          style={{
+            height: 40,
+            justifyContent: "center",
+            alignItems: "flex-end",
+            padding: 20,
+          }}
+        >
+          <Text style={{ fontSize: 17, color: "white" }}>Exit</Text>
+        </View>
+      </TouchableWithoutFeedback>
+    )
+  }
+
   if (flagLoading) {
     return <Loading />
   } else {
@@ -114,6 +149,15 @@ const PostDetails = ({ route, navigation }) => {
                   marginRight: 30,
                 }}
                 imageLoadingColor={colors.primary}
+                onCurrentImagePressed={(index) => {
+                  let temp = []
+                  images.forEach((element) => {
+                    temp.push({ url: element })
+                  })
+                  setfullImage(temp)
+                  setvisible(true)
+                  console.log(fullImage)
+                }}
               />
             ) : (
               <Card containerStyle={styles.cardStyle}>
@@ -124,6 +168,26 @@ const PostDetails = ({ route, navigation }) => {
               </Card>
             )}
           </View>
+          {images ? (
+            <Modal visible={visible} transparent={true}>
+              <ImageViewer
+                onCancel={() => {
+                  setvisible(false)
+                }}
+                onSwipeDown={() => {
+                  setvisible(false)
+                }}
+                // onClick={() => {
+                //   setvisible(false)
+                // }}
+                imageUrls={fullImage}
+                enableSwipeDown={true}
+                renderHeader={_renderHeader}
+                backgroundColor={colors.primary_back}
+              />
+            </Modal>
+          ) : null}
+
           <View style={styles.sections}>
             <Text style={styles.headerText}>Details</Text>
 

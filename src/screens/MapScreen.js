@@ -172,7 +172,7 @@ const MapScreen = ({ navigation }) => {
                 latitude: pos.data.location.coords.latitude,
                 longitude: pos.data.location.coords.longitude,
               }}
-              image={require("../../assets/sell_icon_2.png")}
+              image={require("../../assets/sell.png")}
             >
               <Callout
                 tooltip

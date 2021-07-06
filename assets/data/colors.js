@@ -8,6 +8,7 @@ const colors = {
   primary_fade: "#deeedd",
   warning: "#C3272B",
   flag: "#FFCC00",
+  primary_back: "#98de95",
 }
 
 export default colors
