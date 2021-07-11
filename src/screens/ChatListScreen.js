@@ -131,17 +131,21 @@ const ChatListScreen = ({ navigation }) => {
             }}
           ></FlatList>
         ) : (
-          <View style={{ alignItems: 'center' }}>
+          <View
+            style={{
+              alignItems: 'center',
+
+              flex: 1,
+              justifyContent: 'center',
+            }}
+          >
             <Text
               style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: 100,
                 fontSize: 20,
                 color: colors.darkGray,
               }}
             >
-              NO POST YET
+              INBOX IS EMPTY
             </Text>
           </View>
         )}
