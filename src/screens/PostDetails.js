@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useState } from 'react'
 import {
   View,
   ScrollView,
@@ -8,23 +8,23 @@ import {
   FlatList,
   Switch,
   TouchableWithoutFeedback,
-} from "react-native"
-import colors from "../../assets/data/colors"
-import { Card, ListItem, Button, Icon } from "react-native-elements"
-import DateCard from "../cards/DateCard"
-import { SliderBox } from "react-native-image-slider-box"
-import { Colors } from "react-native/Libraries/NewAppScreen"
-import { FAB } from "react-native-paper"
-import { AuthContext } from "../Providers/AuthProvider"
-import { TouchableOpacity } from "react-native-gesture-handler"
-import openMap from "react-native-open-maps"
-import OpenMap from "react-native-open-map"
-import { FlagPost, updateAvailability } from "../Providers/FirebaseFunc"
-import Loading from "../custom/Loading"
-import { RadioButton } from "react-native-paper"
-import { color } from "react-native-elements/dist/helpers"
-import { Modal } from "react-native"
-import ImageViewer from "react-native-image-zoom-viewer"
+} from 'react-native'
+import colors from '../../assets/data/colors'
+import { Card, ListItem, Button, Icon } from 'react-native-elements'
+import DateCard from '../cards/DateCard'
+import { SliderBox } from 'react-native-image-slider-box'
+import { Colors } from 'react-native/Libraries/NewAppScreen'
+import { FAB } from 'react-native-paper'
+import { AuthContext } from '../Providers/AuthProvider'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import openMap from 'react-native-open-maps'
+import OpenMap from 'react-native-open-map'
+import { FlagPost, updateAvailability } from '../Providers/FirebaseFunc'
+import Loading from '../custom/Loading'
+import { RadioButton } from 'react-native-paper'
+import { color } from 'react-native-elements/dist/helpers'
+import { Modal } from 'react-native'
+import ImageViewer from 'react-native-image-zoom-viewer'
 const PostDetails = ({ route, navigation }) => {
   const {
     address,
@@ -47,10 +47,10 @@ const PostDetails = ({ route, navigation }) => {
 
   const img = [
     {
-      url: "https://firebasestorage.googleapis.com/v0/b/garage-sales-map.appspot.com/o/images%2FpostImages%2F2b78b551-2865-47c9-b1a9-a4e6a0e7998f.jpg-Tue%20Jul%2006%202021%2014%3A37%3A29%20GMT%2B0600?alt=media&token=ab92f660-c070-48ab-808d-2ab966a87eed",
+      url: 'https://firebasestorage.googleapis.com/v0/b/garage-sales-map.appspot.com/o/images%2FpostImages%2F2b78b551-2865-47c9-b1a9-a4e6a0e7998f.jpg-Tue%20Jul%2006%202021%2014%3A37%3A29%20GMT%2B0600?alt=media&token=ab92f660-c070-48ab-808d-2ab966a87eed',
     },
     {
-      url: "https://firebasestorage.googleapis.com/v0/b/garage-sales-map.appspot.com/o/images%2FpostImages%2F2c62a776-74cf-4fdd-8589-7b822443a9e6.jpg-Tue%20Jul%2006%202021%2014%3A37%3A29%20GMT%2B0600?alt=media&token=bb0bf0e1-21cc-43f8-9ac2-d752d12febae",
+      url: 'https://firebasestorage.googleapis.com/v0/b/garage-sales-map.appspot.com/o/images%2FpostImages%2F2c62a776-74cf-4fdd-8589-7b822443a9e6.jpg-Tue%20Jul%2006%202021%2014%3A37%3A29%20GMT%2B0600?alt=media&token=bb0bf0e1-21cc-43f8-9ac2-d752d12febae',
     },
   ]
   const toggleSwitch = () => {
@@ -73,12 +73,12 @@ const PostDetails = ({ route, navigation }) => {
         <View
           style={{
             height: 40,
-            justifyContent: "center",
-            alignItems: "flex-end",
+            justifyContent: 'center',
+            alignItems: 'flex-end',
             padding: 20,
           }}
         >
-          <Text style={{ fontSize: 17, color: "white" }}>Exit</Text>
+          <Text style={{ fontSize: 17, color: 'white' }}>Exit</Text>
         </View>
       </TouchableWithoutFeedback>
     )
@@ -89,7 +89,7 @@ const PostDetails = ({ route, navigation }) => {
   } else {
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView contentContainerStyle={{ alignItems: "center" }}>
+        <ScrollView contentContainerStyle={{ alignItems: 'center' }}>
           <View style={styles.sections}>
             <Text style={styles.headerText}>
               Location (tap to open in maps)
@@ -131,20 +131,20 @@ const PostDetails = ({ route, navigation }) => {
                 dotColor={colors.primary}
                 paginationBoxVerticalPadding={10}
                 circleLoop
-                resizeMethod={"resize"}
-                resizeMode={"contain"}
+                resizeMethod={'resize'}
+                resizeMode={'contain'}
                 paginationBoxStyle={{
-                  alignItems: "center",
-                  alignSelf: "center",
-                  justifyContent: "center",
+                  alignItems: 'center',
+                  alignSelf: 'center',
+                  justifyContent: 'center',
                   paddingVertical: 10,
                 }}
                 ImageComponentStyle={{
                   borderRadius: 15,
-                  backgroundColor: "white",
-                  alignSelf: "center",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  backgroundColor: 'white',
+                  alignSelf: 'center',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   paddingVertical: 10,
                   marginRight: 30,
                 }}
@@ -162,8 +162,8 @@ const PostDetails = ({ route, navigation }) => {
             ) : (
               <Card containerStyle={styles.cardStyle}>
                 <Card.Image
-                  source={require("../../assets/unav.png")}
-                  style={{ resizeMode: "contain" }}
+                  source={require('../../assets/unav.png')}
+                  style={{ resizeMode: 'contain' }}
                 ></Card.Image>
               </Card>
             )}
@@ -199,12 +199,12 @@ const PostDetails = ({ route, navigation }) => {
           {user_id == user.uid ? null : (
             <View
               style={{
-                justifyContent: "space-between",
-                alignItems: "center",
-                width: "85%",
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                width: '85%',
                 paddingBottom: 20,
                 paddingTop: 10,
-                flexDirection: "row",
+                flexDirection: 'row',
               }}
             >
               <FAB
@@ -213,7 +213,7 @@ const PostDetails = ({ route, navigation }) => {
                 icon='message'
                 color={colors.white}
                 onPress={() => {
-                  navigation.navigate("Chat", {
+                  navigation.navigate('Chat', {
                     seller_name: name,
                     seller_id: user_id,
                   })
@@ -231,7 +231,7 @@ const PostDetails = ({ route, navigation }) => {
                   FlagPost(post_id, user_id, setflagLoading, user.uid)
                 }}
               />
-              <Text style={{ paddingLeft: 10 }}>Flag/Expired</Text>
+              <Text style={{ paddingLeft: 10 }}>Flag</Text>
             </View>
           )}
         </ScrollView>
@@ -241,26 +241,26 @@ const PostDetails = ({ route, navigation }) => {
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     flex: 1,
   },
   headerText: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.darkGray,
   },
 
   userBtnTxt: {
     color: colors.primary,
   },
-  locationText: { textAlign: "justify", fontSize: 15 },
+  locationText: { textAlign: 'justify', fontSize: 15 },
   cardStyle: {
     borderRadius: 10,
     elevation: 2,
     marginBottom: 5,
   },
   sections: {
-    width: "90%",
+    width: '90%',
     marginTop: 10,
     marginBottom: 10,
   },
@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
   },
   checkedText: {
     fontSize: 15,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.darkGray,
   },
 })
