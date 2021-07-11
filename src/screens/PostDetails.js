@@ -25,6 +25,7 @@ import { RadioButton } from 'react-native-paper'
 import { color } from 'react-native-elements/dist/helpers'
 import { Modal } from 'react-native'
 import ImageViewer from 'react-native-image-zoom-viewer'
+import ModalPrivacy from '../components/modals/ModalPrivacy'
 const PostDetails = ({ route, navigation }) => {
   const {
     address,
@@ -44,6 +45,7 @@ const PostDetails = ({ route, navigation }) => {
   // function _goToYosemite() {}
   const [isEnabled, setIsEnabled] = useState(available)
   const [fullImage, setfullImage] = useState([])
+  const [modalVisible, setModalVisible] = useState(false)
 
   const img = [
     {
@@ -228,10 +230,21 @@ const PostDetails = ({ route, navigation }) => {
                 icon='alert'
                 color={colors.white}
                 onPress={() => {
-                  FlagPost(post_id, user_id, setflagLoading, user.uid)
+                  setModalVisible(true)
                 }}
               />
               <Text style={{ paddingLeft: 10 }}>Flag</Text>
+
+              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                <ModalPrivacy
+                  modalVisible={modalVisible}
+                  setModalVisible={setModalVisible}
+                  post_id={post_id}
+                  user_id={user_id}
+                  setflagLoading={setflagLoading}
+                  flagger={user.uid}
+                />
+              </View>
             </View>
           )}
         </ScrollView>

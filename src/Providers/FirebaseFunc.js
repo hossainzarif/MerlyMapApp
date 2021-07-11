@@ -1,7 +1,7 @@
-import "firebase/firestore"
-import * as firebase from "firebase"
-import { Alert } from "react-native"
-import { db } from "../utils/firebase"
+import 'firebase/firestore'
+import * as firebase from 'firebase'
+import { Alert } from 'react-native'
+import { db } from '../utils/firebase'
 
 export function addPost(
   allLocation,
@@ -18,7 +18,7 @@ export function addPost(
   user_email
 ) {
   setIsLoading(true)
-  db.collection("posts")
+  db.collection('posts')
     .add({
       location: allLocation,
       title: titlePost,
@@ -36,24 +36,24 @@ export function addPost(
       setdateTimearr([])
       setallLocation(null)
       setimages([])
-      Alert.alert("Post Created")
+      Alert.alert('Post Created')
       setIsLoading(false)
     })
     .catch((error) => {
-      Alert.alert("Error:", error.message)
+      Alert.alert('Error:', error.message)
       setIsLoading(false)
     })
 }
 export function deletePostFirebase(id, setloadingdelete) {
   setloadingdelete(true)
-  db.collection("posts")
+  db.collection('posts')
     .doc(id)
     .delete()
     .then(() => {
-      Alert.alert("Post deleted")
-      db.collection("posts")
+      Alert.alert('Post deleted')
+      db.collection('posts')
         .doc(id)
-        .collection("flaggers")
+        .collection('flaggers')
         .onSnapshot((snapshot) =>
           snapshot.forEach((result) => result.ref.delete())
         )
@@ -62,7 +62,7 @@ export function deletePostFirebase(id, setloadingdelete) {
     .catch((error) => {
       setloadingdelete(false)
       console.log(error)
-      Alert.alert("Error:", error.message)
+      Alert.alert('Error:', error.message)
     })
 }
 export function deletePostImageFirebase(id, setloadingdelete, imgs) {
@@ -76,68 +76,77 @@ export function deletePostImageFirebase(id, setloadingdelete, imgs) {
   })
 
   Promise.all(promises).then(() => {
-    db.collection("posts")
+    db.collection('posts')
       .doc(id)
       .delete()
       .then(() => {
-        db.collection("posts")
+        db.collection('posts')
           .doc(id)
-          .collection("flaggers")
+          .collection('flaggers')
           .onSnapshot((snapshot) =>
             snapshot.forEach((result) => result.ref.delete())
           )
-        Alert.alert("Post deleted")
+        Alert.alert('Post deleted')
         setloadingdelete(false)
       })
       .catch((error) => {
         setloadingdelete(false)
 
-        Alert.alert("Error:", error.message)
+        Alert.alert('Error:', error.message)
       })
   })
 }
-export async function FlagPost(post_id, user_id, setflagLoading, flagger) {
+export async function FlagPost(
+  post_id,
+  user_id,
+  setflagLoading,
+  flagger,
+  comments,
+  reason
+) {
   setflagLoading(true)
-  const postref = db.collection("posts").doc(post_id)
+  const postref = db.collection('posts').doc(post_id)
   await postref
     .update({ flagged: true })
     .then(() => {
-      db.collection("users")
+      db.collection('users')
         .doc(user_id)
-        .collection("flaggers")
+        .collection('flaggers')
         .doc(flagger)
         .set({
           flagger_id: flagger,
         })
         .then(() => {
-          db.collection("posts")
+          db.collection('posts')
             .doc(post_id)
-            .collection("flaggers")
+            .collection('flaggers')
             .doc(flagger)
             .set({
               flagger_id: flagger,
+              comments: comments,
+              reason: reason,
             })
         })
     })
     .then(() => {
-      Alert.alert("Flagged the post")
+      Alert.alert('Flagged the post')
       setflagLoading(false)
     })
     .catch((error) => {
-      Alert.alert("Error:", error.message)
+      Alert.alert('Error:', error.message)
       setflagLoading(false)
     })
 }
 
 export async function updateAvailability(post_id, state) {
-  const postref = db.collection("posts").doc(post_id)
+  const postref = db.collection('posts').doc(post_id)
   await postref.update({ available: state })
 }
 
 export function sendNote(name, email, message, setLoading) {
   try {
     setLoading(true)
-    db.collection("notes")
+    db.collection('notes')
       .add({
         sender_name: name,
         sender_email: email,
@@ -145,11 +154,11 @@ export function sendNote(name, email, message, setLoading) {
         timestamp: firebase.firestore.Timestamp.now(),
       })
       .then(() => {
-        Alert.alert("Message Sent")
+        Alert.alert('Message Sent')
         setLoading(false)
       })
   } catch (error) {
-    Alert.alert("Error:", error.message)
+    Alert.alert('Error:', error.message)
     setLoading(false)
   }
 }
