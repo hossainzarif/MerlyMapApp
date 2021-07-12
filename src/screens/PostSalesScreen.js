@@ -1,49 +1,49 @@
-import React, { useContext, useState, useEffect } from "react"
+import React, { useContext, useState, useEffect } from 'react'
 import {
   Text,
   View,
   StyleSheet,
   TouchableOpacity,
   FlatList,
-} from "react-native"
-import { AuthContext } from "../Providers/AuthProvider"
-import { FAB } from "react-native-paper"
-import colors from "../../assets/data/colors"
-import TextInputTaker from "../components/inputs/TextInputTaker"
-import { ScrollView } from "react-native"
-import CurvedButton from "../components/buttons/CurvedButton"
-import { Entypo } from "@expo/vector-icons"
+} from 'react-native'
+import { AuthContext } from '../Providers/AuthProvider'
+import { FAB } from 'react-native-paper'
+import colors from '../../assets/data/colors'
+import TextInputTaker from '../components/inputs/TextInputTaker'
+import { ScrollView } from 'react-native'
+import CurvedButton from '../components/buttons/CurvedButton'
+import { Entypo } from '@expo/vector-icons'
 import {
   BUTTON_RADIUS,
   HEIGHT_BUTTON,
   ICON_SIZE,
-} from "../constants/Height_Width"
-import DateTimePickerModal from "react-native-modal-datetime-picker"
-import DateCard from "../cards/DateCard"
-import { SafeAreaView } from "react-native"
-import DetailsInputTaker from "../components/inputs/DetailsInputTaker"
-import moment from "moment"
-import CalendarStrip from "react-native-calendar-strip"
-import { ImageBrowser } from "expo-image-picker-multiple"
-import * as ImagePicker from "expo-image-picker"
-import ImageCard from "../cards/ImageCard"
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
-import * as Location from "expo-location"
-import config from "../../config"
-import * as firebase from "firebase"
-import Loading from "../custom/Loading"
-import PostLoading from "../custom/PostLoading"
-import { MaterialIcons } from "@expo/vector-icons"
-import { Alert } from "react-native"
-import { addPost } from "../Providers/FirebaseFunc"
+} from '../constants/Height_Width'
+import DateTimePickerModal from 'react-native-modal-datetime-picker'
+import DateCard from '../cards/DateCard'
+import { SafeAreaView } from 'react-native'
+import DetailsInputTaker from '../components/inputs/DetailsInputTaker'
+import moment from 'moment'
+import CalendarStrip from 'react-native-calendar-strip'
+import { ImageBrowser } from 'expo-image-picker-multiple'
+import * as ImagePicker from 'expo-image-picker'
+import ImageCard from '../cards/ImageCard'
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
+import * as Location from 'expo-location'
+import config from '../../config'
+import * as firebase from 'firebase'
+import Loading from '../custom/Loading'
+import PostLoading from '../custom/PostLoading'
+import { MaterialIcons } from '@expo/vector-icons'
+import { Alert } from 'react-native'
+import { addPost } from '../Providers/FirebaseFunc'
 import {
   AdMobBanner,
   AdMobInterstitial,
   PublisherBanner,
   AdMobRewarded,
   setTestDeviceIDAsync,
-} from "expo-ads-admob"
-import * as Animatable from "react-native-animatable"
+} from 'expo-ads-admob'
+import * as Animatable from 'react-native-animatable'
 
 const PostSalesScreen = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
@@ -54,10 +54,10 @@ const PostSalesScreen = () => {
   const [images, setimages] = useState([])
   const [allLocation, setallLocation] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [LoadText, setLoadText] = useState("")
-  const [DetailsText, setDetailsText] = useState("")
-  const [titlePost, settitlePost] = useState("")
-  const [firstDate, setfirstDate] = useState("")
+  const [LoadText, setLoadText] = useState('')
+  const [DetailsText, setDetailsText] = useState('')
+  const [titlePost, settitlePost] = useState('')
+  const [firstDate, setfirstDate] = useState('')
   const { user } = useContext(AuthContext)
   const fadeIn = {
     from: {
@@ -83,9 +83,9 @@ const PostSalesScreen = () => {
   }
   const handleConfirm = (date) => {
     let dateTime =
-      String(moment(selectedDates).format("LL")) +
-      " " +
-      String(moment(date).format("hh:mm A"))
+      String(moment(selectedDates).format('LL')) +
+      ' ' +
+      String(moment(date).format('hh:mm A'))
 
     setfirstDate(dateTime)
     showDatePicker_1()
@@ -95,16 +95,25 @@ const PostSalesScreen = () => {
   const handleConfirm_1 = (date) => {
     let dateTime =
       firstDate +
-      " " +
-      "to" +
-      " " +
-      String(moment(date).format("hh:mm A")) +
-      "  "
+      ' ' +
+      'to' +
+      ' ' +
+      String(moment(date).format('hh:mm A')) +
+      '  '
 
-    if (dateTimearr.length <= 6) {
-      setdateTimearr((dateTimearr) => [...dateTimearr, dateTime])
+    if (
+      new Date(String(moment(firstDate).format('YYYY-MM-DD'))).getTime() <
+      new Date(String(moment().format('YYYY-MM-DD'))).getTime()
+    ) {
+      Alert.alert('Past days are not acceptable')
     } else {
-      Alert.alert("Max days selected already")
+      if (dateTimearr.length <= 6) {
+        setdateTimearr((dateTimearr) => [...dateTimearr, dateTime])
+      } else {
+        Alert.alert('Max days selected already')
+      }
+      console.log(String(moment(firstDate).format('DD-MM-YY')))
+      console.log(String(moment().format('DD-MM-YY')))
     }
 
     hideDatePicker_1()
@@ -113,8 +122,8 @@ const PostSalesScreen = () => {
   useEffect(() => {
     ;(async () => {
       let { status } = await Location.requestForegroundPermissionsAsync()
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied")
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied')
         return
       }
 
@@ -125,7 +134,7 @@ const PostSalesScreen = () => {
   useEffect(() => {
     ;(async () => {
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync()
-      if (status !== "granted") {
+      if (status !== 'granted') {
         return
       }
     })()
@@ -142,13 +151,13 @@ const PostSalesScreen = () => {
       if (images.length <= 19) {
         setimages((images) => [...images, result.uri])
       } else {
-        Alert.alert("Max images selected already")
+        Alert.alert('Max images selected already')
       }
     }
   }
   const loadAd = async () => {
     await AdMobInterstitial.setAdUnitID(
-      "ca-app-pub-3940256099942544/1033173712"
+      'ca-app-pub-3940256099942544/1033173712'
     ) // Test ID, Replace with your-admob-unit-id
     await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false })
     ShowAd()
@@ -170,22 +179,22 @@ const PostSalesScreen = () => {
 
   const uploadImagePost = (pictures) => {
     setIsLoading(true)
-    setLoadText("Uploading Image")
+    setLoadText('Uploading Image')
     const promises = pictures.map(async (file) => {
-      const imgname = file.substring(file.lastIndexOf("/") + 1)
+      const imgname = file.substring(file.lastIndexOf('/') + 1)
       const response = await fetch(file)
       const blob = await response.blob()
 
       const ref = firebase
         .storage()
         .ref()
-        .child("images/postImages/" + imgname + "-" + String(moment()))
+        .child('images/postImages/' + imgname + '-' + String(moment()))
 
       return ref.put(blob).then(() => ref.getDownloadURL())
     })
 
     Promise.all(promises).then((fileDownloadUrls) => {
-      setLoadText("Creating Post")
+      setLoadText('Creating Post')
 
       addPost(
         allLocation,
@@ -226,17 +235,17 @@ const PostSalesScreen = () => {
       /> */}
 
         <ScrollView
-          contentContainerStyle={{ alignItems: "center" }}
-          keyboardShouldPersistTaps={"handled"}
+          contentContainerStyle={{ alignItems: 'center' }}
+          keyboardShouldPersistTaps={'handled'}
         >
-          <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
+          <View style={{ width: '90%', marginTop: 10, marginBottom: 10 }}>
             <Text style={styles.headerText}>Location *</Text>
 
             <GooglePlacesAutocomplete
               placeholder='Search'
               minLength={2} // minimum length of text to search
               autoFocus={false}
-              returnKeyType={"search"} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
+              returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
               listViewDisplayed='auto' // true/false/undefined
               fetchDetails={true}
               // renderDescription={(row) => row.description} // custom description render
@@ -254,12 +263,12 @@ const PostSalesScreen = () => {
               query={{
                 // available options: https://developers.google.com/places/web-service/autocomplete
                 key: config.MAP_API_KEY,
-                language: "en", // language of the results
-                components: "country:us",
+                language: 'en', // language of the results
+                components: 'country:us',
               }}
               styles={{
                 description: {
-                  fontWeight: "bold",
+                  fontWeight: 'bold',
                 },
 
                 predefinedPlacesDescription: {
@@ -279,8 +288,8 @@ const PostSalesScreen = () => {
                   borderWidth: 1,
                 },
                 poweredContainer: {
-                  justifyContent: "flex-end",
-                  alignItems: "center",
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
                   borderBottomRightRadius: 5,
                   borderBottomLeftRadius: 5,
                   borderColor: colors.primary,
@@ -292,7 +301,7 @@ const PostSalesScreen = () => {
               nearbyPlacesAPI='GoogleReverseGeocoding' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
               GooglePlacesSearchQuery={{
                 // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-                rankby: "distance",
+                rankby: 'distance',
               }}
               // filterReverseGeocodingByTypes={[
               //   "locality",
@@ -301,12 +310,12 @@ const PostSalesScreen = () => {
               enablePoweredByContainer={false}
               debounce={200}
               GooglePlacesDetailsQuery={{
-                fields: ["geometry"],
+                fields: ['geometry'],
               }}
               onFail={(error) => console.error(error)}
             />
           </View>
-          <View style={{ width: "90%" }}>
+          <View style={{ width: '90%' }}>
             <Text style={styles.headerText}>Title *</Text>
 
             <TextInputTaker
@@ -317,36 +326,36 @@ const PostSalesScreen = () => {
               }}
             />
           </View>
-          <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
+          <View style={{ width: '90%', marginTop: 10, marginBottom: 10 }}>
             <Text style={styles.headerText}>Date & Time Range *</Text>
 
             <CalendarStrip
               style={{ height: 150, paddingTop: 20, paddingBottom: 10 }}
-              calendarColor={"white"}
-              calendarHeaderStyle={{ color: "black" }}
-              dateNumberStyle={{ color: "black" }}
-              dateNameStyle={{ color: "black" }}
+              calendarColor={'white'}
+              calendarHeaderStyle={{ color: 'black' }}
+              dateNumberStyle={{ color: 'black' }}
+              dateNameStyle={{ color: 'black' }}
               iconContainer={{ flex: 0.1 }}
               highlightDateNumberStyle={{
-                color: "#fff",
+                color: '#fff',
                 backgroundColor: colors.primary,
                 marginTop: 10,
                 height: 35,
                 width: 35,
-                textAlign: "center",
+                textAlign: 'center',
                 borderRadius: 17.5,
-                overflow: "hidden",
+                overflow: 'hidden',
                 paddingTop: 6,
-                fontWeight: "400",
-                justifyContent: "center",
-                alignItems: "center",
+                fontWeight: '400',
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
               onDateSelected={(date) => {
                 setselectedDates(date)
               }}
               highlightDateNameStyle={{ color: colors.primary }}
-              disabledDateNameStyle={{ color: "red" }}
-              disabledDateNumberStyle={{ color: "red", paddingTop: 10 }}
+              disabledDateNameStyle={{ color: 'red' }}
+              disabledDateNumberStyle={{ color: 'red', paddingTop: 10 }}
               selectedDate={selectedDates}
             />
             <TouchableOpacity style={styles.userBtn} onPress={showDatePicker}>
@@ -371,7 +380,7 @@ const PostSalesScreen = () => {
             />
           </View>
 
-          <View style={{ width: "90%" }}>
+          <View style={{ width: '90%' }}>
             <Text style={styles.headerText}>Add Images (max 5)</Text>
 
             <TouchableOpacity style={styles.userBtn} onPress={pickImage}>
@@ -397,8 +406,8 @@ const PostSalesScreen = () => {
             {images.length > 2 ? (
               <View
                 style={{
-                  alignItems: "center",
-                  justifyContent: "center",
+                  alignItems: 'center',
+                  justifyContent: 'center',
                   margin: 5,
                 }}
               >
@@ -407,14 +416,14 @@ const PostSalesScreen = () => {
                   duration={2000}
                   easing='ease-out'
                   iterationCount='infinite'
-                  style={{ textAlign: "center" }}
+                  style={{ textAlign: 'center' }}
                 >
                   Swipe Left
                 </Animatable.Text>
               </View>
             ) : null}
           </View>
-          <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
+          <View style={{ width: '90%', marginTop: 10, marginBottom: 10 }}>
             <Text style={styles.headerText}>Details *</Text>
             <DetailsInputTaker
               len={2000}
@@ -424,17 +433,17 @@ const PostSalesScreen = () => {
             />
             <Text style={{ color: colors.warning }}>* marked are required</Text>
           </View>
-          <View style={{ width: "90%", marginTop: 10, marginBottom: 10 }}>
+          <View style={{ width: '90%', marginTop: 10, marginBottom: 10 }}>
             <CurvedButton
               btnText='Create Post'
               onPress={() => {
                 if (allLocation == null) {
-                  Alert.alert("Please pick valid location")
+                  Alert.alert('Please pick valid location')
                 } else if (titlePost && dateTimearr.length > 0 && DetailsText) {
                   if (images.length > 0) {
                     uploadImagePost(images)
                   } else {
-                    setLoadText("Creating Post")
+                    setLoadText('Creating Post')
                     addPost(
                       allLocation,
                       titlePost,
@@ -452,7 +461,7 @@ const PostSalesScreen = () => {
                     Adafter5()
                   }
                 } else {
-                  Alert.alert("Please fill up the required field")
+                  Alert.alert('Please fill up the required field')
                 }
               }}
             />
@@ -482,25 +491,25 @@ const PostSalesScreen = () => {
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     flex: 1,
   },
   headerText: {
     fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     padding: 10,
     color: colors.darkGray,
   },
   userBtn: {
-    flexDirection: "row",
+    flexDirection: 'row',
     borderColor: colors.primary,
     borderWidth: 2,
     borderRadius: BUTTON_RADIUS,
     paddingVertical: 8,
     paddingHorizontal: 12,
     marginHorizontal: 5,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 10,
   },
   userBtnTxt: {

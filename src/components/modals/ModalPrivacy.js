@@ -17,7 +17,7 @@ import { FlagPost } from '../../Providers/FirebaseFunc'
 const ModalPrivacy = (props) => {
   const [selectedLanguage, setSelectedLanguage] = useState('Wrong Location')
   const [commentText, setCommentText] = useState('')
-  const { post_id, user_id, setflagLoading } = props
+  const { post_id, user_id, setflagLoading, flagger } = props
 
   return (
     <Modal animationType='fade' transparent={true} visible={props.modalVisible}>
