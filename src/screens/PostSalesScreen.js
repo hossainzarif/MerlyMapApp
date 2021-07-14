@@ -101,7 +101,6 @@ const PostSalesScreen = () => {
       String(moment(date).format('hh:mm A')) +
       '  '
 
-    console.log(moment().add(7, 'days').format('YYYY-MM-DD'))
     if (
       new Date(String(moment(firstDate).format('YYYY-MM-DD'))).getTime() <
       new Date(String(moment().format('YYYY-MM-DD'))).getTime()

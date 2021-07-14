@@ -26,6 +26,7 @@ import { color } from 'react-native-elements/dist/helpers'
 import { Modal } from 'react-native'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import ModalPrivacy from '../components/modals/ModalPrivacy'
+import DateValidCard from '../cards/DateValidCard'
 const PostDetails = ({ route, navigation }) => {
   const {
     address,
@@ -115,7 +116,7 @@ const PostDetails = ({ route, navigation }) => {
             <FlatList
               data={dates}
               renderItem={({ item }) => (
-                <DateCard time={item} showbutton={false} />
+                <DateValidCard time={item} showbutton={false} />
               )}
               horizontal
               showsHorizontalScrollIndicator={false}

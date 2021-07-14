@@ -4,7 +4,7 @@ import { Card } from 'react-native-elements'
 import colors from '../../assets/data/colors'
 import { Entypo } from '@expo/vector-icons'
 import { View } from 'react-native'
-const DateCard = (props) => {
+const DateValidCard = (props) => {
   return (
     <Card
       containerStyle={{
@@ -27,15 +27,9 @@ const DateCard = (props) => {
         }}
       >
         <Text> {props.time} </Text>
-
-        {props.showbutton ? (
-          <TouchableOpacity onPress={props.onPress}>
-            <Entypo name='cross' size={23} color={colors.warning} />
-          </TouchableOpacity>
-        ) : null}
       </View>
     </Card>
   )
 }
 
-export default DateCard
+export default DateValidCard

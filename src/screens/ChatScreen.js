@@ -1,17 +1,17 @@
-import { View, Text, ActivityIndicator } from "react-native"
+import { View, Text, ActivityIndicator } from 'react-native'
 import React, {
   useState,
   useCallback,
   useEffect,
   useContext,
   useLayoutEffect,
-} from "react"
-import { GiftedChat, Bubble } from "react-native-gifted-chat"
-import colors from "../../assets/data/colors"
-import { AuthContext } from "../Providers/AuthProvider"
-import { db } from "../utils/firebase"
-import * as firebase from "firebase"
-import Loading from "../custom/Loading"
+} from 'react'
+import { GiftedChat, Bubble } from 'react-native-gifted-chat'
+import colors from '../../assets/data/colors'
+import { AuthContext } from '../Providers/AuthProvider'
+import { db } from '../utils/firebase'
+import * as firebase from 'firebase'
+import Loading from '../custom/Loading'
 
 const ChatScreen = ({ route }) => {
   const [messages, setMessages] = useState([])
@@ -33,7 +33,6 @@ const ChatScreen = ({ route }) => {
   // }, [])
   const onSend = useCallback((messages = []) => {
     const msg = messages[0]
-    // console.log(msg)
     const mymsg = {
       ...msg,
       sentBy: user.uid,
@@ -42,18 +41,17 @@ const ChatScreen = ({ route }) => {
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, mymsg)
     )
-
+    console.log(messages)
     const docid =
       seller_id > user.uid
-        ? user.uid + "-" + seller_id
-        : seller_id + "-" + user.uid
+        ? user.uid + '-' + seller_id
+        : seller_id + '-' + user.uid
 
     const sender = seller_id > user.uid ? user.uid : seller_id
     const rcv = seller_id > user.uid ? seller_id : user.uid
     const sender_name = seller_id > user.uid ? user.displayName : seller_name
     const rcv_name = seller_id > user.uid ? seller_name : user.displayName
-    console.log(mymsg.text)
-    db.collection("chatrooms")
+    db.collection('chatrooms')
       .doc(docid)
       .set({
         sentBy: sender,
@@ -65,32 +63,24 @@ const ChatScreen = ({ route }) => {
         recent_sender: mymsg.user.name,
       })
       .then(() => {
-        db.collection("chatrooms")
+        db.collection('chatrooms')
           .doc(docid)
-          .collection("messages")
+          .collection('messages')
           .add({ ...mymsg, createdAt: firebase.firestore.Timestamp.now() })
       })
-
-    // const { _id, createdAt, text, user } = messages[0]
-    // firebase.firestore().collection("chats").add({
-    //   _id,
-    //   createdAt,
-    //   text,
-    //   user,
-    // })
   }, [])
 
   useLayoutEffect(() => {
     const docid =
       seller_id > user.uid
-        ? user.uid + "-" + seller_id
-        : seller_id + "-" + user.uid
+        ? user.uid + '-' + seller_id
+        : seller_id + '-' + user.uid
 
     const unsubscribe = db
-      .collection("chatrooms")
+      .collection('chatrooms')
       .doc(docid)
-      .collection("messages")
-      .orderBy("createdAt", "desc")
+      .collection('messages')
+      .orderBy('createdAt', 'desc')
       .onSnapshot((snapshot) =>
         setMessages(
           snapshot.docs.map((doc) => ({
@@ -130,9 +120,13 @@ const ChatScreen = ({ route }) => {
       renderBubble={renderBubble}
       messages={messages}
       onSend={(messages) => onSend(messages)}
+      showAvatarForEveryMessage={true}
       user={{
         _id: user.uid,
         name: user.displayName,
+        avatar: user.photoURL
+          ? user.photoURL
+          : 'https://firebasestorage.googleapis.com/v0/b/garage-sales-map.appspot.com/o/images%2Favatar%2Favatar.png?alt=media&token=0c100ea8-5ad9-421a-bf2f-2aa058a33d37',
       }}
     />
   )
