@@ -80,15 +80,6 @@ const ChatListScreen = ({ navigation }) => {
     console.log(Ax)
   }, [])
   const TotArr = AllMessage_2.concat(AllMessage)
-  // const sortedArr = TotArr.sort(
-  //   (a, b) =>
-  //     b.data.recent_Update.localeCompare.toDate()(
-  //       a.data.recent_Update.toDate()
-  //     ) ||
-  //     b.data.recent_Update.localeCompare.toDate()(a.data.recent_Update.toDate())
-  // )
-  // console.log(sortedArr)
-  // console.log(TotArr)
 
   if (loading) {
     return <Loading />

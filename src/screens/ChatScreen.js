@@ -16,7 +16,7 @@ import Loading from '../custom/Loading'
 const ChatScreen = ({ route }) => {
   const [messages, setMessages] = useState([])
   const { user } = useContext(AuthContext)
-  const { seller_id, seller_name } = route.params
+  const { seller_id, seller_name, seller_url } = route.params
   // useEffect(() => {
   //   setMessages([
   //     {
@@ -51,6 +51,7 @@ const ChatScreen = ({ route }) => {
     const rcv = seller_id > user.uid ? seller_id : user.uid
     const sender_name = seller_id > user.uid ? user.displayName : seller_name
     const rcv_name = seller_id > user.uid ? seller_name : user.displayName
+
     db.collection('chatrooms')
       .doc(docid)
       .set({
