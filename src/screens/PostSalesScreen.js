@@ -101,19 +101,23 @@ const PostSalesScreen = () => {
       String(moment(date).format('hh:mm A')) +
       '  '
 
+    console.log(moment().add(7, 'days').format('YYYY-MM-DD'))
     if (
       new Date(String(moment(firstDate).format('YYYY-MM-DD'))).getTime() <
       new Date(String(moment().format('YYYY-MM-DD'))).getTime()
     ) {
-      Alert.alert('Past days are not acceptable')
+      Alert.alert('Previous days are not acceptable')
+    } else if (
+      new Date(String(moment().add(7, 'days').format('YYYY-MM-DD'))).getTime() <
+      new Date(String(moment(firstDate).format('YYYY-MM-DD'))).getTime()
+    ) {
+      Alert.alert('Date range should be in a week')
     } else {
       if (dateTimearr.length <= 6) {
         setdateTimearr((dateTimearr) => [...dateTimearr, dateTime])
       } else {
         Alert.alert('Max days selected already')
       }
-      console.log(String(moment(firstDate).format('DD-MM-YY')))
-      console.log(String(moment().format('DD-MM-YY')))
     }
 
     hideDatePicker_1()
