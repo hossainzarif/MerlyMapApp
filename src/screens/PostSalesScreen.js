@@ -59,6 +59,7 @@ const PostSalesScreen = () => {
   const [titlePost, settitlePost] = useState('')
   const [firstDate, setfirstDate] = useState('')
   const { user } = useContext(AuthContext)
+  const expiarydate = String(moment().add(7, 'days').format('YYYY-MM-DD'))
   const fadeIn = {
     from: {
       opacity: 0,
@@ -211,7 +212,8 @@ const PostSalesScreen = () => {
         setdateTimearr,
         setallLocation,
         setimages,
-        user.email
+        user.email,
+        expiarydate
       )
     })
     Adafter10()
@@ -459,7 +461,8 @@ const PostSalesScreen = () => {
                       setdateTimearr,
                       setallLocation,
                       setimages,
-                      user.email
+                      user.email,
+                      expiarydate
                     )
                     Adafter5()
                   }

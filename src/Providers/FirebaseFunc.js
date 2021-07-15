@@ -15,7 +15,8 @@ export function addPost(
   setdateTimearr,
   setallLocation,
   setimages,
-  user_email
+  user_email,
+  expiarydate
 ) {
   setIsLoading(true)
   db.collection('posts')
@@ -31,6 +32,7 @@ export function addPost(
       flagged: false,
       email: user_email,
       available: true,
+      expiary: expiarydate,
     })
     .then(() => {
       setdateTimearr([])
