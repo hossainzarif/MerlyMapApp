@@ -1,27 +1,29 @@
-import React, { useContext, useState, useEffect } from "react"
-import { Text, View, StyleSheet, TextInput } from "react-native"
-import { AuthContext } from "../Providers/AuthProvider"
-import { FAB } from "react-native-paper"
-import colors from "../../assets/data/colors"
-import MapView, { Marker, PROVIDER_GOOGLE, Callout } from "react-native-maps"
-import * as Location from "expo-location"
-import { Feather, Entypo } from "@expo/vector-icons"
-import Loading from "../custom/Loading"
-import { Alert } from "react-native"
-import { ICON_SIZE, SearchBox_MAP_HEIGHT } from "../constants/Height_Width"
+import React, { useContext, useState, useEffect } from 'react'
+import { Text, View, StyleSheet, TextInput } from 'react-native'
+import { AuthContext } from '../Providers/AuthProvider'
+import { FAB } from 'react-native-paper'
+import colors from '../../assets/data/colors'
+import MapView, { Marker, PROVIDER_GOOGLE, Callout } from 'react-native-maps'
+import * as Location from 'expo-location'
+import { Feather, Entypo } from '@expo/vector-icons'
+import Loading from '../custom/Loading'
+import { Alert } from 'react-native'
+import { ICON_SIZE, SearchBox_MAP_HEIGHT } from '../constants/Height_Width'
+import moment from 'moment'
+
 import {
   AdMobBanner,
   AdMobInterstitial,
   PublisherBanner,
   AdMobRewarded,
   setTestDeviceIDAsync,
-} from "expo-ads-admob"
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete"
-import config from "../../config"
-import PostLoading from "../custom/PostLoading"
-import * as firebase from "firebase"
-import { FontAwesome5 } from "@expo/vector-icons"
-import { LogBox } from "react-native"
+} from 'expo-ads-admob'
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete'
+import config from '../../config'
+import PostLoading from '../custom/PostLoading'
+import * as firebase from 'firebase'
+import { FontAwesome5 } from '@expo/vector-icons'
+import { LogBox } from 'react-native'
 
 const MapScreen = ({ navigation }) => {
   const mapRef = React.createRef()
@@ -40,8 +42,8 @@ const MapScreen = ({ navigation }) => {
   useEffect(() => {
     ;(async () => {
       let { status } = await Location.requestForegroundPermissionsAsync()
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied")
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied')
         return
       }
     })()
@@ -54,7 +56,7 @@ const MapScreen = ({ navigation }) => {
       setLocation(location)
       // Adafter5()
     } catch (error) {
-      Alert.alert("Error:", error.message)
+      Alert.alert('Error:', error.message)
     }
   }
   const loadCoordinates = async () => {
@@ -64,14 +66,14 @@ const MapScreen = ({ navigation }) => {
       setLocation(location)
       Adafter5()
     } catch (error) {
-      Alert.alert("Error:", error.message)
+      Alert.alert('Error:', error.message)
     }
   }
   const moveToPlace = (loc) => {
     if (loc) {
       setLocation({ coords: { latitude: loc.lat, longitude: loc.lng } })
     } else {
-      Alert.alert("Please Turn on Location and try again")
+      Alert.alert('Please Turn on Location and try again')
     }
   }
 
@@ -79,12 +81,11 @@ const MapScreen = ({ navigation }) => {
     loadCoordinates_initial()
     loadPosts()
     // Adafter10()
-    Adafter10()
   }, [])
 
   const loadAd = async () => {
     await AdMobInterstitial.setAdUnitID(
-      "ca-app-pub-3940256099942544/1033173712"
+      'ca-app-pub-3940256099942544/1033173712'
     ) // Test ID, Replace with your-admob-unit-id
     await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: false })
     ShowAd()
@@ -93,11 +94,7 @@ const MapScreen = ({ navigation }) => {
   const ShowAd = async () => {
     await AdMobInterstitial.showAdAsync()
   }
-  const Adafter10 = () => {
-    setTimeout(() => {
-      loadAd()
-    }, 40000)
-  }
+
   const Adafter5 = () => {
     setTimeout(() => {
       loadAd()
@@ -108,7 +105,8 @@ const MapScreen = ({ navigation }) => {
     try {
       await firebase
         .firestore()
-        .collection("posts")
+        .collection('posts')
+        .where('expiary', '>=', String(moment().format('YYYY-MM-DD')))
         .onSnapshot((querySnapshot) => {
           let temp_posts = []
           querySnapshot.forEach((doc) => {
@@ -120,13 +118,13 @@ const MapScreen = ({ navigation }) => {
           setPosts(temp_posts)
         })
     } catch (error) {
-      Alert.alert("Error:", error.message)
+      Alert.alert('Error:', error.message)
     }
   }
 
   if (errorMsg) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <Text style={{ fontSize: 15 }}>
           Permission was denied please give permission
         </Text>
@@ -172,13 +170,13 @@ const MapScreen = ({ navigation }) => {
                 latitude: pos.data.location.coords.latitude,
                 longitude: pos.data.location.coords.longitude,
               }}
-              image={require("../../assets/sell.png")}
+              image={require('../../assets/sell.png')}
             >
               <Callout
                 tooltip
                 onPress={() => {
                   markers[pos.id].hideCallout()
-                  navigation.navigate("Details", {
+                  navigation.navigate('Details', {
                     address: pos.data.location.coords.address,
                     images: pos.data.pictures,
                     details: pos.data.details,
@@ -203,7 +201,7 @@ const MapScreen = ({ navigation }) => {
                         <Text
                           style={{
                             fontSize: 15,
-                            fontWeight: "bold",
+                            fontWeight: 'bold',
                             paddingLeft: 5,
                           }}
                         >
@@ -220,7 +218,7 @@ const MapScreen = ({ navigation }) => {
                         <Text
                           style={{
                             fontSize: 15,
-                            fontWeight: "bold",
+                            fontWeight: 'bold',
                             marginLeft: 5,
                             marginRight: 10,
                           }}
@@ -266,7 +264,7 @@ const MapScreen = ({ navigation }) => {
           style={styles.fab}
           large
           icon='plus'
-          onPress={() => navigation.navigate("PostSales")}
+          onPress={() => navigation.navigate('PostSales')}
           color={colors.white}
         />
         <View style={styles.searchBox}>
@@ -277,16 +275,16 @@ const MapScreen = ({ navigation }) => {
             enablePoweredByContainer={false}
             fetchDetails={true}
             GooglePlacesDetailsQuery={{
-              fields: ["geometry"],
+              fields: ['geometry'],
             }}
             query={{
               key: config.MAP_API_KEY,
-              language: "en", // language of the results
-              components: "country:us",
+              language: 'en', // language of the results
+              components: 'country:us',
             }}
             styles={{
               description: {
-                fontWeight: "bold",
+                fontWeight: 'bold',
               },
 
               textInput: {
@@ -298,14 +296,14 @@ const MapScreen = ({ navigation }) => {
                 name='search'
                 size={ICON_SIZE}
                 color='black'
-                style={{ alignSelf: "center", paddingBottom: 5 }}
+                style={{ alignSelf: 'center', paddingBottom: 5 }}
               />
             )}
             onPress={(data, details) => {
               if (details.geometry.location) {
                 moveToPlace(details.geometry.location)
               } else {
-                Alert.alert("This Specific location was not found")
+                Alert.alert('This Specific location was not found')
               }
             }}
           />
@@ -328,14 +326,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   fab_loc: {
-    position: "absolute",
+    position: 'absolute',
     margin: 16,
     right: 10,
     bottom: 100,
     backgroundColor: colors.primary,
   },
   fab: {
-    position: "absolute",
+    position: 'absolute',
     margin: 16,
     right: 0,
     bottom: 20,
@@ -345,46 +343,46 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   searchBox: {
-    position: "absolute",
-    marginTop: Platform.OS === "ios" ? 40 : 10,
-    flexDirection: "row",
-    backgroundColor: "#fff",
-    width: "90%",
-    alignSelf: "center",
+    position: 'absolute',
+    marginTop: Platform.OS === 'ios' ? 40 : 10,
+    flexDirection: 'row',
+    backgroundColor: '#fff',
+    width: '90%',
+    alignSelf: 'center',
     borderRadius: 5,
-    shadowColor: "#ccc",
+    shadowColor: '#ccc',
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.5,
     shadowRadius: 5,
     elevation: 10,
     paddingHorizontal: 10,
-    alignItems: "center",
+    alignItems: 'center',
   },
   bubble: {
-    flexDirection: "column",
-    alignSelf: "flex-start",
-    backgroundColor: "#fff",
+    flexDirection: 'column',
+    alignSelf: 'flex-start',
+    backgroundColor: '#fff',
     borderRadius: 6,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderWidth: 0.5,
     padding: 15,
     width: 150,
   },
   // Arrow below the bubble
   arrow: {
-    backgroundColor: "transparent",
-    borderColor: "transparent",
-    borderTopColor: "#fff",
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    borderTopColor: '#fff',
     borderWidth: 16,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: -40,
   },
   arrowBorder: {
-    backgroundColor: "transparent",
-    borderColor: "transparent",
-    borderTopColor: "#007a87",
+    backgroundColor: 'transparent',
+    borderColor: 'transparent',
+    borderTopColor: '#007a87',
     borderWidth: 16,
-    alignSelf: "center",
+    alignSelf: 'center',
     marginTop: -0.5,
     // marginBottom: -15
   },
@@ -392,11 +390,11 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 14,
     marginBottom: 5,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   avStyle: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 5,
   },
 })

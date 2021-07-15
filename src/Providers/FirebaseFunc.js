@@ -38,6 +38,7 @@ export function addPost(
       setdateTimearr([])
       setallLocation(null)
       setimages([])
+      console.log(expiarydate)
       Alert.alert('Post Created')
       setIsLoading(false)
     })
