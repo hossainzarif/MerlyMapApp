@@ -52,8 +52,6 @@ const FlaggedPostScreen = ({ navigation }) => {
           title={item.data.title}
           name={item.data.user_name}
           user_id={item.data.user}
-          comment={item.data.comments}
-          reason={item.data.reason}
           onPress_delete={() => {
             Alert.alert(
               'Delete Post',
