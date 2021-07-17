@@ -73,9 +73,9 @@ const ModalPrivacy = (props) => {
                 setSelectedLanguage(itemValue)
               }
             >
-              <Picker.Item label='Wrong location' value='location' />
-              <Picker.Item label='Wrong date' value='date' />
-              <Picker.Item label='Others' value='ot' />
+              <Picker.Item label='Wrong location' value='Wrong location' />
+              <Picker.Item label='Wrong date' value='Wrong date' />
+              <Picker.Item label='Others' value='Others' />
             </Picker>
           </View>
           <Text
