@@ -1,7 +1,7 @@
-import React, { useContext } from "react"
+import React, { useContext } from 'react'
 
-import { View, StyleSheet } from "react-native"
-import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer"
+import { View, StyleSheet } from 'react-native'
+import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer'
 import {
   useTheme,
   Title,
@@ -12,18 +12,18 @@ import {
   Text,
   TouchableRipple,
   Switch,
-} from "react-native-paper"
+} from 'react-native-paper'
 // import { Avatar } from 'react-native-elements'
-import { SimpleLineIcons, AntDesign, MaterialIcons } from "@expo/vector-icons"
-import { DRAWER_ICON_SIZE } from "../constants/Height_Width"
-import { FontAwesome5 } from "@expo/vector-icons"
-import { Foundation } from "@expo/vector-icons"
+import { SimpleLineIcons, AntDesign, MaterialIcons } from '@expo/vector-icons'
+import { DRAWER_ICON_SIZE } from '../constants/Height_Width'
+import { FontAwesome5 } from '@expo/vector-icons'
+import { Foundation } from '@expo/vector-icons'
 
-import { AuthContext } from "../Providers/AuthProvider"
-import colors from "../../assets/data/colors"
-import { TouchableOpacity } from "react-native"
-import { PRIVACY_POLICY_LINK, TERMS_SERVICES_LINK } from "../constants/WebLinks"
-import * as Linking from "expo-linking"
+import { AuthContext } from '../Providers/AuthProvider'
+import colors from '../../assets/data/colors'
+import { TouchableOpacity } from 'react-native'
+import { PRIVACY_POLICY_LINK, TERMS_SERVICES_LINK } from '../constants/WebLinks'
+import * as Linking from 'expo-linking'
 
 const DrawerContent = (props) => {
   const { logout, user } = useContext(AuthContext)
@@ -33,10 +33,10 @@ const DrawerContent = (props) => {
       <DrawerContentScrollView {...props}>
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
-            <View style={{ flexDirection: "row", marginTop: 15 }}>
+            <View style={{ flexDirection: 'row', marginTop: 15 }}>
               <TouchableOpacity
                 onPress={() => {
-                  props.navigation.navigate("Profile")
+                  props.navigation.navigate('Profile')
                 }}
               >
                 {user.photoURL ? (
@@ -55,7 +55,7 @@ const DrawerContent = (props) => {
                   />
                 )}
               </TouchableOpacity>
-              <View style={{ marginLeft: 15, flexDirection: "column" }}>
+              <View style={{ marginLeft: 15, flexDirection: 'column' }}>
                 <Title style={styles.title}>{user.displayName}</Title>
                 <Caption style={styles.caption}>{user.email}</Caption>
               </View>
@@ -69,7 +69,7 @@ const DrawerContent = (props) => {
               )}
               label='Home'
               onPress={() => {
-                props.navigation.navigate("Home")
+                props.navigation.navigate('Home')
               }}
             />
             <DrawerItem
@@ -82,7 +82,7 @@ const DrawerContent = (props) => {
               )}
               label='Profile'
               onPress={() => {
-                props.navigation.navigate("Profile")
+                props.navigation.navigate('Profile')
               }}
             />
             <DrawerItem
@@ -94,12 +94,12 @@ const DrawerContent = (props) => {
                 />
               )}
               onPress={() => {
-                props.navigation.navigate("Inbox")
+                props.navigation.navigate('Inbox')
               }}
               label='Inbox'
             />
 
-            {user.email == "garagesalesmap1@gmail.com" ? null : (
+            {user.email == 'admin@gmail.com' ? null : (
               <DrawerItem
                 icon={() => (
                   <FontAwesome5
@@ -110,11 +110,11 @@ const DrawerContent = (props) => {
                 )}
                 label='Contact Us'
                 onPress={() => {
-                  props.navigation.navigate("Contact")
+                  props.navigation.navigate('Contact')
                 }}
               />
             )}
-            {user.email == "garagesalesmap1@gmail.com" ? (
+            {user.email == 'admin@gmail.com' ? (
               <DrawerItem
                 icon={() => (
                   <FontAwesome5
@@ -125,11 +125,11 @@ const DrawerContent = (props) => {
                 )}
                 label='Flagged'
                 onPress={() => {
-                  props.navigation.navigate("AdminPanel")
+                  props.navigation.navigate('AdminPanel')
                 }}
               />
             ) : null}
-            {user.email == "garagesalesmap1@gmail.com" ? (
+            {user.email == 'admin@gmail.com' ? (
               <DrawerItem
                 icon={() => (
                   <FontAwesome5
@@ -140,7 +140,7 @@ const DrawerContent = (props) => {
                 )}
                 label='Notes'
                 onPress={() => {
-                  props.navigation.navigate("Notes")
+                  props.navigation.navigate('Notes')
                 }}
               />
             ) : null}
@@ -202,26 +202,26 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     marginTop: 3,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   caption: {
     fontSize: 14,
     // lineHeight: 20,
     paddingRight: 10,
-    width: "90%",
+    width: '90%',
   },
   row: {
     marginTop: 20,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   section: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     marginRight: 15,
   },
   paragraph: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginRight: 3,
   },
   drawerSection: {
@@ -229,12 +229,12 @@ const styles = StyleSheet.create({
   },
   bottomDrawerSection: {
     marginBottom: 15,
-    borderTopColor: "#f4f4f4",
+    borderTopColor: '#f4f4f4',
     borderTopWidth: 1,
   },
   preference: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingVertical: 12,
     paddingHorizontal: 16,
   },

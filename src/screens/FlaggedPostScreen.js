@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react"
-import { View, Text, Alert, StyleSheet } from "react-native"
-import colors from "../../assets/data/colors"
-import FlaggedPostCard from "../cards/FlaggedPostCard"
-import Loading from "../custom/Loading"
+import React, { useState, useEffect } from 'react'
+import { View, Text, Alert, StyleSheet } from 'react-native'
+import colors from '../../assets/data/colors'
+import FlaggedPostCard from '../cards/FlaggedPostCard'
+import Loading from '../custom/Loading'
 import {
   deletePostFirebase,
   deletePostImageFirebase,
-} from "../Providers/FirebaseFunc"
-import { db } from "../utils/firebase"
+} from '../Providers/FirebaseFunc'
+import { db } from '../utils/firebase'
 
 const FlaggedPostScreen = ({ navigation }) => {
   const [flaggedPost, setflaggedPost] = useState([])
@@ -16,9 +16,9 @@ const FlaggedPostScreen = ({ navigation }) => {
     try {
       setloading(true)
       await db
-        .collection("posts")
-        .where("flagged", "==", true)
-        .orderBy("timestamp", "desc")
+        .collection('posts')
+        .where('flagged', '==', true)
+        .orderBy('timestamp', 'desc')
         .onSnapshot((querySnapshot) => {
           let temp_posts = []
           querySnapshot.forEach((doc) => {
@@ -32,7 +32,7 @@ const FlaggedPostScreen = ({ navigation }) => {
           console.log(flaggedPost)
         })
     } catch (error) {
-      Alert.alert("Error:", error.message)
+      Alert.alert('Error:', error.message)
 
       setloading(false)
     }
@@ -52,17 +52,19 @@ const FlaggedPostScreen = ({ navigation }) => {
           title={item.data.title}
           name={item.data.user_name}
           user_id={item.data.user}
+          comment={item.data.comments}
+          reason={item.data.reason}
           onPress_delete={() => {
             Alert.alert(
-              "Delete Post",
-              "Are you sure you want to delete flagged post?",
+              'Delete Post',
+              'Are you sure you want to delete flagged post?',
               [
                 {
-                  text: "Cancel",
-                  style: "cancel",
+                  text: 'Cancel',
+                  style: 'cancel',
                 },
                 {
-                  text: "Confirm",
+                  text: 'Confirm',
                   onPress: () => {
                     if (item.data.pictures) {
                       deletePostImageFirebase(
@@ -80,7 +82,7 @@ const FlaggedPostScreen = ({ navigation }) => {
             )
           }}
           onPress={() => {
-            navigation.navigate("FlaggedPostDetails", {
+            navigation.navigate('FlaggedPostDetails', {
               name: item.data.user_name,
               user_id: item.data.user,
               email: item.data.email,
@@ -91,11 +93,11 @@ const FlaggedPostScreen = ({ navigation }) => {
       ))
     } else {
       return (
-        <View style={{ alignItems: "center" }}>
+        <View style={{ alignItems: 'center' }}>
           <Text
             style={{
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: 'center',
+              alignItems: 'center',
               padding: 100,
               fontSize: 20,
               color: colors.darkGray,
