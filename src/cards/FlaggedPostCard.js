@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 import {
   View,
   Text,
@@ -6,13 +6,23 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   StyleSheet,
-} from "react-native"
-import { Entypo } from "@expo/vector-icons"
-import { Card, ListItem, Button, Icon } from "react-native-elements"
-import colors from "../../assets/data/colors"
+} from 'react-native'
+import { Entypo } from '@expo/vector-icons'
+import { Card, ListItem, Button, Icon } from 'react-native-elements'
+import colors from '../../assets/data/colors'
 
 const FlaggedPostCard = (props) => {
-  const { onPress, title, details, img, onPress_delete, name, user_id } = props
+  const {
+    onPress,
+    title,
+    details,
+    img,
+    onPress_delete,
+    name,
+    user_id,
+    comments,
+    reason,
+  } = props
 
   return (
     <TouchableOpacity onPress={onPress}>
@@ -31,23 +41,24 @@ const FlaggedPostCard = (props) => {
         </View>
         <Card.Divider />
 
-        <Text style={styles.titleText}>Click for more details</Text>
+        <Text style={styles.titleText}>{reason}</Text>
+        <Text style={styles.titleText}>{comments}</Text>
       </Card>
     </TouchableOpacity>
   )
 }
 const styles = StyleSheet.create({
   imgStyle: {
-    resizeMode: "contain",
+    resizeMode: 'contain',
     marginBottom: 10,
   },
   title: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 10,
   },
-  titleText: { width: "90%", fontSize: 18 },
+  titleText: { width: '90%', fontSize: 18 },
 })
 
 export default FlaggedPostCard
