@@ -52,6 +52,11 @@ const FlaggedPostScreen = ({ navigation }) => {
           title={item.data.title}
           name={item.data.user_name}
           user_id={item.data.user}
+          onPress_flags={() => {
+            navigation.navigate('FlagDetails', {
+              post_id: item.id,
+            })
+          }}
           onPress_delete={() => {
             Alert.alert(
               'Delete Post',
@@ -79,8 +84,8 @@ const FlaggedPostScreen = ({ navigation }) => {
               { cancelable: true }
             )
           }}
-          onPress={() => {
-            navigation.navigate('FlagDetails', {
+          onPress_details={() => {
+            navigation.navigate('FlaggedPostDetails', {
               name: item.data.user_name,
               user_id: item.data.user,
               email: item.data.email,

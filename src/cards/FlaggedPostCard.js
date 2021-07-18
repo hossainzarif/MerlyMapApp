@@ -13,38 +13,45 @@ import colors from '../../assets/data/colors'
 
 const FlaggedPostCard = (props) => {
   const {
-    onPress,
+    onPress_details,
     title,
     details,
     img,
     onPress_delete,
     name,
     user_id,
-    comments,
-    reason,
+    onPress_flags,
   } = props
 
   return (
-    <TouchableOpacity onPress={onPress}>
-      <Card
-        containerStyle={{
-          borderRadius: 10,
-          elevation: 5,
-        }}
-      >
-        <View style={styles.title}>
-          <Text style={styles.titleText}>{title}</Text>
+    <Card
+      containerStyle={{
+        borderRadius: 10,
+        elevation: 5,
+      }}
+    >
+      <View style={styles.title}>
+        <Text style={styles.titleText}>{title}</Text>
 
-          <TouchableOpacity onPress={onPress_delete}>
-            <Entypo name='cross' size={30} color={colors.warning} />
-          </TouchableOpacity>
-        </View>
-        <Card.Divider />
+        <TouchableOpacity onPress={onPress_delete}>
+          <Entypo name='cross' size={30} color={colors.warning} />
+        </TouchableOpacity>
+      </View>
+      <Card.Divider />
 
-        <Text style={styles.titleText}>{reason}</Text>
-        <Text style={styles.titleText}>{comments}</Text>
-      </Card>
-    </TouchableOpacity>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Button
+          title='Check Details'
+          onPress={onPress_details}
+          buttonStyle={{ backgroundColor: colors.primary }}
+        />
+        <Button
+          title='All Flags'
+          buttonStyle={{ backgroundColor: colors.primary }}
+          onPress={onPress_flags}
+        />
+      </View>
+    </Card>
   )
 }
 const styles = StyleSheet.create({

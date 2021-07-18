@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react"
-import { StyleSheet } from "react-native"
-import { View, Text } from "react-native"
-import Loading from "../custom/Loading"
-import { db } from "../utils/firebase"
-import { AntDesign } from "@expo/vector-icons"
-import colors from "../../assets/data/colors"
+import React, { useState, useEffect } from 'react'
+import { StyleSheet } from 'react-native'
+import { View, Text } from 'react-native'
+import Loading from '../custom/Loading'
+import { db } from '../utils/firebase'
+import { AntDesign } from '@expo/vector-icons'
+import colors from '../../assets/data/colors'
 const FlaggedPostDetailsScreen = ({ route }) => {
-  const { name, user_id, email, postid } = route.params
+  const { name, user_id, email, post_id } = route.params
   const [loading, setloading] = useState(false)
   const [flaggers, setflaggers] = useState(0)
   const [totalflags, settotalflags] = useState(0)
@@ -15,16 +15,16 @@ const FlaggedPostDetailsScreen = ({ route }) => {
     try {
       setloading(true)
       await db
-        .collection("users")
+        .collection('users')
         .doc(user_id)
-        .collection("flaggers")
+        .collection('flaggers')
         .onSnapshot((querySnapshot) => {
           setflaggers(querySnapshot.size)
           setloading(false)
           console.log(flaggers)
         })
     } catch (error) {
-      Alert.alert("Error:", error.message)
+      Alert.alert('Error:', error.message)
 
       setloading(false)
     }
@@ -34,16 +34,16 @@ const FlaggedPostDetailsScreen = ({ route }) => {
       setloading(true)
 
       await db
-        .collection("posts")
-        .doc(postid)
-        .collection("flaggers")
+        .collection('posts')
+        .doc(post_id)
+        .collection('flaggers')
         .onSnapshot((querySnapshot) => {
           settotalflags(querySnapshot.size)
 
           setloading(false)
         })
     } catch (error) {
-      Alert.alert("Error:", error.message)
+      Alert.alert('Error:', error.message)
 
       setloading(false)
     }
@@ -77,12 +77,12 @@ const FlaggedPostDetailsScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   textdata: {
     fontSize: 18,
-    textAlign: "center",
+    textAlign: 'center',
     padding: 20,
   },
 })
