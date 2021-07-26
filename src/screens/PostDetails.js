@@ -10,7 +10,13 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native'
 import colors from '../../assets/data/colors'
-import { Card, ListItem, Button, Icon } from 'react-native-elements'
+import {
+  Card,
+  ListItem,
+  Button,
+  Icon,
+  ButtonGroup,
+} from 'react-native-elements'
 import DateCard from '../cards/DateCard'
 import { SliderBox } from 'react-native-image-slider-box'
 import { Colors } from 'react-native/Libraries/NewAppScreen'
@@ -27,6 +33,7 @@ import { Modal } from 'react-native'
 import ImageViewer from 'react-native-image-zoom-viewer'
 import ModalPrivacy from '../components/modals/ModalPrivacy'
 import DateValidCard from '../cards/DateValidCard'
+import { AntDesign, FontAwesome, Entypo } from '@expo/vector-icons'
 const PostDetails = ({ route, navigation }) => {
   const {
     address,
@@ -47,7 +54,7 @@ const PostDetails = ({ route, navigation }) => {
   const [isEnabled, setIsEnabled] = useState(available)
   const [fullImage, setfullImage] = useState([])
   const [modalVisible, setModalVisible] = useState(false)
-
+  const [selectedIndex, setselectedIndex] = useState(0)
   const img = [
     {
       url: 'https://firebasestorage.googleapis.com/v0/b/garage-sales-map.appspot.com/o/images%2FpostImages%2F2b78b551-2865-47c9-b1a9-a4e6a0e7998f.jpg-Tue%20Jul%2006%202021%2014%3A37%3A29%20GMT%2B0600?alt=media&token=ab92f660-c070-48ab-808d-2ab966a87eed',
@@ -63,6 +70,40 @@ const PostDetails = ({ route, navigation }) => {
       updateAvailability(post_id, false)
     } else {
       updateAvailability(post_id, true)
+    }
+  }
+  const component1 = () => <AntDesign name='heart' size={24} color='white' />
+  const component2 = () => (
+    <FontAwesome name='envelope' size={24} color='white' />
+  )
+  const component3 = () => (
+    <Entypo name='location-pin' size={24} color='white' />
+  )
+  const component4 = () => <FontAwesome name='flag' size={24} color='white' />
+
+  const buttons = [
+    { element: component1 },
+    { element: component2 },
+    { element: component3 },
+    { element: component4 },
+  ]
+
+  function updateIndex(selectedIndex) {
+    setselectedIndex(selectedIndex)
+    if (selectedIndex == 0) {
+      console.log('Love')
+    } else if (selectedIndex == 1) {
+      navigation.navigate('Chat', {
+        seller_name: name,
+        seller_id: user_id,
+      })
+    } else if (selectedIndex == 2) {
+      OpenMap.show({
+        latitude: coord.latitude,
+        longitude: coord.longitude,
+      })
+    } else if (selectedIndex == 3) {
+      setModalVisible(true)
     }
   }
 
@@ -234,6 +275,7 @@ const PostDetails = ({ route, navigation }) => {
                   setModalVisible(true)
                 }}
               />
+
               <Text style={{ paddingLeft: 10 }}>Flag</Text>
 
               <View style={{ alignItems: 'center', justifyContent: 'center' }}>
@@ -248,6 +290,22 @@ const PostDetails = ({ route, navigation }) => {
               </View>
             </View>
           )}
+
+          <ButtonGroup
+            buttons={buttons}
+            onPress={updateIndex}
+            // selectedIndex={selectedIndex}
+            containerStyle={{
+              height: 50,
+              marginBottom: 10,
+              elevation: 10,
+              borderRadius: 10,
+              backgroundColor: colors.primary,
+            }}
+            underlayColor={colors.white}
+
+            // selectedButtonStyle={{ backgroundColor: colors.darkGray }}
+          />
         </ScrollView>
       </SafeAreaView>
     )

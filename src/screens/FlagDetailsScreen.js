@@ -4,7 +4,7 @@ import { TouchableOpacity, Alert } from 'react-native'
 import { View, Text } from 'react-native'
 import FlaggedCommentsCard from '../cards/FlaggedCommentsCard'
 import { db } from '../utils/firebase'
-
+import { ButtonGroup } from 'react-native-elements'
 const FlagDetailsScreen = ({ route, navigation }) => {
   const { post_id } = route.params
   const [FlaggedPost, setFlaggedPost] = useState([])

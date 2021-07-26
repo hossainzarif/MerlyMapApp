@@ -12,30 +12,18 @@ import { Card, ListItem, Button, Icon } from 'react-native-elements'
 import colors from '../../assets/data/colors'
 
 const FlaggedCommentsCard = (props) => {
-  const {
-    onPress,
-    title,
-    details,
-    img,
-    onPress_delete,
-    name,
-    user_id,
-    comments,
-    reason,
-  } = props
+  const { comments, reason } = props
 
   return (
-    <TouchableOpacity onPress={onPress}>
-      <Card
-        containerStyle={{
-          borderRadius: 10,
-          elevation: 5,
-        }}
-      >
-        <Text style={styles.titleText}> Reason: {reason}</Text>
-        <Text style={styles.titleText}> Comments: {comments}</Text>
-      </Card>
-    </TouchableOpacity>
+    <Card
+      containerStyle={{
+        borderRadius: 10,
+        elevation: 5,
+      }}
+    >
+      <Text style={styles.titleText}> Reason: {reason}</Text>
+      <Text style={styles.titleText}> Comments: {comments}</Text>
+    </Card>
   )
 }
 const styles = StyleSheet.create({
