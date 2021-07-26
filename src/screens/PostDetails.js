@@ -251,33 +251,6 @@ const PostDetails = ({ route, navigation }) => {
                 flexDirection: 'row',
               }}
             >
-              <FAB
-                style={styles.fab}
-                large
-                icon='message'
-                color={colors.white}
-                onPress={() => {
-                  navigation.navigate('Chat', {
-                    seller_name: name,
-                    seller_id: user_id,
-                  })
-                }}
-              />
-
-              <Text style={{ paddingLeft: 10 }}>Message sller</Text>
-
-              <FAB
-                style={styles.fab_2}
-                large
-                icon='alert'
-                color={colors.white}
-                onPress={() => {
-                  setModalVisible(true)
-                }}
-              />
-
-              <Text style={{ paddingLeft: 10 }}>Flag</Text>
-
               <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <ModalPrivacy
                   modalVisible={modalVisible}
