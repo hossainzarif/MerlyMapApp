@@ -239,44 +239,34 @@ const PostDetails = ({ route, navigation }) => {
           </View>
 
           {user_id == user.uid ? null : (
-            <View
-              style={{
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                width: '85%',
-                paddingBottom: 20,
-                paddingTop: 10,
-                flexDirection: 'row',
-              }}
-            >
-              <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                <ModalPrivacy
-                  modalVisible={modalVisible}
-                  setModalVisible={setModalVisible}
-                  post_id={post_id}
-                  user_id={user_id}
-                  setflagLoading={setflagLoading}
-                  flagger={user.uid}
-                />
-              </View>
+            <View style={{ width: '90%' }}>
+              <ButtonGroup
+                buttons={buttons}
+                onPress={updateIndex}
+                // selectedIndex={selectedIndex}
+                containerStyle={{
+                  height: 50,
+                  marginBottom: 20,
+                  elevation: 10,
+                  borderRadius: 10,
+                  backgroundColor: colors.primary,
+                }}
+                underlayColor={colors.white}
+
+                // selectedButtonStyle={{ backgroundColor: colors.darkGray }}
+              />
             </View>
           )}
-
-          <ButtonGroup
-            buttons={buttons}
-            onPress={updateIndex}
-            // selectedIndex={selectedIndex}
-            containerStyle={{
-              height: 50,
-              marginBottom: 10,
-              elevation: 10,
-              borderRadius: 10,
-              backgroundColor: colors.primary,
-            }}
-            underlayColor={colors.white}
-
-            // selectedButtonStyle={{ backgroundColor: colors.darkGray }}
-          />
+          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <ModalPrivacy
+              modalVisible={modalVisible}
+              setModalVisible={setModalVisible}
+              post_id={post_id}
+              user_id={user_id}
+              setflagLoading={setflagLoading}
+              flagger={user.uid}
+            />
+          </View>
         </ScrollView>
       </SafeAreaView>
     )
