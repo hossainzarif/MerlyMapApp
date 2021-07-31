@@ -153,14 +153,6 @@ const MapScreen = ({ navigation }) => {
             longitudeDelta: 0.0421,
           }}
         >
-          <Marker
-            coordinate={{
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude,
-            }}
-            icon={<Entypo name='location-pin' size={20} color='black' />}
-          ></Marker>
-
           {posts.map((pos) => (
             <Marker
               tracksViewChanges={false}
@@ -185,49 +177,11 @@ const MapScreen = ({ navigation }) => {
                     name: pos.data.user_name,
                     coord: pos.data.location.coords,
                     post_id: pos.id,
-                    available: pos.data.available,
                   })
                 }}
               >
                 <View>
                   <View style={styles.bubble}>
-                    {pos.data.available ? (
-                      <View style={styles.avStyle}>
-                        <FontAwesome5
-                          name='dot-circle'
-                          size={24}
-                          color='green'
-                        />
-                        <Text
-                          style={{
-                            fontSize: 15,
-                            fontWeight: 'bold',
-                            paddingLeft: 5,
-                          }}
-                        >
-                          Sale Available
-                        </Text>
-                      </View>
-                    ) : (
-                      <View style={styles.avStyle}>
-                        <FontAwesome5
-                          name='dot-circle'
-                          size={24}
-                          color={colors.warning}
-                        />
-                        <Text
-                          style={{
-                            fontSize: 15,
-                            fontWeight: 'bold',
-                            marginLeft: 5,
-                            marginRight: 10,
-                          }}
-                        >
-                          Sale Unvailable
-                        </Text>
-                      </View>
-                    )}
-
                     <Text numberOfLines={1} style={styles.name}>
                       {pos.data.title}
                     </Text>

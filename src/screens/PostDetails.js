@@ -136,6 +136,7 @@ const PostDetails = ({ route, navigation }) => {
             <Text style={styles.headerText}>
               Location (tap to open in maps)
             </Text>
+
             <TouchableOpacity
               onPress={() => {
                 OpenMap.show({
@@ -238,7 +239,31 @@ const PostDetails = ({ route, navigation }) => {
             </Card>
           </View>
 
-          {user_id == user.uid ? null : (
+          {user_id == user.uid ? (
+            <View
+              style={{
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                width: '85%',
+                paddingBottom: 20,
+                paddingTop: 10,
+                flexDirection: 'row',
+              }}
+            >
+              <FAB
+                style={styles.fab}
+                large
+                icon='circle-edit-outline'
+                color={colors.white}
+                onPress={() => {
+                  navigation.navigate('Edit', {
+                    seller_name: name,
+                    seller_id: user_id,
+                  })
+                }}
+              />
+            </View>
+          ) : (
             <View style={{ width: '90%' }}>
               <ButtonGroup
                 buttons={buttons}
