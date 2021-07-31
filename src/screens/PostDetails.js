@@ -72,7 +72,6 @@ const PostDetails = ({ route, navigation }) => {
       updateAvailability(post_id, true)
     }
   }
-  const component1 = () => <AntDesign name='heart' size={24} color='white' />
   const component2 = () => (
     <FontAwesome name='envelope' size={24} color='white' />
   )
@@ -82,7 +81,6 @@ const PostDetails = ({ route, navigation }) => {
   const component4 = () => <FontAwesome name='flag' size={24} color='white' />
 
   const buttons = [
-    { element: component1 },
     { element: component2 },
     { element: component3 },
     { element: component4 },
