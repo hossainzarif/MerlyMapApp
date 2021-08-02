@@ -1,15 +1,15 @@
-import React from "react"
-import { Text, StyleSheet } from "react-native"
+import React from 'react'
+import { Text, StyleSheet } from 'react-native'
 
-import { Input } from "react-native-elements"
-import { AntDesign } from "@expo/vector-icons"
-import colors from "../../../assets/data/colors"
+import { Input } from 'react-native-elements'
+import { AntDesign } from '@expo/vector-icons'
+import colors from '../../../assets/data/colors'
 import {
   HEIGHT_INPUT,
   INPUT_RADIUS,
   ICON_SIZE_MED,
-} from "../../constants/Height_Width"
-import { MaterialIcons } from "@expo/vector-icons"
+} from '../../constants/Height_Width'
+import { MaterialIcons } from '@expo/vector-icons'
 const TextInputTaker = (props) => {
   const { place, lefticon, onChangeText, len } = props
 

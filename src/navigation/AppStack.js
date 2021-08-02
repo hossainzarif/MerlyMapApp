@@ -100,9 +100,6 @@ const AppStack = ({ navigation }) => {
         name='Edit'
         component={EditPostScreen}
         options={({ route }) => ({
-          headerTitleAlign: 'center',
-
-          title: route.params.seller_name,
           headerLeft: () => (
             <Feather
               name='arrow-left'
@@ -110,7 +107,7 @@ const AppStack = ({ navigation }) => {
               color={colors.white}
               style={{ padding: 10 }}
               onPress={() => {
-                navigation.navigate('MapScreen')
+                navigation.goBack()
               }}
             />
           ),

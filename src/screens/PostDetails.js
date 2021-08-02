@@ -257,8 +257,12 @@ const PostDetails = ({ route, navigation }) => {
                 color={colors.white}
                 onPress={() => {
                   navigation.navigate('Edit', {
-                    seller_name: name,
+                    post_id: post_id,
                     seller_id: user_id,
+                    address: address,
+                    dates: dates,
+                    details: details,
+                    images_passed: images,
                   })
                 }}
               />
