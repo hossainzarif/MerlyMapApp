@@ -177,6 +177,7 @@ const MapScreen = ({ navigation }) => {
                     name: pos.data.user_name,
                     coord: pos.data.location.coords,
                     post_id: pos.id,
+                    title: pos.data.title,
                   })
                 }}
               >

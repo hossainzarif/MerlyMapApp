@@ -49,6 +49,8 @@ const EditPostScreen = ({ route }) => {
   const {
     address,
     dates,
+    title,
+    name,
     details,
     images_passed,
     user_id,
@@ -64,7 +66,7 @@ const EditPostScreen = ({ route }) => {
   const [allLocation, setallLocation] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [LoadText, setLoadText] = useState('')
-  const [DetailsText, setDetailsText] = useState('')
+  const [DetailsText, setDetailsText] = useState(details)
   const [titlePost, settitlePost] = useState('')
   const [firstDate, setfirstDate] = useState('')
   const { user } = useContext(AuthContext)
@@ -256,7 +258,7 @@ const EditPostScreen = ({ route }) => {
             <Text style={styles.headerText}>Location *</Text>
 
             <GooglePlacesAutocomplete
-              placeholder='Search'
+              placeholder={address}
               minLength={2} // minimum length of text to search
               autoFocus={false}
               returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
@@ -333,7 +335,7 @@ const EditPostScreen = ({ route }) => {
             <Text style={styles.headerText}>Title *</Text>
 
             <TextInputTaker
-              place='Title'
+              place={title}
               len={80}
               onChangeText={function (currentInput) {
                 settitlePost(currentInput)
@@ -441,6 +443,7 @@ const EditPostScreen = ({ route }) => {
             <Text style={styles.headerText}>Details *</Text>
             <DetailsInputTaker
               len={2000}
+              val={DetailsText}
               onChangeText={function (currentInput) {
                 setDetailsText(currentInput)
               }}
@@ -449,7 +452,7 @@ const EditPostScreen = ({ route }) => {
           </View>
           <View style={{ width: '90%', marginTop: 10, marginBottom: 10 }}>
             <CurvedButton
-              btnText='Create Post'
+              btnText='Confirm Edit'
               onPress={() => {
                 if (allLocation == null) {
                   Alert.alert('Please pick valid location')

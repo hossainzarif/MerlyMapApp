@@ -1,20 +1,21 @@
-import React from "react"
-import { Text, StyleSheet } from "react-native"
+import React from 'react'
+import { Text, StyleSheet } from 'react-native'
 
-import { Input } from "react-native-elements"
-import { AntDesign } from "@expo/vector-icons"
-import colors from "../../../assets/data/colors"
+import { Input } from 'react-native-elements'
+import { AntDesign } from '@expo/vector-icons'
+import colors from '../../../assets/data/colors'
 import {
   HEIGHT_INPUT,
   INPUT_RADIUS,
   ICON_SIZE_MED,
   HEIGHT_INPUT_DETAILS,
-} from "../../constants/Height_Width"
+} from '../../constants/Height_Width'
 const DetailsInputTaker = (props) => {
-  const { onChangeText, len } = props
+  const { onChangeText, len, val } = props
 
   return (
     <Input
+      value={val}
       multiline={true}
       inputStyle={styles.input}
       containerStyle={styles.textInput}

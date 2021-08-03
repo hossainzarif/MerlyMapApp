@@ -45,6 +45,7 @@ const PostDetails = ({ route, navigation }) => {
     coord,
     post_id,
     available,
+    title,
   } = route.params
   const { user } = useContext(AuthContext)
 
@@ -263,6 +264,8 @@ const PostDetails = ({ route, navigation }) => {
                     dates: dates,
                     details: details,
                     images_passed: images,
+                    name: name,
+                    title: title,
                   })
                 }}
               />
