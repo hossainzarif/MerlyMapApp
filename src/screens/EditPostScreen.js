@@ -67,7 +67,7 @@ const EditPostScreen = ({ route }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [LoadText, setLoadText] = useState('')
   const [DetailsText, setDetailsText] = useState(details)
-  const [titlePost, settitlePost] = useState('')
+  const [titlePost, settitlePost] = useState(title)
   const [firstDate, setfirstDate] = useState('')
   const { user } = useContext(AuthContext)
   const expiarydate = String(moment().add(7, 'days').format('YYYY-MM-DD'))
@@ -335,7 +335,8 @@ const EditPostScreen = ({ route }) => {
             <Text style={styles.headerText}>Title *</Text>
 
             <TextInputTaker
-              place={title}
+              place='title'
+              val={titlePost}
               len={80}
               onChangeText={function (currentInput) {
                 settitlePost(currentInput)
