@@ -47,6 +47,7 @@ export function addPost(
       setIsLoading(false)
     })
 }
+
 export function deletePostFirebase(id, setloadingdelete) {
   setloadingdelete(true)
   db.collection('posts')
@@ -165,3 +166,5 @@ export function sendNote(name, email, message, setLoading) {
     setLoading(false)
   }
 }
+
+export function editPost(params) {}

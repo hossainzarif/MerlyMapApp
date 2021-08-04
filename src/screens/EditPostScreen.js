@@ -62,7 +62,7 @@ const EditPostScreen = ({ route }) => {
 
   const [selectedDates, setselectedDates] = useState(moment())
   const [dateTimearr, setdateTimearr] = useState(dates)
-  const [images, setimages] = useState([])
+  const [images, setimages] = useState(images_passed)
   const [allLocation, setallLocation] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [LoadText, setLoadText] = useState('')
@@ -455,33 +455,34 @@ const EditPostScreen = ({ route }) => {
             <CurvedButton
               btnText='Confirm Edit'
               onPress={() => {
-                if (allLocation == null) {
-                  Alert.alert('Please pick valid location')
-                } else if (titlePost && dateTimearr.length > 0 && DetailsText) {
-                  if (images.length > 0) {
-                    uploadImagePost(images)
-                  } else {
-                    setLoadText('Creating Post')
-                    addPost(
-                      allLocation,
-                      titlePost,
-                      dateTimearr,
-                      DetailsText,
-                      null,
-                      user.uid,
-                      user.displayName,
-                      setIsLoading,
-                      setdateTimearr,
-                      setallLocation,
-                      setimages,
-                      user.email,
-                      expiarydate
-                    )
-                    Adafter5()
-                  }
-                } else {
-                  Alert.alert('Please fill up the required field')
-                }
+                // if (allLocation == null) {
+                //   Alert.alert('Please pick valid location')
+                // } else if (titlePost && dateTimearr.length > 0 && DetailsText) {
+                //   if (images.length > 0) {
+                //     uploadImagePost(images)
+                //   } else {
+                //     setLoadText('Creating Post')
+                //     addPost(
+                //       allLocation,
+                //       titlePost,
+                //       dateTimearr,
+                //       DetailsText,
+                //       null,
+                //       user.uid,
+                //       user.displayName,
+                //       setIsLoading,
+                //       setdateTimearr,
+                //       setallLocation,
+                //       setimages,
+                //       user.email,
+                //       expiarydate
+                //     )
+                //     Adafter5()
+                //   }
+                // } else {
+                //   Alert.alert('Please fill up the required field')
+                // }
+                console.log(images)
               }}
             />
           </View>

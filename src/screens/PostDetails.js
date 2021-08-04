@@ -263,7 +263,7 @@ const PostDetails = ({ route, navigation }) => {
                     address: address,
                     dates: dates,
                     details: details,
-                    images_passed: images,
+                    images_passed: images ? images : [],
                     name: name,
                     title: title,
                   })
