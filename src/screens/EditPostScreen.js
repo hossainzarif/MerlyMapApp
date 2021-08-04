@@ -455,34 +455,33 @@ const EditPostScreen = ({ route }) => {
             <CurvedButton
               btnText='Confirm Edit'
               onPress={() => {
-                // if (allLocation == null) {
-                //   Alert.alert('Please pick valid location')
-                // } else if (titlePost && dateTimearr.length > 0 && DetailsText) {
-                //   if (images.length > 0) {
-                //     uploadImagePost(images)
-                //   } else {
-                //     setLoadText('Creating Post')
-                //     addPost(
-                //       allLocation,
-                //       titlePost,
-                //       dateTimearr,
-                //       DetailsText,
-                //       null,
-                //       user.uid,
-                //       user.displayName,
-                //       setIsLoading,
-                //       setdateTimearr,
-                //       setallLocation,
-                //       setimages,
-                //       user.email,
-                //       expiarydate
-                //     )
-                //     Adafter5()
-                //   }
-                // } else {
-                //   Alert.alert('Please fill up the required field')
-                // }
-                console.log(images)
+                if (allLocation == null) {
+                  Alert.alert('Please pick valid location')
+                } else if (titlePost && dateTimearr.length > 0 && DetailsText) {
+                  if (images.length > 0) {
+                    uploadImagePost(images)
+                  } else {
+                    setLoadText('Creating Post')
+                    addPost(
+                      allLocation,
+                      titlePost,
+                      dateTimearr,
+                      DetailsText,
+                      null,
+                      user.uid,
+                      user.displayName,
+                      setIsLoading,
+                      setdateTimearr,
+                      setallLocation,
+                      setimages,
+                      user.email,
+                      expiarydate
+                    )
+                    Adafter5()
+                  }
+                } else {
+                  Alert.alert('Please fill up the required field')
+                }
               }}
             />
           </View>
