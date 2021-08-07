@@ -58,6 +58,7 @@ const PostSalesScreen = () => {
   const [DetailsText, setDetailsText] = useState('')
   const [titlePost, settitlePost] = useState('')
   const [firstDate, setfirstDate] = useState('')
+
   const { user } = useContext(AuthContext)
   const expiarydate = String(moment().add(7, 'days').format('YYYY-MM-DD'))
   const fadeIn = {

@@ -35,7 +35,7 @@ import Loading from '../custom/Loading'
 import PostLoading from '../custom/PostLoading'
 import { MaterialIcons } from '@expo/vector-icons'
 import { Alert } from 'react-native'
-import { addPost } from '../Providers/FirebaseFunc'
+import { addPost, editPost } from '../Providers/FirebaseFunc'
 import {
   AdMobBanner,
   AdMobInterstitial,
@@ -45,7 +45,7 @@ import {
 } from 'expo-ads-admob'
 import * as Animatable from 'react-native-animatable'
 
-const EditPostScreen = ({ route }) => {
+const EditPostScreen = ({ route, navigation }) => {
   const {
     address,
     dates,
@@ -56,14 +56,19 @@ const EditPostScreen = ({ route }) => {
     user_id,
     post_id,
     available,
+    ed_location,
   } = route.params
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false)
   const [isDatePickerVisible_1, setDatePickerVisibility_1] = useState(false)
 
   const [selectedDates, setselectedDates] = useState(moment())
   const [dateTimearr, setdateTimearr] = useState(dates)
-  const [images, setimages] = useState(images_passed)
-  const [allLocation, setallLocation] = useState(null)
+  const [images, setimages] = useState([])
+  const [passedimages, setpassedimages] = useState(images_passed)
+
+  const [allImages, setallImages] = useState(images.concat(passedimages))
+
+  const [allLocation, setallLocation] = useState(ed_location)
   const [isLoading, setIsLoading] = useState(false)
   const [LoadText, setLoadText] = useState('')
   const [DetailsText, setDetailsText] = useState(details)
@@ -71,6 +76,7 @@ const EditPostScreen = ({ route }) => {
   const [firstDate, setfirstDate] = useState('')
   const { user } = useContext(AuthContext)
   const expiarydate = String(moment().add(7, 'days').format('YYYY-MM-DD'))
+
   const fadeIn = {
     from: {
       opacity: 0,
@@ -163,7 +169,8 @@ const EditPostScreen = ({ route }) => {
     })
 
     if (!result.cancelled) {
-      if (images.length <= 19) {
+      if (images.concat(passedimages).length <= 19) {
+        setallImages((images) => [...images, result.uri])
         setimages((images) => [...images, result.uri])
       } else {
         Alert.alert('Max images selected already')
@@ -194,7 +201,7 @@ const EditPostScreen = ({ route }) => {
 
   const uploadImagePost = (pictures) => {
     setIsLoading(true)
-    setLoadText('Uploading Image')
+    setLoadText('Uploading New Image')
     const promises = pictures.map(async (file) => {
       const imgname = file.substring(file.lastIndexOf('/') + 1)
       const response = await fetch(file)
@@ -209,22 +216,18 @@ const EditPostScreen = ({ route }) => {
     })
 
     Promise.all(promises).then((fileDownloadUrls) => {
-      setLoadText('Creating Post')
+      setLoadText('Editing in Progress')
 
-      addPost(
+      const allimg = fileDownloadUrls.concat(passedimages)
+      editPost(
         allLocation,
         titlePost,
         dateTimearr,
         DetailsText,
-        fileDownloadUrls,
-        user.uid,
-        user.displayName,
+        allimg,
         setIsLoading,
-        setdateTimearr,
-        setallLocation,
-        setimages,
-        user.email,
-        expiarydate
+        expiarydate,
+        post_id
       )
     })
     Adafter10()
@@ -235,21 +238,6 @@ const EditPostScreen = ({ route }) => {
   } else {
     return (
       <SafeAreaView style={styles.container}>
-        {/* <GooglePlacesAutocomplete
-        placeholder='Search'
-        onPress={(data, details = null) => {
-          // 'details' is provided when fetchDetails = true
-          console.log(data, details)
-        }}
-        query={{
-          key: 'AIzaSyBBAxNJbe9wYcgUk8tN9VGzFEDMcXbaATU',
-          language: 'en',
-        }}
-        currentLocation={true}
-        currentLocationLabel='Current location'
-        onFail={(error) => console.error(error)}
-      /> */}
-
         <ScrollView
           contentContainerStyle={{ alignItems: 'center' }}
           keyboardShouldPersistTaps={'handled'}
@@ -398,7 +386,7 @@ const EditPostScreen = ({ route }) => {
           </View>
 
           <View style={{ width: '90%' }}>
-            <Text style={styles.headerText}>Add Images (max 5)</Text>
+            <Text style={styles.headerText}>Add Images (max 20)</Text>
 
             <TouchableOpacity style={styles.userBtn} onPress={pickImage}>
               <Entypo name='camera' size={24} color={colors.primary} />
@@ -406,21 +394,27 @@ const EditPostScreen = ({ route }) => {
             </TouchableOpacity>
 
             <FlatList
-              data={images}
+              data={images.concat(passedimages)}
               renderItem={({ item, index }) => (
                 <ImageCard
                   uri={item}
                   onPress={() => {
-                    setimages((images) =>
-                      images.filter((_item, _Index) => _Index !== index)
-                    )
+                    if (images.includes(item)) {
+                      setimages((images) =>
+                        images.filter((_item, _Index) => _Index !== index)
+                      )
+                    } else {
+                      setpassedimages((images) =>
+                        images.filter((_item, _Index) => _Index !== index)
+                      )
+                    }
                   }}
                 />
               )}
               horizontal
               showsHorizontalScrollIndicator={false}
             />
-            {images.length > 2 ? (
+            {images.concat(passedimages).length > 2 ? (
               <View
                 style={{
                   alignItems: 'center',
@@ -461,21 +455,17 @@ const EditPostScreen = ({ route }) => {
                   if (images.length > 0) {
                     uploadImagePost(images)
                   } else {
-                    setLoadText('Creating Post')
-                    addPost(
+                    setLoadText('Editing in Progress')
+                    const img = passedimages.length > 0 ? passedimages : null
+                    editPost(
                       allLocation,
                       titlePost,
                       dateTimearr,
                       DetailsText,
-                      null,
-                      user.uid,
-                      user.displayName,
+                      img,
                       setIsLoading,
-                      setdateTimearr,
-                      setallLocation,
-                      setimages,
-                      user.email,
-                      expiarydate
+                      expiarydate,
+                      post_id
                     )
                     Adafter5()
                   }

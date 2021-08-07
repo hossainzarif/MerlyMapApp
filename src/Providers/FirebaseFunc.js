@@ -167,4 +167,36 @@ export function sendNote(name, email, message, setLoading) {
   }
 }
 
-export function editPost(params) {}
+export function editPost(
+  allLocation,
+  titlePost,
+  dateTimearr,
+  DetailsText,
+  fileDownloadUrls,
+  setIsLoading,
+  expiarydate,
+  post_id
+) {
+  try {
+    setIsLoading(true)
+
+    db.collection('posts')
+      .doc(post_id)
+      .update({
+        location: allLocation,
+        title: titlePost,
+        dates: dateTimearr,
+        details: DetailsText,
+        pictures: fileDownloadUrls,
+        expiary: expiarydate,
+      })
+      .then(() => {
+        console.log(expiarydate)
+        Alert.alert('Post Edited')
+        setIsLoading(false)
+      })
+  } catch (error) {
+    Alert.alert('Error:', error.message)
+    setIsLoading(false)
+  }
+}
