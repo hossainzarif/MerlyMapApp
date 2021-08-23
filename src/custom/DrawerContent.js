@@ -24,6 +24,7 @@ import colors from '../../assets/data/colors'
 import { TouchableOpacity } from 'react-native'
 import { PRIVACY_POLICY_LINK, TERMS_SERVICES_LINK } from '../constants/WebLinks'
 import * as Linking from 'expo-linking'
+import { ADMIN_MAIL } from '../constants/stringsConstants'
 
 const DrawerContent = (props) => {
   const { logout, user } = useContext(AuthContext)
@@ -99,7 +100,7 @@ const DrawerContent = (props) => {
               label='Inbox'
             />
 
-            {user.email == 'admin@gmail.com' ? null : (
+            {user.email == ADMIN_MAIL ? null : (
               <DrawerItem
                 icon={() => (
                   <FontAwesome5
@@ -114,7 +115,7 @@ const DrawerContent = (props) => {
                 }}
               />
             )}
-            {user.email == 'admin@gmail.com' ? (
+            {user.email == ADMIN_MAIL ? (
               <DrawerItem
                 icon={() => (
                   <FontAwesome5
@@ -129,7 +130,7 @@ const DrawerContent = (props) => {
                 }}
               />
             ) : null}
-            {user.email == 'admin@gmail.com' ? (
+            {user.email == ADMIN_MAIL ? (
               <DrawerItem
                 icon={() => (
                   <FontAwesome5
