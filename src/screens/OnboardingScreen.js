@@ -15,14 +15,35 @@ const OnboardingScreen = ({ navigation }) => {
       pages={[
         {
           backgroundColor: colors.primary,
-          image: <Image source={require('../../assets/onboarding-img1.png')} />,
-          title: 'Onboarding-1',
+          image: (
+            <Image
+              source={require('../../assets/on01.png')}
+              resizeMode='contain'
+            />
+          ),
+          title: 'Post a Sale',
           subtitle: ONBOARDING_1,
         },
         {
           backgroundColor: colors.primary,
-          image: <Image source={require('../../assets/map-1.png')} />,
-          title: 'Onboarding-2',
+          image: (
+            <Image
+              source={require('../../assets/on02.png')}
+              resizeMode='contain'
+            />
+          ),
+          title: 'Find Sales Near You',
+          subtitle: ONBOARDING_2,
+        },
+        {
+          backgroundColor: colors.primary,
+          image: (
+            <Image
+              source={require('../../assets/on03.png')}
+              resizeMode='contain'
+            />
+          ),
+          title: 'Click on Addres to Start Navigation',
           subtitle: ONBOARDING_2,
         },
       ]}
