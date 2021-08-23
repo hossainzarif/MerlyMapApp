@@ -30,7 +30,7 @@ const MapScreen = ({ navigation }) => {
 
   const { user } = useContext(AuthContext)
   const [location, setLocation] = useState({
-    coords: { latitude: 23.93, longitude: 93.2 },
+    coords: { latitude: 37.90675910905513, longitude: -100.82332766983428 },
   })
   const [errorMsg, setErrorMsg] = useState(null)
   const [loadingMap, setloadingMap] = useState(false)
